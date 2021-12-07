@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "BCPF Test/1.0.0": {
+        "dependencies": {
+          "BeConsolePresentationFramework": "1.0.0"
+        },
+        "runtime": {
+          "BCPF Test.dll": {}
+        }
+      },
+      "BeConsolePresentationFramework/1.0.0": {
+        "runtime": {
+          "BeConsolePresentationFramework.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BCPF Test/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "BeConsolePresentationFramework/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

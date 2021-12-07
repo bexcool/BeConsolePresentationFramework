@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "cd6423be-7bbd-4803-90d4-5f66f40c689d": {
+      "ProjectGuid": "cd6423be-7bbd-4803-90d4-5f66f40c689d",
+      "DisplayName": "BeConsolePresentationFramework",
+      "ColorIndex": 0
+    },
+    "35007a39-7246-4bdb-b7a9-089b31634059": {
+      "ProjectGuid": "35007a39-7246-4bdb-b7a9-089b31634059",
+      "DisplayName": "BCPF Test",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
