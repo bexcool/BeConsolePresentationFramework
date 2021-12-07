@@ -18,7 +18,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                ValueChanged();
+                _ValueChanged();
                 _X = value;
             }
         }
@@ -30,7 +30,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                ValueChanged();
+                _ValueChanged();
                 _Y = value;
             }
         }
@@ -42,7 +42,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                ValueChanged();
+                _ValueChanged();
                 _Width = value;
             }
         }
@@ -54,7 +54,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                ValueChanged();
+                _ValueChanged();
                 _Height = value;
             }
         }
@@ -66,10 +66,12 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                ValueChanged();
+                _ValueChanged();
                 _Padding = value;
             }
         }
+
+        public bool ValueChanged = false;
 
         private string _Content = "";
         public string Content
@@ -78,7 +80,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                ValueChanged();
+                _ValueChanged();
                 _Content = value;
             }
         }
@@ -93,9 +95,9 @@ namespace BeConsolePresentationFramework.Controls.Base
             ConsolePresentation.AddControl(this);
         }
 
-        private void ValueChanged()
+        private void _ValueChanged()
         {
-            Renderer.DrawBlank(new Rectangle(_X, _Y, _Width, _Height));
+            ValueChanged = true;
         }
 
         public void Click()

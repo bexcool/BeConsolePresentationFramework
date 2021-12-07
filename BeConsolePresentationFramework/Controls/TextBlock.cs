@@ -12,7 +12,7 @@ namespace BeConsolePresentationFramework.Controls
 {
     public class TextBlock : Control
     {
-        public TextBlock(int X, int Y, Size Size)
+        public TextBlock(int X, int Y, int Width, int Height)
         {
             this.X = X;
             this.Y = Y;
@@ -22,6 +22,8 @@ namespace BeConsolePresentationFramework.Controls
         {
             this.X = X;
             this.Y = Y;
+            this.Content = Content;
+            Width = Content.Length;
         }
     }
 }

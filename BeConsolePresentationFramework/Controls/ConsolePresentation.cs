@@ -7,6 +7,7 @@ using BeConsolePresentationFramework.Utilities;
 using BeConsolePresentationFramework.Rendering;
 using BeConsolePresentationFramework.Controls.Base;
 using BeConsolePresentationFramework.Controls;
+using System.Drawing;
 
 namespace BeConsolePresentationFramework
 {
@@ -15,6 +16,7 @@ namespace BeConsolePresentationFramework
         static List<Control> AllControls = new List<Control>();
         Thread Core;
         private NativeMethods.INPUT_RECORD record;
+        int LastLeftMouseButtonPressed = 0;
 
         public ConsolePresentation()
         {
@@ -23,6 +25,14 @@ namespace BeConsolePresentationFramework
 
             Core = new Thread(InitializeCore);
             Core.Start();
+
+            Thread thread = new Thread(Test);
+            thread.Start();
+        }
+
+        private void Test()
+        {
+            Debug.WriteLine("LOL");
         }
 
         private void InitializeConsole()
@@ -39,7 +49,7 @@ namespace BeConsolePresentationFramework
         private void InitializeCore()
         {
             var handle = NativeMethods.GetStdHandle(NativeMethods.STD_INPUT_HANDLE);
-
+            
             int mode = 0;
             if (!(NativeMethods.GetConsoleMode(handle, ref mode))) { throw new Win32Exception(); }
 
@@ -48,7 +58,7 @@ namespace BeConsolePresentationFramework
             mode |= NativeMethods.ENABLE_EXTENDED_FLAGS;
 
             if (!(NativeMethods.SetConsoleMode(handle, mode))) { throw new Win32Exception(); }
-
+            
             record = new NativeMethods.INPUT_RECORD();
             uint recordLen = 0;
 
@@ -90,6 +100,16 @@ namespace BeConsolePresentationFramework
                 }
 
                 Render();
+
+                // Left mouse button press
+                if (record.MouseEvent.dwButtonState == 0 || record.MouseEvent.dwButtonState == 1)
+                {
+                    LastLeftMouseButtonPressed = record.MouseEvent.dwButtonState;
+                }
+                else
+                {
+                    LastLeftMouseButtonPressed = 0;
+                }
             }
         }
 
@@ -103,16 +123,13 @@ namespace BeConsolePresentationFramework
                     {
                         if (control is TextBlock)
                         {
-                            Renderer.DrawText(control.X, control.Y, control.Content);
 
                         }
                         else if (control is Button)
                         {
-                            control.Height = control.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (control.Padding != null ? control.Padding.Top + control.Padding.Bottom : 0) + 1;
-                            Renderer.DrawBox(control.X, control.Y, control.Padding != null ? control.Padding : new Thickness(), control.Content);
                             if (
-                                /*record.MouseEvent.dwEventFlags == 0 &&*/
-                                record.MouseEvent.dwButtonState == 1 &&
+                                record.MouseEvent.dwButtonState != LastLeftMouseButtonPressed &&
+                                record.MouseEvent.dwButtonState == 0 &&
                                 record.MouseEvent.dwMousePosition.X >= control.X &&
                                 record.MouseEvent.dwMousePosition.X <= control.X + control.Width &&
                                 record.MouseEvent.dwMousePosition.Y >= control.Y &&
@@ -121,6 +138,27 @@ namespace BeConsolePresentationFramework
                             {
                                 ((Button)control).Click();
                             }
+                        }
+                    }
+
+                    foreach (Control control in AllControls)
+                    {
+                        if (control is TextBlock)
+                        {
+                            if (control.ValueChanged)
+                            {
+                                Debug.WriteLine(control.Content + " - " + control.ValueChanged);
+                                Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                                control.ValueChanged = false;
+                            }
+                            control.Width = control.Content.Length;
+                            control.ValueChanged = false;
+                            Renderer.DrawText(control.X, control.Y, control.Content);
+                        }
+                        else if (control is Button)
+                        {
+                            control.Height = control.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (control.Padding != null ? control.Padding.Top + control.Padding.Bottom : 0) + 1;
+                            Renderer.DrawBox(control.X, control.Y, control.Padding != null ? control.Padding : new Thickness(), control.Content);
                         }
                     }
                 }
@@ -132,7 +170,6 @@ namespace BeConsolePresentationFramework
         }
 
         protected abstract void KeyPressed(ConsoleKey consoleKey);
-        //protected abstract void KeyReleased(ConsoleKey consoleKey);
 
         private class NativeMethods
         {

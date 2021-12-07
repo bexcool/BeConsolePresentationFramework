@@ -11,7 +11,7 @@ namespace BeConsolePresentationFramework.Controls
 {
     public class Button : Control
     {
-        public Button(int X, int Y, Size Size)
+        public Button(int X, int Y, int Width, int Height)
         {
             this.X = X;
             this.Y = Y;

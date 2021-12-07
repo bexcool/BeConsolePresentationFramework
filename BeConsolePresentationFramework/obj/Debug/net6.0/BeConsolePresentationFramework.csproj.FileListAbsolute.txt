@@ -10,3 +10,4 @@ F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFra
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BeConsolePresentationFramework\obj\Debug\net6.0\BeConsolePresentationFramework.dll
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BeConsolePresentationFramework\obj\Debug\net6.0\ref\BeConsolePresentationFramework.dll
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BeConsolePresentationFramework\obj\Debug\net6.0\BeConsolePresentationFramework.pdb
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BeConsolePresentationFramework\obj\Debug\net6.0\BeConsolePresentationFramework.csproj.ResolveComReference.cache

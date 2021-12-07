@@ -123,9 +123,9 @@ namespace BeConsolePresentationFramework.Rendering
         }
         public static void DrawBlank(Rectangle Rectangle)
         {
-            for (int X = Rectangle.Left; X < Rectangle.Width; X++)
+            for (int X = Rectangle.X; X < Rectangle.X + Rectangle.Width; X++)
             {
-                for (int Y = Rectangle.Top; Y < Rectangle.Height; Y++)
+                for (int Y = Rectangle.Top; Y < Rectangle.Y + Rectangle.Height; Y++)
                 {
                     Console.SetCursorPosition(X, Y);
                     Console.Write(' ');
