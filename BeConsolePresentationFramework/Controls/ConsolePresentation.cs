@@ -14,25 +14,31 @@ namespace BeConsolePresentationFramework
     public abstract class ConsolePresentation
     {
         static List<Control> AllControls = new List<Control>();
-        Thread Core;
+        Thread InputThread, RenderThread;
         private NativeMethods.INPUT_RECORD record;
         int LastLeftMouseButtonPressed = 0;
+        bool ExitRequest = false;
 
         public ConsolePresentation()
         {
             InitializeConsole();
             Render();
 
-            Core = new Thread(InitializeCore);
-            Core.Start();
-
-            Thread thread = new Thread(Test);
-            thread.Start();
+            InputThread = new Thread(InitializeCore);
+            InputThread.IsBackground = true;
+            InputThread.Start();
+            /*
+            RenderThread = new Thread(Test);
+            RenderThread.Start();*/
         }
 
         private void Test()
         {
-            Debug.WriteLine("LOL");
+            while (!ExitRequest)
+            {
+                Debug.WriteLine("ff");
+                Render();
+            }
         }
 
         private void InitializeConsole()
@@ -62,7 +68,7 @@ namespace BeConsolePresentationFramework
             record = new NativeMethods.INPUT_RECORD();
             uint recordLen = 0;
 
-            while (true)
+            while (!ExitRequest)
             {
                 if (!NativeMethods.ReadConsoleInput(handle, ref record, 1, ref recordLen)) { throw new Win32Exception(); }
                 Console.SetCursorPosition(0, 0);
@@ -147,7 +153,6 @@ namespace BeConsolePresentationFramework
                         {
                             if (control.ValueChanged)
                             {
-                                Debug.WriteLine(control.Content + " - " + control.ValueChanged);
                                 Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
                                 control.ValueChanged = false;
                             }
