@@ -43,23 +43,23 @@ namespace BeConsolePresentationFramework.Rendering
             Console.SetCursorPosition(X, Y);
             Console.Write(ulCorner + h + urCorner);
 
-            int Height = 1;
+            int Height = 1, pdng; ;
 
             // Set padding top
             if (Padding != null)
-            for (int pt = 0; pt < Padding.Top; pt++)
-            {
-                string Spacing = "";
-                for (int i = 0; i < width; i++)
+                for (pdng = 0; pdng < Padding.Top; pdng++)
                 {
-                    Spacing += " ";
+                    string Spacing = "";
+                    for (int i = 0; i < width; i++)
+                    {
+                        Spacing += " ";
+                    }
+
+                    Console.SetCursorPosition(X, Y + Height);
+                    Console.Write(vertical + Spacing + vertical);
+
+                    Height++;
                 }
-
-                Console.SetCursorPosition(X, Y + Height);
-                Console.Write(vertical + Spacing + vertical);
-
-                Height++;
-            }
 
             // box contents
             foreach (string line in lines)
@@ -89,6 +89,22 @@ namespace BeConsolePresentationFramework.Rendering
                 Console.Write(vertical + beginSpacing + line + endSpacing + vertical);
                 Height++;
             }
+
+            // Set padding bottom
+            if (Padding != null)
+                for (pdng = 0; pdng < Padding.Bottom; pdng++)
+                {
+                    string Spacing = "";
+                    for (int i = 0; i < width; i++)
+                    {
+                        Spacing += " ";
+                    }
+
+                    Console.SetCursorPosition(X, Y + Height);
+                    Console.Write(vertical + Spacing + vertical);
+
+                    Height++;
+                }
 
             // box bottom
             Console.SetCursorPosition(X, Y + Height);

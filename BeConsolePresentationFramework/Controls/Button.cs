@@ -22,9 +22,8 @@ namespace BeConsolePresentationFramework.Controls
             this.X = X;
             this.Y = Y;
             this.Content = Content;
-            Width = Content.Length + 3; // Přidat ať získá nejdelší řádek
+            Width = Content.Length + 3;
             Height = Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (Padding != null ? Padding.Top + Padding.Bottom : 0) + 2;
-            //Renderer.DrawBox(X, Y, Padding, Content);
         }
     }
 }

@@ -14,10 +14,12 @@ namespace BeConsolePresentationFramework
     {
         static List<Control> AllControls = new List<Control>();
         Thread Core;
+        private NativeMethods.INPUT_RECORD record;
 
         public ConsolePresentation()
         {
             InitializeConsole();
+            Render();
 
             Core = new Thread(InitializeCore);
             Core.Start();
@@ -46,8 +48,8 @@ namespace BeConsolePresentationFramework
             mode |= NativeMethods.ENABLE_EXTENDED_FLAGS;
 
             if (!(NativeMethods.SetConsoleMode(handle, mode))) { throw new Win32Exception(); }
-            
-            var record = new NativeMethods.INPUT_RECORD();
+
+            record = new NativeMethods.INPUT_RECORD();
             uint recordLen = 0;
 
             while (true)
@@ -87,6 +89,14 @@ namespace BeConsolePresentationFramework
                     KeyPressed((ConsoleKey)record.KeyEvent.wVirtualKeyCode);
                 }
 
+                Render();
+            }
+        }
+
+        private void Render()
+        {
+            try
+            {
                 if (AllControls.Count > 0)
                 {
                     foreach (Control control in AllControls)
@@ -94,20 +104,30 @@ namespace BeConsolePresentationFramework
                         if (control is TextBlock)
                         {
                             Renderer.DrawText(control.X, control.Y, control.Content);
-                            
+
                         }
                         else if (control is Button)
                         {
-                            Renderer.DrawBox(control.X, control.Y, control.Padding, control.Content);
-                            if (record.MouseEvent.dwButtonState == 1 &&
+                            control.Height = control.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (control.Padding != null ? control.Padding.Top + control.Padding.Bottom : 0) + 1;
+                            Renderer.DrawBox(control.X, control.Y, control.Padding != null ? control.Padding : new Thickness(), control.Content);
+                            if (
+                                /*record.MouseEvent.dwEventFlags == 0 &&*/
+                                record.MouseEvent.dwButtonState == 1 &&
                                 record.MouseEvent.dwMousePosition.X >= control.X &&
                                 record.MouseEvent.dwMousePosition.X <= control.X + control.Width &&
                                 record.MouseEvent.dwMousePosition.Y >= control.Y &&
-                                record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height) ((Button)control).Click();
-                            control.Height = control.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (control.Padding != null ? control.Padding.Top + control.Padding.Bottom : 0) + 2;
+                                record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height
+                                )
+                            {
+                                ((Button)control).Click();
+                            }
                         }
                     }
                 }
+            }
+            catch
+            {
+
             }
         }
 

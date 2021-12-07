@@ -22,7 +22,6 @@ namespace BeConsolePresentationFramework.Controls
         {
             this.X = X;
             this.Y = Y;
-            //Renderer.DrawText(X, Y, Content);
         }
     }
 }
