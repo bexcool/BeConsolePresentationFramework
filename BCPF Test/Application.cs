@@ -8,6 +8,7 @@ public class Application : ConsolePresentation
 {
     TextBlock textBlock, honza, hover, pressed, removeMe;
     int number = 0;
+    Timer timer;
 
     public Application()
     {
@@ -35,7 +36,7 @@ public class Application : ConsolePresentation
         Button btnMinus = new Button(25, 20, "MINUS");
         btnMinus.OnClick += BtnMinus_OnClick;
 
-        Timer timer = new Timer(new TimerCallback(TickTimer), null, 2000, 2000);
+        timer = new Timer(new TimerCallback(TickTimer), null, 2000, 2000);
 
     }
 
@@ -50,6 +51,8 @@ public class Application : ConsolePresentation
 
         // Call for refreshing UI to show new TextBlock content
         RefreshRender();
+
+        timer.Dispose();
     }
 
     private void Zelva_MouseReleased(object sender, EventArgs e)

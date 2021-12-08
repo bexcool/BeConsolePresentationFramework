@@ -50,6 +50,7 @@ namespace BeConsolePresentationFramework
 
         private void InitializeConsole()
         {
+            Console.Clear();
             ConsoleExtension.DisableEdit();
             Console.CursorVisible = false;
             SetForeColor(ConsoleColor.White);
@@ -82,9 +83,10 @@ namespace BeConsolePresentationFramework
 
             while (!ExitRequest)
             {
+                if (!NativeMethods.ReadConsoleInput(handle, ref record, 1, ref recordLen)) { throw new Win32Exception(); }
+
                 if (!RefreshingRender)
                 {
-                    if (!NativeMethods.ReadConsoleInput(handle, ref record, 1, ref recordLen)) { throw new Win32Exception(); }
                     Console.SetCursorPosition(0, 0);
 
                     switch (record.EventType)
@@ -132,6 +134,7 @@ namespace BeConsolePresentationFramework
                         LastLeftMouseButtonPressed = 0;
                     }
                 }
+
             }
         }
 
