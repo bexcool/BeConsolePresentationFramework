@@ -1,5 +1,6 @@
 ﻿using BeConsolePresentationFramework.Rendering;
 using BeConsolePresentationFramework.Utilities;
+using BeConsolePresentationFramework.Controls.Base;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,7 +20,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                _ValueChanged();
+                if (!ChangingByCore) _ValueChanged();
                 _X = value;
             }
         }
@@ -31,7 +32,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                _ValueChanged();
+                if (!ChangingByCore) _ValueChanged();
                 _Y = value;
             }
         }
@@ -43,7 +44,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                _ValueChanged();
+                if (!ChangingByCore) _ValueChanged();
                 _Width = value;
             }
         }
@@ -55,7 +56,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                _ValueChanged();
+                if (!ChangingByCore) _ValueChanged();
                 _Height = value;
             }
         }
@@ -67,7 +68,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                _ValueChanged();
+                if (!ChangingByCore) _ValueChanged();
                 _Padding = value;
             }
         }
@@ -79,7 +80,7 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                _ValueChanged();
+                if (!ChangingByCore) _ValueChanged();
                 _ForegroundColor = value;
             }
         }
@@ -91,12 +92,12 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                _ValueChanged();
+                if (!ChangingByCore) _ValueChanged();
                 _Content = value;
             }
         }
 
-        internal bool ValueChanged = false;
+        internal bool ValueChanged = false, ChangingByCore = false;
         public bool Hovered = false;
         public bool Pressed = false;
 
@@ -125,7 +126,11 @@ namespace BeConsolePresentationFramework.Controls.Base
 
         private void _ValueChanged()
         {
-            ValueChanged = true;
+            if (!ValueChanged)
+            {
+                ValueChanged = true;
+                //ConsolePresentation.keybd_event(0x87 - 40, 0, ConsolePresentation.KEYEVENTF_EXTENDEDKEY | 0, 0);
+            }
         }
 
         internal void _OnClick()

@@ -104,7 +104,7 @@ namespace BeConsolePresentationFramework
                         break;
                 }
 
-                if (record.KeyEvent.wVirtualKeyCode != 0 && record.EventType == NativeMethods.KEY_EVENT)
+                if (record.KeyEvent.wVirtualKeyCode != 0 && record.EventType == NativeMethods.KEY_EVENT && record.KeyEvent.wVirtualKeyCode != 95)
                 {
                     KeyPressed((ConsoleKey)record.KeyEvent.wVirtualKeyCode);
                 }
@@ -124,6 +124,11 @@ namespace BeConsolePresentationFramework
             }
         }
 
+        public void RefreshRender()
+        {
+            Render();
+        }
+
         private void Render()
         {
             try
@@ -132,16 +137,17 @@ namespace BeConsolePresentationFramework
                 {
                     foreach (Control control in AllControls)
                     {
+                        control.ChangingByCore = true;
+
                         if (control is TextBlock)
                         {
                             if (control.ValueChanged)
                             {
                                 Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
-                                control.ValueChanged = false;
                             }
                             control.Width = control.Content.Length;
-                            control.ValueChanged = false;
                             Renderer.DrawText(control.X, control.Y, control.Content, control.ForegroundColor);
+                            control.ValueChanged = false;
                         }
                         else if (control is Button)
                         {
@@ -151,6 +157,8 @@ namespace BeConsolePresentationFramework
                             Renderer.DrawBox(control.X, control.Y, control.Padding != null ? control.Padding : new Thickness(), control.Content, control.Pressed);
                             SetForeColor(ConsoleColor.White);
                         }
+
+                        control.ChangingByCore = false;
                     }
                 }
             }
@@ -240,17 +248,31 @@ namespace BeConsolePresentationFramework
             }
         }
 
-        private void SetForeColor(ConsoleColor consoleColor)
+        private static void SetForeColor(ConsoleColor consoleColor)
         {
             Console.ForegroundColor = consoleColor;
         }
 
-        private void SetBackColor(ConsoleColor consoleColor)
+        private static void SetBackColor(ConsoleColor consoleColor)
         {
             Console.BackgroundColor = consoleColor;
         }
 
         protected abstract void KeyPressed(ConsoleKey consoleKey);
+
+        #region DLL IMPORTS
+
+        [DllImport("user32.dll")]
+        public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
+
+        #endregion
+
+        #region CONSTANTS
+
+        public const uint KEYEVENTF_KEYUP = 0x0002;
+        public const uint KEYEVENTF_EXTENDEDKEY = 0x0001;
+
+        #endregion
 
         private class NativeMethods
         {
