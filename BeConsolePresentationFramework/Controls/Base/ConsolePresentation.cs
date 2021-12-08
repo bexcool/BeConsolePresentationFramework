@@ -13,11 +13,18 @@ namespace BeConsolePresentationFramework
 {
     public abstract class ConsolePresentation
     {
+        // All controls
         static List<Control> AllControls = new List<Control>();
+
+        // Multithreading
         Thread InputThread, RenderThread;
+
+        // Input
         private NativeMethods.INPUT_RECORD record;
+
+        // Basic values
         int LastLeftMouseButtonPressed = 0;
-        bool ExitRequest = false;
+        bool ExitRequest = false, RefreshingRender = false;
 
         public ConsolePresentation()
         {
@@ -45,6 +52,7 @@ namespace BeConsolePresentationFramework
         {
             ConsoleExtension.DisableEdit();
             Console.CursorVisible = false;
+            SetForeColor(ConsoleColor.White);
         }
 
         public static void AddControl(Control control)
@@ -74,59 +82,74 @@ namespace BeConsolePresentationFramework
 
             while (!ExitRequest)
             {
-                if (!NativeMethods.ReadConsoleInput(handle, ref record, 1, ref recordLen)) { throw new Win32Exception(); }
-                Console.SetCursorPosition(0, 0);
-                
-                switch (record.EventType)
+                if (!RefreshingRender)
                 {
-                    case NativeMethods.MOUSE_EVENT:
-                        {
-                            Console.WriteLine("Mouse event");
-                            Console.WriteLine(string.Format("    X ...............:   {0,4:0}  ", record.MouseEvent.dwMousePosition.X));
-                            Console.WriteLine(string.Format("    Y ...............:   {0,4:0}  ", record.MouseEvent.dwMousePosition.Y));
-                            Console.WriteLine(string.Format("    dwButtonState ...: 0x{0:X4}  ", record.MouseEvent.dwButtonState));
-                            Console.WriteLine(string.Format("    dwControlKeyState: 0x{0:X4}  ", record.MouseEvent.dwControlKeyState));
-                            Console.WriteLine(string.Format("    dwEventFlags ....: 0x{0:X4}  ", record.MouseEvent.dwEventFlags));
-                        }
-                        break;
+                    if (!NativeMethods.ReadConsoleInput(handle, ref record, 1, ref recordLen)) { throw new Win32Exception(); }
+                    Console.SetCursorPosition(0, 0);
 
-                    case NativeMethods.KEY_EVENT:
-                        {
-                            Console.WriteLine("Key event  ");
-                            Console.WriteLine(string.Format("    bKeyDown  .......:  {0,5}  ", record.KeyEvent.bKeyDown));
-                            Console.WriteLine(string.Format("    wRepeatCount ....:   {0,4:0}  ", record.KeyEvent.wRepeatCount));
-                            Console.WriteLine(string.Format("    wVirtualKeyCode .:   {0,4:0}  ", record.KeyEvent.wVirtualKeyCode));
-                            Console.WriteLine(string.Format("    uChar ...........:      {0}  ", record.KeyEvent.UnicodeChar));
-                            Console.WriteLine(string.Format("    dwControlKeyState: 0x{0:X4}  ", record.KeyEvent.dwControlKeyState));
+                    switch (record.EventType)
+                    {
+                        case NativeMethods.MOUSE_EVENT:
+                            {
+                                Console.WriteLine("Mouse event");
+                                Console.WriteLine(string.Format("    X ...............:   {0,4:0}  ", record.MouseEvent.dwMousePosition.X));
+                                Console.WriteLine(string.Format("    Y ...............:   {0,4:0}  ", record.MouseEvent.dwMousePosition.Y));
+                                Console.WriteLine(string.Format("    dwButtonState ...: 0x{0:X4}  ", record.MouseEvent.dwButtonState));
+                                Console.WriteLine(string.Format("    dwControlKeyState: 0x{0:X4}  ", record.MouseEvent.dwControlKeyState));
+                                Console.WriteLine(string.Format("    dwEventFlags ....: 0x{0:X4}  ", record.MouseEvent.dwEventFlags));
+                            }
+                            break;
 
-                            if (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Escape) { return; }
-                        }
-                        break;
-                }
+                        case NativeMethods.KEY_EVENT:
+                            {
+                                Console.WriteLine("Key event  ");
+                                Console.WriteLine(string.Format("    bKeyDown  .......:  {0,5}  ", record.KeyEvent.bKeyDown));
+                                Console.WriteLine(string.Format("    wRepeatCount ....:   {0,4:0}  ", record.KeyEvent.wRepeatCount));
+                                Console.WriteLine(string.Format("    wVirtualKeyCode .:   {0,4:0}  ", record.KeyEvent.wVirtualKeyCode));
+                                Console.WriteLine(string.Format("    uChar ...........:      {0}  ", record.KeyEvent.UnicodeChar));
+                                Console.WriteLine(string.Format("    dwControlKeyState: 0x{0:X4}  ", record.KeyEvent.dwControlKeyState));
 
-                if (record.KeyEvent.wVirtualKeyCode != 0 && record.EventType == NativeMethods.KEY_EVENT && record.KeyEvent.wVirtualKeyCode != 95)
-                {
-                    KeyPressed((ConsoleKey)record.KeyEvent.wVirtualKeyCode);
-                }
+                                if (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Escape) { return; }
+                            }
+                            break;
+                    }
 
-                CheckInput();
-                Render();
+                    if (record.KeyEvent.wVirtualKeyCode != 0 && record.EventType == NativeMethods.KEY_EVENT && record.KeyEvent.wVirtualKeyCode != 95)
+                    {
+                        KeyPressed((ConsoleKey)record.KeyEvent.wVirtualKeyCode);
+                    }
 
-                // Left mouse button press
-                if (record.MouseEvent.dwButtonState == 0 || record.MouseEvent.dwButtonState == 1)
-                {
-                    LastLeftMouseButtonPressed = record.MouseEvent.dwButtonState;
-                }
-                else
-                {
-                    LastLeftMouseButtonPressed = 0;
+                    CheckInput();
+                    Render();
+
+                    // Left mouse button press
+                    if (record.MouseEvent.dwButtonState == 0 || record.MouseEvent.dwButtonState == 1)
+                    {
+                        LastLeftMouseButtonPressed = record.MouseEvent.dwButtonState;
+                    }
+                    else
+                    {
+                        LastLeftMouseButtonPressed = 0;
+                    }
                 }
             }
         }
 
+        public void Exit()
+        {
+            AllControls.Clear();
+            Console.Clear();
+            SetForeColor(ConsoleColor.Green);
+            Console.WriteLine("Successfully exited application.");
+            SetForeColor(ConsoleColor.White);
+            ExitRequest = true;
+        }
+
         public void RefreshRender()
         {
+            RefreshingRender = true;
             Render();
+            RefreshingRender = false;
         }
 
         private void Render()

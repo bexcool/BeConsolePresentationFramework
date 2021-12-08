@@ -70,6 +70,7 @@ public class Application : ConsolePresentation
     {
         honza.Content = "ZelvaMan";
         removeMe.Remove();
+        Exit();
     }
 
     private void BtnMinus_OnClick(object sender, EventArgs e)
