@@ -2,6 +2,7 @@
 using BeConsolePresentationFramework.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -71,7 +72,17 @@ namespace BeConsolePresentationFramework.Controls.Base
             }
         }
 
-        public bool ValueChanged = false;
+        private ConsoleColor _ForegroundColor = ConsoleColor.White;
+        public ConsoleColor ForegroundColor
+        {
+            get { return _ForegroundColor; }
+
+            set
+            {
+                _ValueChanged();
+                _ForegroundColor = value;
+            }
+        }
 
         private string _Content = "";
         public string Content
@@ -85,9 +96,26 @@ namespace BeConsolePresentationFramework.Controls.Base
             }
         }
 
+        internal bool ValueChanged = false;
+        public bool Hovered = false;
+        public bool Pressed = false;
+
         #region Event handlers
+        // Click handler
         public delegate void ClickHandler(object sender, EventArgs e);
         public event ClickHandler OnClick;
+        // Mouse enter handler
+        public delegate void MouseEnterHandler(object sender, EventArgs e);
+        public event MouseEnterHandler MouseEnter;
+        // Mouse enter leave
+        public delegate void MouseLeaveHandler(object sender, EventArgs e);
+        public event MouseLeaveHandler MouseLeave;
+        // Mouse pressed handler
+        public delegate void MousePressedHandler(object sender, EventArgs e);
+        public event MousePressedHandler MousePressed;
+        // Mouse released leave
+        public delegate void MouseReleasedHandler(object sender, EventArgs e);
+        public event MouseReleasedHandler MouseReleased;
         #endregion
 
         public Control()
@@ -100,11 +128,49 @@ namespace BeConsolePresentationFramework.Controls.Base
             ValueChanged = true;
         }
 
-        public void Click()
+        internal void _OnClick()
         {
             if (OnClick == null) return;
 
             OnClick(this, EventArgs.Empty);
+        }
+
+        internal void _MouseEnter()
+        {
+            if (MouseEnter == null) return;
+
+            MouseEnter(this, EventArgs.Empty);
+        }
+
+        internal void _MouseLeave()
+        {
+            if (MouseLeave == null) return;
+
+            MouseLeave(this, EventArgs.Empty);
+        }
+
+        internal void _MousePressed()
+        {
+            if (MousePressed == null) return;
+
+            MousePressed(this, EventArgs.Empty);
+        }
+
+        internal void _MouseReleased()
+        {
+
+            if (MouseReleased == null) return;
+
+            MouseReleased(this, EventArgs.Empty);
+        }
+
+        // Public functions
+
+        public void Remove()
+        {
+            ConsolePresentation.RemoveControl(this);
+
+            Renderer.DrawBlank(new Rectangle(X, Y, Width, Height));
         }
     }
 }

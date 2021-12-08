@@ -25,7 +25,7 @@ namespace BeConsolePresentationFramework
             Render();
 
             InputThread = new Thread(InitializeCore);
-            InputThread.IsBackground = true;
+            InputThread.IsBackground = false;
             InputThread.Start();
             /*
             RenderThread = new Thread(Test);
@@ -50,6 +50,10 @@ namespace BeConsolePresentationFramework
         public static void AddControl(Control control)
         {
             AllControls.Add(control);
+        }
+        public static void RemoveControl(Control control)
+        {
+            AllControls.Remove(control);
         }
 
         private void InitializeCore()
@@ -105,6 +109,7 @@ namespace BeConsolePresentationFramework
                     KeyPressed((ConsoleKey)record.KeyEvent.wVirtualKeyCode);
                 }
 
+                CheckInput();
                 Render();
 
                 // Left mouse button press
@@ -129,6 +134,42 @@ namespace BeConsolePresentationFramework
                     {
                         if (control is TextBlock)
                         {
+                            if (control.ValueChanged)
+                            {
+                                Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                                control.ValueChanged = false;
+                            }
+                            control.Width = control.Content.Length;
+                            control.ValueChanged = false;
+                            Renderer.DrawText(control.X, control.Y, control.Content, control.ForegroundColor);
+                        }
+                        else if (control is Button)
+                        {
+                            control.Height = control.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (control.Padding != null ? control.Padding.Top + control.Padding.Bottom : 0) + 1;
+                            if (control.Hovered) SetForeColor(ConsoleColor.Gray);
+                            if (control.Pressed) SetForeColor(ConsoleColor.DarkGray);
+                            Renderer.DrawBox(control.X, control.Y, control.Padding != null ? control.Padding : new Thickness(), control.Content, control.Pressed);
+                            SetForeColor(ConsoleColor.White);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void CheckInput()
+        {
+            try
+            {
+                if (AllControls.Count > 0)
+                {
+                    foreach (Control control in AllControls)
+                    {
+                        if (control is TextBlock)
+                        {
 
                         }
                         else if (control is Button)
@@ -142,28 +183,53 @@ namespace BeConsolePresentationFramework
                                 record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height
                                 )
                             {
-                                ((Button)control).Click();
+                                ((Button)control)._OnClick();
                             }
-                        }
-                    }
 
-                    foreach (Control control in AllControls)
-                    {
-                        if (control is TextBlock)
-                        {
-                            if (control.ValueChanged)
+                            if (
+                                record.MouseEvent.dwButtonState > 0 &&
+                                record.MouseEvent.dwMousePosition.X >= control.X &&
+                                record.MouseEvent.dwMousePosition.X <= control.X + control.Width &&
+                                record.MouseEvent.dwMousePosition.Y >= control.Y &&
+                                record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height
+                                )
                             {
-                                Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
-                                control.ValueChanged = false;
+                                if (!control.Pressed)
+                                {
+                                    ((Button)control)._MousePressed();
+                                    control.Pressed = true;
+                                }
                             }
-                            control.Width = control.Content.Length;
-                            control.ValueChanged = false;
-                            Renderer.DrawText(control.X, control.Y, control.Content);
-                        }
-                        else if (control is Button)
-                        {
-                            control.Height = control.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (control.Padding != null ? control.Padding.Top + control.Padding.Bottom : 0) + 1;
-                            Renderer.DrawBox(control.X, control.Y, control.Padding != null ? control.Padding : new Thickness(), control.Content);
+                            else
+                            {
+                                if (control.Pressed)
+                                {
+                                    ((Button)control)._MouseReleased();
+                                    control.Pressed = false;
+                                }
+                            }
+
+                            if (
+                                record.MouseEvent.dwMousePosition.X >= control.X &&
+                                record.MouseEvent.dwMousePosition.X <= control.X + control.Width &&
+                                record.MouseEvent.dwMousePosition.Y >= control.Y &&
+                                record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height
+                                )
+                            {
+                                if (!control.Hovered)
+                                {
+                                    ((Button)control)._MouseEnter();
+                                    control.Hovered = true;
+                                }
+                            }
+                            else
+                            {
+                                if (control.Hovered)
+                                {
+                                    ((Button)control)._MouseLeave();
+                                    control.Hovered = false;
+                                }
+                            }
                         }
                     }
                 }
@@ -172,6 +238,16 @@ namespace BeConsolePresentationFramework
             {
 
             }
+        }
+
+        private void SetForeColor(ConsoleColor consoleColor)
+        {
+            Console.ForegroundColor = consoleColor;
+        }
+
+        private void SetBackColor(ConsoleColor consoleColor)
+        {
+            Console.BackgroundColor = consoleColor;
         }
 
         protected abstract void KeyPressed(ConsoleKey consoleKey);

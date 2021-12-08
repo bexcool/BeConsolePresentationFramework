@@ -11,7 +11,7 @@ namespace BeConsolePresentationFramework.Controls
 {
     public class Button : Control
     {
-        public Button(int X, int Y, int Width, int Height)
+        public Button(int X, int Y)
         {
             this.X = X;
             this.Y = Y;
@@ -22,6 +22,16 @@ namespace BeConsolePresentationFramework.Controls
             this.X = X;
             this.Y = Y;
             this.Content = Content;
+            Width = Content.Length + 3;
+            Height = Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (Padding != null ? Padding.Top + Padding.Bottom : 0) + 2;
+        }
+
+        public Button(int X, int Y, string Content, ConsoleColor ForegroundColor)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Content = Content;
+            this.ForegroundColor = ForegroundColor;
             Width = Content.Length + 3;
             Height = Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (Padding != null ? Padding.Top + Padding.Bottom : 0) + 2;
         }
