@@ -17,6 +17,9 @@ public class Application : ConsolePresentation
         removeMe = new TextBlock(55, 23, "<-- REMOVE ME BY PRESSING THIS BUTTON!", ConsoleColor.Yellow);
         pressed = new TextBlock(55, 22, "RELEASED", ConsoleColor.Red);
 
+        Button Exit = new Button(55, 15, "EXIT", ConsoleColor.Red);
+        Exit.OnClick += Exit_OnClick;
+
         Button zelva = new Button(40, 20, "ZelvaMan");
         zelva.Padding = new Thickness(2, 0, 5, 0);
         zelva.OnClick += Zelva_OnClick;
@@ -34,6 +37,11 @@ public class Application : ConsolePresentation
 
         Timer timer = new Timer(new TimerCallback(TickTimer), null, 2000, 2000);
 
+    }
+
+    private void Exit_OnClick(object sender, EventArgs e)
+    {
+        Exit();
     }
 
     void TickTimer(object state)
@@ -70,7 +78,6 @@ public class Application : ConsolePresentation
     {
         honza.Content = "ZelvaMan";
         removeMe.Remove();
-        Exit();
     }
 
     private void BtnMinus_OnClick(object sender, EventArgs e)
