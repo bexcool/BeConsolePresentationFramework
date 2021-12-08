@@ -142,9 +142,11 @@ namespace BeConsolePresentationFramework
         {
             AllControls.Clear();
             Console.Clear();
+            ConsoleExtension.EnableEdit();
+            Console.CursorVisible = true;
             SetForeColor(ConsoleColor.Green);
             Console.WriteLine("Successfully exited application.");
-            SetForeColor(ConsoleColor.White);
+            SetForeColor(ConsoleColor.Gray);
             ExitRequest = true;
         }
 

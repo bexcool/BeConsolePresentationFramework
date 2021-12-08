@@ -52,5 +52,36 @@ namespace BeConsolePresentationFramework.Utilities
 
             return true;
         }
+
+
+        /// <summary>
+        /// Enables console line editing.
+        /// </summary>
+        /// <returns>Bool</returns>
+        internal static bool EnableEdit()
+        {
+
+            IntPtr consoleHandle = GetStdHandle(STD_INPUT_HANDLE);
+
+            // get current console mode
+            uint consoleMode;
+            if (!GetConsoleMode(consoleHandle, out consoleMode))
+            {
+                // ERROR: Unable to get console mode.
+                return false;
+            }
+
+            // Clear the quick edit bit in the mode flags
+            consoleMode &= ENABLE_QUICK_EDIT;
+
+            // set the new mode
+            if (!SetConsoleMode(consoleHandle, consoleMode))
+            {
+                // ERROR: Unable to set console mode
+                return false;
+            }
+
+            return true;
+        }
     }
 }
