@@ -10,7 +10,12 @@
       "ProjectGuid": "35007a39-7246-4bdb-b7a9-089b31634059",
       "DisplayName": "BCPF Test",
       "ColorIndex": 1
+    },
+    "897eb941-b0be-4405-a71e-c9f7495b9b0d": {
+      "ProjectGuid": "897eb941-b0be-4405-a71e-c9f7495b9b0d",
+      "DisplayName": "BCPF Template",
+      "ColorIndex": 2
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 3
 }

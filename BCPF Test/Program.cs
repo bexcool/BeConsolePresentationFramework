@@ -10,6 +10,7 @@ namespace BCPF_Test
     {
         private static void Main()
         {
+            // Creating application
             Application application = new Application();
         }
     }

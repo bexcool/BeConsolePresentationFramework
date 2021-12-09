@@ -3,6 +3,7 @@ using BeConsolePresentationFramework.Controls;
 using BeConsolePresentationFramework.Rendering;
 using BeConsolePresentationFramework.Utilities;
 using System.Diagnostics;
+using static BeConsolePresentationFramework.Utilities.Utilities;
 
 public class Application : ConsolePresentation
 {
@@ -17,9 +18,15 @@ public class Application : ConsolePresentation
         hover = new TextBlock(55, 21, "NOT HOVERED");
         removeMe = new TextBlock(55, 23, "<-- REMOVE ME BY PRESSING THIS BUTTON!", ConsoleColor.Yellow);
         pressed = new TextBlock(55, 22, "RELEASED", ConsoleColor.Red);
+        new TextBlock(55, 24, Convert.ToInt64((float)5 / 2).ToString());
+        new TextBlock(55, 25, Math.Round(2.5).ToString());
 
         Button Exit = new Button(55, 15, "EXIT", ConsoleColor.Red);
         Exit.OnClick += Exit_OnClick;
+
+        BeforeRender += Application_BeforeRender;
+        AfterRender += Application_AfterRender;
+        Loaded += Application_Loaded;
 
         Button zelva = new Button(40, 20, "ZelvaMan");
         zelva.Padding = new Thickness(2, 0, 5, 0);
@@ -28,6 +35,7 @@ public class Application : ConsolePresentation
         zelva.MouseLeave += Zelva_MouseLeave;
         zelva.MousePressed += Zelva_MousePressed;
         zelva.MouseReleased += Zelva_MouseReleased;
+        zelva.Visibility = Visibility.Hidden;
 
         Button btnPlus = new Button(16, 20, "PLUS");
         btnPlus.Padding = new Thickness(2, 0, 2, 0);
@@ -38,6 +46,21 @@ public class Application : ConsolePresentation
 
         timer = new Timer(new TimerCallback(TickTimer), null, 2000, 2000);
 
+    }
+
+    private void Application_Loaded(object sender, EventArgs e)
+    {
+        Debug.WriteLine("Loaded");
+    }
+
+    private void Application_AfterRender(object sender, EventArgs e)
+    {
+        Debug.WriteLine("After");
+    }
+
+    private void Application_BeforeRender(object sender, EventArgs e)
+    {
+        Debug.WriteLine("Before");
     }
 
     private void Exit_OnClick(object sender, EventArgs e)
@@ -81,6 +104,7 @@ public class Application : ConsolePresentation
     {
         honza.Content = "ZelvaMan";
         removeMe.Remove();
+        (sender as Button).Visibility = Visibility.Visible;
     }
 
     private void BtnMinus_OnClick(object sender, EventArgs e)
@@ -102,10 +126,5 @@ public class Application : ConsolePresentation
         if (number < 0) textBlock.ForegroundColor = ConsoleColor.Red;
         else if (number == 0) textBlock.ForegroundColor = ConsoleColor.White;
         else if (number > 0) textBlock.ForegroundColor = ConsoleColor.Green;
-    }
-
-    protected override void KeyPressed(ConsoleKey consoleKey)
-    {
-        if (consoleKey == ConsoleKey.Enter) textBlock.Content = "123";
     }
 }

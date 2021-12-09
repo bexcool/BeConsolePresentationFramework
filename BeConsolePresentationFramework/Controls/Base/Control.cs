@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BeConsolePresentationFramework.Utilities.Utilities;
 
 namespace BeConsolePresentationFramework.Controls.Base
 {
@@ -82,6 +83,18 @@ namespace BeConsolePresentationFramework.Controls.Base
             {
                 if (!ChangingByCore) _ValueChanged();
                 _ForegroundColor = value;
+            }
+        }
+
+        private Visibility _Visibility = Visibility.Visible;
+        public Visibility Visibility
+        {
+            get { return _Visibility; }
+
+            set
+            {
+                if (!ChangingByCore) _ValueChanged();
+                _Visibility = value;
             }
         }
 

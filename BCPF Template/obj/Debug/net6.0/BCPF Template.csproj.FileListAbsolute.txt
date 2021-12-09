@@ -1,0 +1,18 @@
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\obj\Debug\net6.0\BCPF Template.csproj.AssemblyReference.cache
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\obj\Debug\net6.0\BCPF Template.GeneratedMSBuildEditorConfig.editorconfig
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\obj\Debug\net6.0\BCPF Template.AssemblyInfoInputs.cache
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\obj\Debug\net6.0\BCPF Template.AssemblyInfo.cs
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\obj\Debug\net6.0\BCPF Template.csproj.CoreCompileInputs.cache
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\bin\Debug\net6.0\BCPF Template.exe
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\bin\Debug\net6.0\BCPF Template.deps.json
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\bin\Debug\net6.0\BCPF Template.runtimeconfig.json
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\bin\Debug\net6.0\BCPF Template.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\bin\Debug\net6.0\ref\BCPF Template.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\bin\Debug\net6.0\BCPF Template.pdb
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\bin\Debug\net6.0\BeConsolePresentationFramework.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\bin\Debug\net6.0\BeConsolePresentationFramework.pdb
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\obj\Debug\net6.0\BCPF Template.csproj.CopyComplete
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\obj\Debug\net6.0\BCPF Template.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\obj\Debug\net6.0\ref\BCPF Template.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\obj\Debug\net6.0\BCPF Template.pdb
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Template\obj\Debug\net6.0\BCPF Template.genruntimeconfig.cache
