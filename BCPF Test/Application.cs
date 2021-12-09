@@ -13,6 +13,8 @@ public class Application : ConsolePresentation
 
     public Application()
     {
+        InitializeApplication();
+
         textBlock = new TextBlock(10, 20, "GGEGE");
         honza = new TextBlock(55, 20, "HONZA JE HONZA");
         hover = new TextBlock(55, 21, "NOT HOVERED");

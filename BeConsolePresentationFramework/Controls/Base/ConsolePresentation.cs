@@ -190,11 +190,16 @@ namespace BeConsolePresentationFramework
                             }
                             else if (control is Button)
                             {
+                                if (control.ValueChanged)
+                                {
+                                    Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                                }
                                 control.Height = control.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (control.Padding != null ? control.Padding.Top + control.Padding.Bottom : 0) + 1;
                                 if (control.Hovered) SetForeColor(ConsoleColor.Gray);
                                 if (control.Pressed) SetForeColor(ConsoleColor.DarkGray);
                                 Renderer.DrawBox(control.X, control.Y, control.Padding != null ? control.Padding : new Thickness(), control.Content, control.Pressed);
                                 SetForeColor(ConsoleColor.White);
+                                control.ValueChanged = false;
                             }
 
                         }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 // Framework classes
 using BeConsolePresentationFramework;
 using BeConsolePresentationFramework.Controls;
+using BeConsolePresentationFramework.Utilities;
 
 namespace BCPF_Template
 {
@@ -25,7 +26,7 @@ namespace BCPF_Template
             // Code after initialization
 
             // Created new button
-            btn = new Button(10, 20, "Click me!");
+            btn = new Button(10, 15, "Click me!");
 
             // Assigned OnClick event for button
             btn.OnClick += btn_OnClick;
