@@ -31,7 +31,6 @@ public class Application : ConsolePresentation
         Exit.Padding = new Thickness(0, 2, 0, 1);
 
         Button zelva = new Button(40, 20, 13, 5, "ZelvaMan", Line.SingleRound);
-        zelva.Padding = new Thickness();
         zelva.OnClick += Zelva_OnClick;
         zelva.MouseEnter += Zelva_MouseEnter;
         zelva.MouseLeave += Zelva_MouseLeave;
@@ -39,7 +38,8 @@ public class Application : ConsolePresentation
         zelva.MouseReleased += Zelva_MouseReleased;
 
         Button btnPlus = new Button(16, 20, 8, 5, "PLUS", Line.Double);
-        btnPlus.Padding = new Thickness(1, 0, 1, 0);
+        btnPlus.ContentVerticalAlignment = VerticalAlignment.Top;
+        btnPlus.Padding = new Thickness(6, 0, 0, 0);
         btnPlus.OnClick += BtnPlus_OnClick;
 
         Button btnMinus = new Button(25, 20, 9, 5, "MINUS", Line.DoubleSingle);

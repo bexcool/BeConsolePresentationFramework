@@ -10,7 +10,8 @@ namespace BeConsolePresentationFramework.Utilities
     {
         public enum Visibility { Visible, Hidden, Collapsed };
         public enum Line { Single, Double, SingleRound, DoubleSingle, SingleDouble};
-        public enum Alignment { Left, Right, Center, Stretch };
+        public enum HorizontalAlignment { Left, Right, Center, Stretch };
+        public enum VerticalAlignment { Top, Bottom, Center, Stretch };
 
         /// <summary>
         /// Gets longest line from string.

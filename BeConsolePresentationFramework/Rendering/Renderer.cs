@@ -39,7 +39,9 @@ namespace BeConsolePresentationFramework.Rendering
             for (int _Y = Y + 1; _Y <= Y + _Height; _Y++)
             {
                 Console.SetCursorPosition(X, _Y);
-                Console.Write(Vertical + new string(' ', _Width) + Vertical);
+                Console.Write(Vertical);
+                Console.SetCursorPosition(X + _Width + 1, _Y);
+                Console.Write(Vertical);
             }
 
             // box bottom
@@ -74,7 +76,9 @@ namespace BeConsolePresentationFramework.Rendering
             for (int _Y = Y + 1; _Y <= Y + _Height; _Y++)
             {
                 Console.SetCursorPosition(X, _Y);
-                Console.Write(Vertical + new string(' ', _Width) + Vertical);
+                Console.Write(Vertical);
+                Console.SetCursorPosition(X + _Width + 1, _Y);
+                Console.Write(Vertical);
             }
 
             // box bottom
@@ -172,7 +176,9 @@ namespace BeConsolePresentationFramework.Rendering
             for (int _Y = Y + 1; _Y <= Y + _Height; _Y++)
             {
                 Console.SetCursorPosition(X, _Y);
-                Console.Write(Vertical + new string(' ', _Width) + Vertical);
+                Console.Write(Vertical);
+                Console.SetCursorPosition(X + _Width + 1, _Y);
+                Console.Write(Vertical);
             }
 
             // box bottom
@@ -271,7 +277,9 @@ namespace BeConsolePresentationFramework.Rendering
             for (int _Y = Y + 1; _Y <= Y + _Height; _Y++)
             {
                 Console.SetCursorPosition(X, _Y);
-                Console.Write(Vertical + new string(' ', _Width) + Vertical);
+                Console.Write(Vertical);
+                Console.SetCursorPosition(X + _Width + 1, _Y);
+                Console.Write(Vertical);
             }
 
             // box bottom
@@ -297,7 +305,7 @@ namespace BeConsolePresentationFramework.Rendering
 
             int _Width = Width - 2;
             int _Height = Height - 2;
-            int ContentX = (_Width / 2) - Content.Length;
+            int ContentX = (_Width / 2) - Content.GetLongestLineLength();
             int ContentY = (_Height / 2) - Content.GetNumberOfLines();
 
             // box top
@@ -308,7 +316,9 @@ namespace BeConsolePresentationFramework.Rendering
             for (int _Y = Y + 1; _Y < Y + _Height; _Y++)
             {
                 Console.SetCursorPosition(X, _Y);
-                Console.Write(Vertical + new string(' ', _Width) + Vertical);
+                Console.Write(Vertical);
+                Console.SetCursorPosition(X + _Width + 1, _Y);
+                Console.Write(Vertical);
             }
 
             // box bottom
@@ -355,7 +365,9 @@ namespace BeConsolePresentationFramework.Rendering
             for (int _Y = Y + 1; _Y <= Y + _Height; _Y++)
             {
                 Console.SetCursorPosition(X, _Y);
-                Console.Write(Vertical + new string(' ', _Width) + Vertical);
+                Console.Write(Vertical);
+                Console.SetCursorPosition(X + _Width + 1, _Y);
+                Console.Write(Vertical);
             }
 
             // box bottom
@@ -464,7 +476,9 @@ namespace BeConsolePresentationFramework.Rendering
             for (int _Y = Y + 1; _Y <= Y + _Height; _Y++)
             {
                 Console.SetCursorPosition(X, _Y);
-                Console.Write(Vertical + new string(' ', _Width) + Vertical);
+                Console.Write(Vertical);
+                Console.SetCursorPosition(X + _Width + 1, _Y);
+                Console.Write(Vertical);
             }
 
             // box bottom
@@ -574,7 +588,7 @@ namespace BeConsolePresentationFramework.Rendering
 
             int _Width = Width - 2 + Padding.Left + Padding.Right;
             int _Height = Height - 2 + Padding.Top + Padding.Bottom;
-            int ContentX = ((_Width / 2) - Content.Length / 2) + 1 - Padding.Right + Padding.Left;
+            int ContentX = ((_Width / 2) - Content.GetLongestLineLength() / 2) + 1 - Padding.Right + Padding.Left;
             int ContentY = ((_Height / 2) - Content.GetNumberOfLines() / 2) + 1 + Padding.Top - Padding.Bottom;
 
             // box top
@@ -614,7 +628,7 @@ namespace BeConsolePresentationFramework.Rendering
         /// <param name="Padding">Control padding.</param>
         /// <param name="Line">Control border style.</param>
         /// <param name="ContentHorizontalAlignment">Control content horizontal alignment.</param>
-        public static void DrawBox(int X, int Y, int Width, int Height, string Content, Thickness Padding, Line Line, Alignment ContentHorizontalAlignment)
+        public static void DrawBox(int X, int Y, int Width, int Height, string Content, Thickness Padding, Line Line, HorizontalAlignment ContentHorizontalAlignment)
         {
             char TL_Corner = '╔';
             char BL_Corner = '╚';
@@ -689,35 +703,213 @@ namespace BeConsolePresentationFramework.Rendering
             int _Width = Width - 2 + Padding.Left + Padding.Right;
             int _Height = Height - 2 + Padding.Top + Padding.Bottom;
 
-            int ContentX = ((_Width / 2) - Content.Length / 2) + 1 - Padding.Right + Padding.Left;
+            int ContentX = ((_Width / 2) - Content.GetLongestLineLength() / 2) + 1 - Padding.Right + Padding.Left;
             int ContentY = ((_Height / 2) - Content.GetNumberOfLines() / 2) + 1 + Padding.Top - Padding.Bottom;
 
             switch (ContentHorizontalAlignment)
             {
-                case Alignment.Left:
+                case HorizontalAlignment.Left:
                     {
                         ContentX = 1 - Padding.Right + Padding.Left;
 
                         break;
                     }
 
-                case Alignment.Right:
+                case HorizontalAlignment.Right:
                     {
-                        ContentX = Width - Content.Length - 1 - Padding.Right + Padding.Left;
+                        ContentX = Width - Content.GetLongestLineLength() - 1 - Padding.Right + Padding.Left;
 
                         break;
                     }
 
-                case Alignment.Center:
+                case HorizontalAlignment.Center:
                     {
-                        ContentX = ((_Width / 2) - Content.Length / 2) + 1 - Padding.Right + Padding.Left;
+                        ContentX = ((_Width / 2) - Content.GetLongestLineLength() / 2) + 1 - Padding.Right + Padding.Left;
 
                         break;
                     }
 
-                case Alignment.Stretch:
+                case HorizontalAlignment.Stretch:
                     {
-                        ContentX = ((_Width / 2) - Content.Length / 2) + 1 - Padding.Right + Padding.Left;
+                        ContentX = ((_Width / 2) - Content.GetLongestLineLength() / 2) + 1 - Padding.Right + Padding.Left;
+
+                        break;
+                    }
+            }
+
+            // box top
+            Console.SetCursorPosition(X, Y);
+            Console.Write(TL_Corner + new string(Horizontal, _Width) + TR_Corner);
+
+            // Set width and height
+            for (int _Y = Y + 1; _Y <= Y + _Height; _Y++)
+            {
+                Console.SetCursorPosition(X, _Y);
+                Console.Write(Vertical);
+                Console.SetCursorPosition(X + _Width + 1, _Y);
+                Console.Write(Vertical);
+            }
+
+            // box bottom
+            Console.SetCursorPosition(X, Y + _Height + 1);
+            Console.Write(BL_Corner + new string(Horizontal, _Width) + BR_Corner);
+
+            string[] Lines = Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Text content
+            for (int i = 0; i < Lines.Length; i++)
+            {
+                Console.SetCursorPosition(X + ContentX, Y + i + ContentY);
+                Console.Write(Lines[i]);
+            }
+        }
+        /// <summary>
+        /// Draw box with fixed size with content.
+        /// </summary>
+        /// <param name="X">Position from left.</param>
+        /// <param name="Y">Position from top.</param>
+        /// <param name="Width">Control width.</param>
+        /// <param name="Height">Control height.</param>
+        /// <param name="Content">Control content.</param>
+        /// <param name="Padding">Control padding.</param>
+        /// <param name="Line">Control border style.</param>
+        /// <param name="ContentHorizontalAlignment">Control content horizontal alignment.</param>
+        /// <param name="ContentVerticalAlignment">Control content vertical alignment.</param>
+        public static void DrawBox(int X, int Y, int Width, int Height, string Content, Thickness Padding, Line Line, HorizontalAlignment ContentHorizontalAlignment, VerticalAlignment ContentVerticalAlignment)
+        {
+            char TL_Corner = '╔';
+            char BL_Corner = '╚';
+            char TR_Corner = '╗';
+            char BR_Corner = '╝';
+            char Vertical = '║';
+            char Horizontal = '═';
+
+            switch (Line)
+            {
+                case Line.Single:
+                    {
+                        TL_Corner = '┌';
+                        BL_Corner = '└';
+                        TR_Corner = '┐';
+                        BR_Corner = '┘';
+                        Vertical = '│';
+                        Horizontal = '─';
+
+                        break;
+                    }
+
+                case Line.Double:
+                    {
+                        TL_Corner = '╔';
+                        BL_Corner = '╚';
+                        TR_Corner = '╗';
+                        BR_Corner = '╝';
+                        Vertical = '║';
+                        Horizontal = '═';
+
+                        break;
+                    }
+
+                case Line.SingleRound:
+                    {
+                        TL_Corner = '╭';
+                        BL_Corner = '╰';
+                        TR_Corner = '╮';
+                        BR_Corner = '╯';
+                        Vertical = '│';
+                        Horizontal = '─';
+
+                        break;
+                    }
+
+                case Line.DoubleSingle:
+                    {
+                        TL_Corner = '╒';
+                        BL_Corner = '╘';
+                        TR_Corner = '╕';
+                        BR_Corner = '╛';
+                        Vertical = '│';
+                        Horizontal = '═';
+
+                        break;
+                    }
+
+                case Line.SingleDouble:
+                    {
+                        TL_Corner = '╓';
+                        BL_Corner = '╙';
+                        TR_Corner = '╖';
+                        BR_Corner = '╜';
+                        Vertical = '║';
+                        Horizontal = '─';
+
+                        break;
+                    }
+            }
+
+            int _Width = Width - 2 + Padding.Left + Padding.Right;
+            int _Height = Height - 2 + Padding.Top + Padding.Bottom;
+
+            int ContentX = ((_Width / 2) - Content.GetLongestLineLength() / 2) + 1 - Padding.Right + Padding.Left;
+            int ContentY = ((_Height / 2) - Content.GetNumberOfLines() / 2) + 1 + Padding.Top - Padding.Bottom;
+
+            switch (ContentHorizontalAlignment)
+            {
+                case HorizontalAlignment.Left:
+                    {
+                        ContentX = 1 - Padding.Right + Padding.Left;
+
+                        break;
+                    }
+
+                case HorizontalAlignment.Right:
+                    {
+                        ContentX = Width - Content.GetLongestLineLength() - 1 - Padding.Right + Padding.Left;
+
+                        break;
+                    }
+
+                case HorizontalAlignment.Center:
+                    {
+                        ContentX = ((_Width / 2) - Content.GetLongestLineLength() / 2) + 1 - Padding.Right + Padding.Left;
+
+                        break;
+                    }
+
+                case HorizontalAlignment.Stretch:
+                    {
+                        ContentX = ((_Width / 2) - Content.GetLongestLineLength() / 2) + 1 - Padding.Right + Padding.Left;
+
+                        break;
+                    }
+            }
+
+            switch (ContentVerticalAlignment)
+            {
+                case VerticalAlignment.Top:
+                    {
+                        ContentY = 1 + Padding.Top - Padding.Bottom;
+
+                        break;
+                    }
+
+                case VerticalAlignment.Bottom:
+                    {
+                        ContentY = Height - Content.GetNumberOfLines() - 1 + Padding.Top - Padding.Bottom;
+
+                        break;
+                    }
+
+                case VerticalAlignment.Center:
+                    {
+                        ContentY = ((_Height / 2) - Content.GetNumberOfLines() / 2) + 1 + Padding.Top - Padding.Bottom;
+
+                        break;
+                    }
+
+                case VerticalAlignment.Stretch:
+                    {
+                        ContentY = ((_Height / 2) - Content.GetNumberOfLines() / 2) + 1 + Padding.Top - Padding.Bottom;
 
                         break;
                     }

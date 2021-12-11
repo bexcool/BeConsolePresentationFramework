@@ -86,8 +86,8 @@ namespace BeConsolePresentationFramework.Controls.Base
             }
         }
 
-        private Alignment _ContentHorizontalAlignment;
-        public Alignment ContentHorizontalAlignment
+        private HorizontalAlignment _ContentHorizontalAlignment = HorizontalAlignment.Center;
+        public HorizontalAlignment ContentHorizontalAlignment
         {
             get { return _ContentHorizontalAlignment; }
 
@@ -95,6 +95,18 @@ namespace BeConsolePresentationFramework.Controls.Base
             {
                 if (!ChangingByCore) _ValueChanged();
                 _ContentHorizontalAlignment = value;
+            }
+        }
+
+        private VerticalAlignment _ContentVerticalAlignment = VerticalAlignment.Center;
+        public VerticalAlignment ContentVerticalAlignment
+        {
+            get { return _ContentVerticalAlignment; }
+
+            set
+            {
+                if (!ChangingByCore) _ValueChanged();
+                _ContentVerticalAlignment = value;
             }
         }
 

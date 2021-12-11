@@ -191,7 +191,7 @@ namespace BeConsolePresentationFramework
                                 }
                                 if (control.Hovered) SetForeColor(ConsoleColor.Gray);
                                 if (control.Pressed) SetForeColor(ConsoleColor.DarkGray);
-                                Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment);
+                                Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
                                 SetForeColor(ConsoleColor.White);
                                 control.ValueChanged = false;
                             }

@@ -20,7 +20,15 @@ namespace BeConsolePresentationFramework.Controls
             this.Width = Width;
             this.Height = Height;
         }
-        public Button(int X, int Y, int Width, int Height, Alignment ContentHorizontalAlignment)
+        public Button(int X, int Y, int Width, int Height, VerticalAlignment ContentVerticalAlignment)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.ContentVerticalAlignment = ContentVerticalAlignment;
+        }
+        public Button(int X, int Y, int Width, int Height, HorizontalAlignment ContentHorizontalAlignment)
         {
             this.X = X;
             this.Y = Y;
@@ -28,15 +36,25 @@ namespace BeConsolePresentationFramework.Controls
             this.Height = Height;
             this.ContentHorizontalAlignment = ContentHorizontalAlignment;
         }
-        public Button(int X, int Y, int Width, int Height, string Content)
+        public Button(int X, int Y, int Width, int Height, HorizontalAlignment ContentHorizontalAlignment, VerticalAlignment ContentVerticalAlignment)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.ContentHorizontalAlignment = ContentHorizontalAlignment;
+            this.ContentVerticalAlignment = ContentVerticalAlignment;
+        }
+        public Button(int X, int Y, int Width, int Height, string Content, VerticalAlignment ContentVerticalAlignment)
         {
             this.X = X;
             this.Y = Y;
             this.Width = Width;
             this.Height = Height;
             this.Content = Content;
+            this.ContentVerticalAlignment = ContentVerticalAlignment;
         }
-        public Button(int X, int Y, int Width, int Height, string Content, Alignment ContentHorizontalAlignment)
+        public Button(int X, int Y, int Width, int Height, string Content, HorizontalAlignment ContentHorizontalAlignment)
         {
             this.X = X;
             this.Y = Y;
@@ -44,6 +62,16 @@ namespace BeConsolePresentationFramework.Controls
             this.Height = Height;
             this.Content = Content;
             this.ContentHorizontalAlignment= ContentHorizontalAlignment;
+        }
+        public Button(int X, int Y, int Width, int Height, string Content, HorizontalAlignment ContentHorizontalAlignment, VerticalAlignment ContentVerticalAlignment)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.Content = Content;
+            this.ContentHorizontalAlignment = ContentHorizontalAlignment;
+            this.ContentVerticalAlignment = ContentVerticalAlignment;
         }
         public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding)
         {
@@ -54,7 +82,17 @@ namespace BeConsolePresentationFramework.Controls
             this.Content = Content;
             this.Padding = Padding;
         }
-        public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding, Alignment ContentHorizontalAlignment)
+        public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding, VerticalAlignment ContentVerticalAlignment)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.Content = Content;
+            this.Padding = Padding;
+            this.ContentVerticalAlignment = ContentVerticalAlignment;
+        }
+        public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding, HorizontalAlignment ContentHorizontalAlignment)
         {
             this.X = X;
             this.Y = Y;
@@ -63,6 +101,17 @@ namespace BeConsolePresentationFramework.Controls
             this.Content = Content;
             this.Padding = Padding;
             this.ContentHorizontalAlignment = ContentHorizontalAlignment;
+        }
+        public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding, HorizontalAlignment ContentHorizontalAlignment, VerticalAlignment ContentVerticalAlignment)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.Content = Content;
+            this.Padding = Padding;
+            this.ContentHorizontalAlignment = ContentHorizontalAlignment;
+            this.ContentVerticalAlignment = ContentVerticalAlignment;
         }
         public Button(int X, int Y, int Width, int Height, string Content, Line Line)
         {
@@ -73,7 +122,17 @@ namespace BeConsolePresentationFramework.Controls
             this.Content = Content;
             this.Line = Line;
         }
-        public Button(int X, int Y, int Width, int Height, string Content, Line Line, Alignment ContentHorizontalAlignment)
+        public Button(int X, int Y, int Width, int Height, string Content, Line Line, VerticalAlignment ContentVerticalAlignment)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.Content = Content;
+            this.Line = Line;
+            this.ContentVerticalAlignment = ContentVerticalAlignment;
+        }
+        public Button(int X, int Y, int Width, int Height, string Content, Line Line, HorizontalAlignment ContentHorizontalAlignment)
         {
             this.X = X;
             this.Y = Y;
@@ -82,6 +141,17 @@ namespace BeConsolePresentationFramework.Controls
             this.Content = Content;
             this.Line = Line;
             this.ContentHorizontalAlignment = ContentHorizontalAlignment;
+        }
+        public Button(int X, int Y, int Width, int Height, string Content, Line Line, HorizontalAlignment ContentHorizontalAlignment, VerticalAlignment ContentVerticalAlignment)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.Content = Content;
+            this.Line = Line;
+            this.ContentHorizontalAlignment = ContentHorizontalAlignment;
+            this.ContentVerticalAlignment = ContentVerticalAlignment;
         }
         public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding, Line Line)
         {
@@ -93,7 +163,18 @@ namespace BeConsolePresentationFramework.Controls
             this.Padding = Padding;
             this.Line = Line;
         }
-        public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding, Line Line, Alignment ContentHorizontalAlignment)
+        public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding, Line Line, VerticalAlignment ContentVerticalAlignment)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.Content = Content;
+            this.Padding = Padding;
+            this.Line = Line;
+            this.ContentVerticalAlignment = ContentVerticalAlignment;
+        }
+        public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding, Line Line, HorizontalAlignment ContentHorizontalAlignment)
         {
             this.X = X;
             this.Y = Y;
@@ -103,6 +184,18 @@ namespace BeConsolePresentationFramework.Controls
             this.Padding = Padding;
             this.Line = Line;
             this.ContentHorizontalAlignment= ContentHorizontalAlignment;
+        }
+        public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding, Line Line, HorizontalAlignment ContentHorizontalAlignment, VerticalAlignment ContentVerticalAlignment)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.Content = Content;
+            this.Padding = Padding;
+            this.Line = Line;
+            this.ContentHorizontalAlignment = ContentHorizontalAlignment;
+            this.ContentVerticalAlignment = ContentVerticalAlignment;
         }
     }
 }

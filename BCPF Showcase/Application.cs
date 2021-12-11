@@ -14,8 +14,20 @@ namespace BCPF_Showcase
 {
     public class Application : ConsolePresentation
     {
-        // Declared button (Don't create here "new Button();")
-        Button ContinueButton, CreditsButton, ExitButton;
+        // Declared Buttons
+        Button
+            ContinueButton = new Button(5, 10, 13, 3, "Continue", new Thickness(0, 0, 0 ,1), Line.Double, HorizontalAlignment.Left),
+            CreditsButton = new Button(5, 13, 13, 3, "Credits", new Thickness(0, 0, 0, 1), HorizontalAlignment.Left),
+            ExitButton = new Button(5, 16, 13, 3, "Exit", new Thickness(0, 0, 0, 1), HorizontalAlignment.Left);
+
+        // Declared Borders
+        Border
+            WelcomeBorder = new Border(5, 3, 40, 5, Line.SingleRound);
+
+        // Declared TextBlocks
+        TextBlock
+            WelcomeTextBlock = new TextBlock(12, 5, "Welcome to BCPF showcase!");
+
 
         public Application()
         {
@@ -25,9 +37,6 @@ namespace BCPF_Showcase
             InitializeApplication();
 
             // Code after initialization
-            ContinueButton = new Button(5, 10, 13, 3, "Continue", new Thickness(0, 0, 0 ,1), Alignment.Left);
-            CreditsButton = new Button(5, 13, 13, 3, "Credits", new Thickness(0, 0, 0, 1), Alignment.Left);
-            ExitButton = new Button(5, 16, 13, 3, "Exit", new Thickness(0, 0, 0, 1), Alignment.Left);
 
             // Assigning events
             ContinueButton.OnClick += Continue_OnClick;
