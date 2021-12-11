@@ -62,7 +62,7 @@ namespace BeConsolePresentationFramework.Controls.Base
             }
         }
 
-        private Thickness _Padding;
+        private Thickness _Padding = new Thickness(1, 1, 1, 1);
         public Thickness Padding
         {
             get { return _Padding; }
@@ -71,6 +71,18 @@ namespace BeConsolePresentationFramework.Controls.Base
             {
                 if (!ChangingByCore) _ValueChanged();
                 _Padding = value;
+            }
+        }
+
+        private Line _Line;
+        public Line Line
+        {
+            get { return _Line; }
+
+            set
+            {
+                if (!ChangingByCore) _ValueChanged();
+                _Line = value;
             }
         }
 
@@ -142,7 +154,6 @@ namespace BeConsolePresentationFramework.Controls.Base
             if (!ValueChanged)
             {
                 ValueChanged = true;
-                //ConsolePresentation.keybd_event(0x87 - 40, 0, ConsolePresentation.KEYEVENTF_EXTENDEDKEY | 0, 0);
             }
         }
 
@@ -183,7 +194,6 @@ namespace BeConsolePresentationFramework.Controls.Base
         }
 
         // Public functions
-
         public void Remove()
         {
             ConsolePresentation.RemoveControl(this);

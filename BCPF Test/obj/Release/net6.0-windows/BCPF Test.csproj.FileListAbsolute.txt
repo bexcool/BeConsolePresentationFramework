@@ -1,0 +1,18 @@
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\bin\Release\net6.0-windows\BCPF Test.exe
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\bin\Release\net6.0-windows\BCPF Test.deps.json
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\bin\Release\net6.0-windows\BCPF Test.runtimeconfig.json
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\bin\Release\net6.0-windows\BCPF Test.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\bin\Release\net6.0-windows\ref\BCPF Test.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\bin\Release\net6.0-windows\BCPF Test.pdb
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\bin\Release\net6.0-windows\BeConsolePresentationFramework.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\bin\Release\net6.0-windows\BeConsolePresentationFramework.pdb
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\obj\Release\net6.0-windows\BCPF Test.csproj.AssemblyReference.cache
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\obj\Release\net6.0-windows\BCPF Test.GeneratedMSBuildEditorConfig.editorconfig
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\obj\Release\net6.0-windows\BCPF Test.AssemblyInfoInputs.cache
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\obj\Release\net6.0-windows\BCPF Test.AssemblyInfo.cs
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\obj\Release\net6.0-windows\BCPF Test.csproj.CoreCompileInputs.cache
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\obj\Release\net6.0-windows\BCPF Test.csproj.CopyComplete
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\obj\Release\net6.0-windows\BCPF Test.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\obj\Release\net6.0-windows\ref\BCPF Test.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\obj\Release\net6.0-windows\BCPF Test.pdb
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Test\obj\Release\net6.0-windows\BCPF Test.genruntimeconfig.cache

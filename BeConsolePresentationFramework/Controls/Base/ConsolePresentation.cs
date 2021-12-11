@@ -26,12 +26,11 @@ namespace BeConsolePresentationFramework
         // Basic values
         int LastLeftMouseButtonPressed = 0;
         bool ExitRequest = false, RefreshingRender = false;
+        public bool ShowDebug = false;
 
         public ConsolePresentation()
         {
-            /*
-            RenderThread = new Thread(Test);
-            RenderThread.Start();*/
+
         }
 
         protected void InitializeApplication()
@@ -46,17 +45,9 @@ namespace BeConsolePresentationFramework
             InputThread.Start();
         }
 
-        private void Test()
-        {
-            while (!ExitRequest)
-            {
-                Debug.WriteLine("ff");
-                Render();
-            }
-        }
-
         private void InitializeConsole()
         {
+            Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
             ConsoleExtension.DisableEdit();
             Console.CursorVisible = false;
@@ -96,31 +87,34 @@ namespace BeConsolePresentationFramework
                 {
                     Console.SetCursorPosition(0, 0);
 
-                    switch (record.EventType)
+                    if (ShowDebug)
                     {
-                        case NativeMethods.MOUSE_EVENT:
-                            {
-                                Console.WriteLine("Mouse event");
-                                Console.WriteLine(string.Format("    X ...............:   {0,4:0}  ", record.MouseEvent.dwMousePosition.X));
-                                Console.WriteLine(string.Format("    Y ...............:   {0,4:0}  ", record.MouseEvent.dwMousePosition.Y));
-                                Console.WriteLine(string.Format("    dwButtonState ...: 0x{0:X4}  ", record.MouseEvent.dwButtonState));
-                                Console.WriteLine(string.Format("    dwControlKeyState: 0x{0:X4}  ", record.MouseEvent.dwControlKeyState));
-                                Console.WriteLine(string.Format("    dwEventFlags ....: 0x{0:X4}  ", record.MouseEvent.dwEventFlags));
-                            }
-                            break;
+                        switch (record.EventType)
+                        {
+                            case NativeMethods.MOUSE_EVENT:
+                                {
+                                    Console.WriteLine("Mouse event");
+                                    Console.WriteLine(string.Format("    X ...............:   {0,4:0}  ", record.MouseEvent.dwMousePosition.X));
+                                    Console.WriteLine(string.Format("    Y ...............:   {0,4:0}  ", record.MouseEvent.dwMousePosition.Y));
+                                    Console.WriteLine(string.Format("    dwButtonState ...: 0x{0:X4}  ", record.MouseEvent.dwButtonState));
+                                    Console.WriteLine(string.Format("    dwControlKeyState: 0x{0:X4}  ", record.MouseEvent.dwControlKeyState));
+                                    Console.WriteLine(string.Format("    dwEventFlags ....: 0x{0:X4}  ", record.MouseEvent.dwEventFlags));
+                                }
+                                break;
 
-                        case NativeMethods.KEY_EVENT:
-                            {
-                                Console.WriteLine("Key event  ");
-                                Console.WriteLine(string.Format("    bKeyDown  .......:  {0,5}  ", record.KeyEvent.bKeyDown));
-                                Console.WriteLine(string.Format("    wRepeatCount ....:   {0,4:0}  ", record.KeyEvent.wRepeatCount));
-                                Console.WriteLine(string.Format("    wVirtualKeyCode .:   {0,4:0}  ", record.KeyEvent.wVirtualKeyCode));
-                                Console.WriteLine(string.Format("    uChar ...........:      {0}  ", record.KeyEvent.UnicodeChar));
-                                Console.WriteLine(string.Format("    dwControlKeyState: 0x{0:X4}  ", record.KeyEvent.dwControlKeyState));
+                            case NativeMethods.KEY_EVENT:
+                                {
+                                    Console.WriteLine("Key event  ");
+                                    Console.WriteLine(string.Format("    bKeyDown  .......:  {0,5}  ", record.KeyEvent.bKeyDown));
+                                    Console.WriteLine(string.Format("    wRepeatCount ....:   {0,4:0}  ", record.KeyEvent.wRepeatCount));
+                                    Console.WriteLine(string.Format("    wVirtualKeyCode .:   {0,4:0}  ", record.KeyEvent.wVirtualKeyCode));
+                                    Console.WriteLine(string.Format("    uChar ...........:      {0}  ", record.KeyEvent.UnicodeChar));
+                                    Console.WriteLine(string.Format("    dwControlKeyState: 0x{0:X4}  ", record.KeyEvent.dwControlKeyState));
 
-                                if (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Escape) { return; }
-                            }
-                            break;
+                                    if (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Escape) { return; }
+                                }
+                                break;
+                        }
                     }
 
                     if (record.KeyEvent.wVirtualKeyCode != 0 && record.EventType == NativeMethods.KEY_EVENT && record.KeyEvent.wVirtualKeyCode != 95)
@@ -184,7 +178,8 @@ namespace BeConsolePresentationFramework
                                 {
                                     Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
                                 }
-                                control.Width = control.Content.Length;
+                                control.Width = control.Content.GetLongestLineLength();
+                                control.Height = control.Content.GetNumberOfLines();
                                 Renderer.DrawText(control.X, control.Y, control.Content, control.ForegroundColor);
                                 control.ValueChanged = false;
                             }
@@ -194,10 +189,19 @@ namespace BeConsolePresentationFramework
                                 {
                                     Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
                                 }
-                                control.Height = control.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (control.Padding != null ? control.Padding.Top + control.Padding.Bottom : 0) + 1;
                                 if (control.Hovered) SetForeColor(ConsoleColor.Gray);
                                 if (control.Pressed) SetForeColor(ConsoleColor.DarkGray);
-                                Renderer.DrawBox(control.X, control.Y, control.Padding != null ? control.Padding : new Thickness(), control.Content, control.Pressed);
+                                Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line);
+                                SetForeColor(ConsoleColor.White);
+                                control.ValueChanged = false;
+                            }
+                            else if (control is Border)
+                            {
+                                if (control.ValueChanged)
+                                {
+                                    Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                                }
+                                Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Line);
                                 SetForeColor(ConsoleColor.White);
                                 control.ValueChanged = false;
                             }
@@ -205,15 +209,6 @@ namespace BeConsolePresentationFramework
                         }
                         else
                         {
-                            if (control is TextBlock)
-                            {
-                                control.Width = control.Content.Length;
-                            }
-                            else if (control is Button)
-                            {
-                                control.Height = control.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (control.Padding != null ? control.Padding.Top + control.Padding.Bottom : 0) + 1;
-                            }
-
                             Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
                         }
 
@@ -245,13 +240,15 @@ namespace BeConsolePresentationFramework
                             }
                             else if (control is Button)
                             {
+                                Thickness Padding = control.Padding;
+
                                 if (
                                     record.MouseEvent.dwButtonState != LastLeftMouseButtonPressed &&
                                     record.MouseEvent.dwButtonState == 0 &&
                                     record.MouseEvent.dwMousePosition.X >= control.X &&
-                                    record.MouseEvent.dwMousePosition.X <= control.X + control.Width &&
+                                    record.MouseEvent.dwMousePosition.X <= control.X + control.Width + control.Padding.LeftRight - 1 &&
                                     record.MouseEvent.dwMousePosition.Y >= control.Y &&
-                                    record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height
+                                    record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
                                     )
                                 {
                                     ((Button)control)._OnClick();
@@ -260,9 +257,9 @@ namespace BeConsolePresentationFramework
                                 if (
                                     record.MouseEvent.dwButtonState > 0 &&
                                     record.MouseEvent.dwMousePosition.X >= control.X &&
-                                    record.MouseEvent.dwMousePosition.X <= control.X + control.Width &&
+                                    record.MouseEvent.dwMousePosition.X <= control.X + control.Width + control.Padding.LeftRight - 1 &&
                                     record.MouseEvent.dwMousePosition.Y >= control.Y &&
-                                    record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height
+                                    record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
                                     )
                                 {
                                     if (!control.Pressed)
@@ -282,9 +279,9 @@ namespace BeConsolePresentationFramework
 
                                 if (
                                     record.MouseEvent.dwMousePosition.X >= control.X &&
-                                    record.MouseEvent.dwMousePosition.X <= control.X + control.Width &&
+                                    record.MouseEvent.dwMousePosition.X <= control.X + control.Width + control.Padding.LeftRight - 1 &&
                                     record.MouseEvent.dwMousePosition.Y >= control.Y &&
-                                    record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height
+                                    record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
                                     )
                                 {
                                     if (!control.Hovered)

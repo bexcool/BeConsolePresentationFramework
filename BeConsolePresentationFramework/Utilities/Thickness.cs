@@ -12,6 +12,22 @@ namespace BeConsolePresentationFramework.Utilities
         public int Right { get; set; }
         public int Bottom { get; set; }
         public int Left { get; set; }
+        public int LeftRight
+        {
+            get { return Left + Right; }
+        }
+        public int TopBottom
+        {
+            get { return Top + Bottom; }
+        }
+
+        public Thickness()
+        {
+            Top = 0;
+            Right = 0;
+            Bottom = 0;
+            Left = 0;
+        }
 
         public Thickness(int Top, int Right, int Bottom, int Left)
         {
@@ -21,12 +37,12 @@ namespace BeConsolePresentationFramework.Utilities
             this.Left = Left;
         }
 
-        public Thickness()
+        public Thickness(int Value)
         {
-            Top = 0;
-            Right = 0;
-            Bottom = 0;
-            Left = 0;
+            Top = Value;
+            Right = Value;
+            Bottom = Value;
+            Left = Value;
         }
     }
 }

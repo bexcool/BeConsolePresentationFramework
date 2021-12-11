@@ -15,6 +15,8 @@ public class Application : ConsolePresentation
     {
         InitializeApplication();
 
+        ShowDebug = true;
+
         textBlock = new TextBlock(10, 20, "GGEGE");
         honza = new TextBlock(55, 20, "HONZA JE HONZA");
         hover = new TextBlock(55, 21, "NOT HOVERED");
@@ -22,47 +24,31 @@ public class Application : ConsolePresentation
         pressed = new TextBlock(55, 22, "RELEASED", ConsoleColor.Red);
         new TextBlock(55, 24, Convert.ToInt64((float)5 / 2).ToString());
         new TextBlock(55, 25, Math.Round(2.5).ToString());
+        new TextBlock(55, 26, "Ahoj!\nNový řádek!");
 
-        Button Exit = new Button(55, 15, "EXIT", ConsoleColor.Red);
+        Button Exit = new Button(55, 15, 8, 5, "EXIT", Line.SingleDouble);
         Exit.OnClick += Exit_OnClick;
+        Exit.Padding = new Thickness(0, 2, 0, 1);
 
-        BeforeRender += Application_BeforeRender;
-        AfterRender += Application_AfterRender;
-        Loaded += Application_Loaded;
-
-        Button zelva = new Button(40, 20, "ZelvaMan");
-        zelva.Padding = new Thickness(2, 0, 5, 0);
+        Button zelva = new Button(40, 20, 13, 5, "ZelvaMan", Line.SingleRound);
+        zelva.Padding = new Thickness();
         zelva.OnClick += Zelva_OnClick;
         zelva.MouseEnter += Zelva_MouseEnter;
         zelva.MouseLeave += Zelva_MouseLeave;
         zelva.MousePressed += Zelva_MousePressed;
         zelva.MouseReleased += Zelva_MouseReleased;
-        zelva.Visibility = Visibility.Hidden;
 
-        Button btnPlus = new Button(16, 20, "PLUS");
-        btnPlus.Padding = new Thickness(2, 0, 2, 0);
+        Button btnPlus = new Button(16, 20, 8, 5, "PLUS", Line.Double);
+        btnPlus.Padding = new Thickness(1, 0, 1, 0);
         btnPlus.OnClick += BtnPlus_OnClick;
 
-        Button btnMinus = new Button(25, 20, "MINUS");
+        Button btnMinus = new Button(25, 20, 9, 5, "MINUS", Line.DoubleSingle);
         btnMinus.OnClick += BtnMinus_OnClick;
 
-        timer = new Timer(new TimerCallback(TickTimer), null, 2000, 2000);
+        new Border(50, 5, 10, 5, Line.SingleRound);
 
-    }
+        //timer = new Timer(new TimerCallback(TickTimer), null, 2000, 2000);
 
-    private void Application_Loaded(object sender, EventArgs e)
-    {
-        Debug.WriteLine("Loaded");
-    }
-
-    private void Application_AfterRender(object sender, EventArgs e)
-    {
-        Debug.WriteLine("After");
-    }
-
-    private void Application_BeforeRender(object sender, EventArgs e)
-    {
-        Debug.WriteLine("Before");
     }
 
     private void Exit_OnClick(object sender, EventArgs e)
@@ -107,6 +93,7 @@ public class Application : ConsolePresentation
         honza.Content = "ZelvaMan";
         removeMe.Remove();
         (sender as Button).Visibility = Visibility.Visible;
+        (sender as Button).Content = "ZLVMN";
     }
 
     private void BtnMinus_OnClick(object sender, EventArgs e)

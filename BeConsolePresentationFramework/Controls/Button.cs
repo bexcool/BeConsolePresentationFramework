@@ -1,39 +1,64 @@
 ﻿using BeConsolePresentationFramework.Controls.Base;
 using BeConsolePresentationFramework.Rendering;
+using BeConsolePresentationFramework.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BeConsolePresentationFramework.Utilities.Utilities;
 
 namespace BeConsolePresentationFramework.Controls
 {
     public class Button : Control
     {
-        public Button(int X, int Y)
+        public Button(int X, int Y, int Width, int Height)
         {
             this.X = X;
             this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
         }
 
-        public Button(int X, int Y, string Content)
+        public Button(int X, int Y, int Width, int Height, string Content)
         {
             this.X = X;
             this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
             this.Content = Content;
-            Width = Content.Length + 3;
-            Height = Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (Padding != null ? Padding.Top + Padding.Bottom : 0) + 2;
         }
 
-        public Button(int X, int Y, string Content, ConsoleColor ForegroundColor)
+        public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding)
         {
             this.X = X;
             this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
             this.Content = Content;
-            this.ForegroundColor = ForegroundColor;
-            Width = Content.Length + 3;
-            Height = Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + (Padding != null ? Padding.Top + Padding.Bottom : 0) + 2;
+            this.Padding = Padding;
+        }
+
+        public Button(int X, int Y, int Width, int Height, string Content, Line Line)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.Content = Content;
+            this.Line = Line;
+        }
+
+        public Button(int X, int Y, int Width, int Height, string Content, Thickness Padding, Line Line)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.Content = Content;
+            this.Padding = Padding;
+            this.Line = Line;
         }
     }
 }
