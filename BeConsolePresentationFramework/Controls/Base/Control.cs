@@ -62,7 +62,7 @@ namespace BeConsolePresentationFramework.Controls.Base
             }
         }
 
-        private Thickness _Padding = new Thickness(1, 1, 1, 1);
+        private Thickness _Padding = new Thickness();
         public Thickness Padding
         {
             get { return _Padding; }
@@ -83,6 +83,18 @@ namespace BeConsolePresentationFramework.Controls.Base
             {
                 if (!ChangingByCore) _ValueChanged();
                 _Line = value;
+            }
+        }
+
+        private Alignment _ContentHorizontalAlignment;
+        public Alignment ContentHorizontalAlignment
+        {
+            get { return _ContentHorizontalAlignment; }
+
+            set
+            {
+                if (!ChangingByCore) _ValueChanged();
+                _ContentHorizontalAlignment = value;
             }
         }
 

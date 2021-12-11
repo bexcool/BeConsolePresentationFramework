@@ -37,6 +37,14 @@ namespace BeConsolePresentationFramework.Utilities
             this.Left = Left;
         }
 
+        public Thickness(int TopBottom, int LeftRight)
+        {
+            Top = TopBottom;
+            Right = LeftRight;
+            Bottom = TopBottom;
+            Left = LeftRight;
+        }
+
         public Thickness(int Value)
         {
             Top = Value;

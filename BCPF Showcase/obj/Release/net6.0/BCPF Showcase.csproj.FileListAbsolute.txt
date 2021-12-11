@@ -1,0 +1,18 @@
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\bin\Release\net6.0\BCPF Showcase.exe
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\bin\Release\net6.0\BCPF Showcase.deps.json
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\bin\Release\net6.0\BCPF Showcase.runtimeconfig.json
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\bin\Release\net6.0\BCPF Showcase.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\bin\Release\net6.0\ref\BCPF Showcase.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\bin\Release\net6.0\BCPF Showcase.pdb
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\bin\Release\net6.0\BeConsolePresentationFramework.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\bin\Release\net6.0\BeConsolePresentationFramework.pdb
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\obj\Release\net6.0\BCPF Showcase.csproj.AssemblyReference.cache
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\obj\Release\net6.0\BCPF Showcase.GeneratedMSBuildEditorConfig.editorconfig
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\obj\Release\net6.0\BCPF Showcase.AssemblyInfoInputs.cache
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\obj\Release\net6.0\BCPF Showcase.AssemblyInfo.cs
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\obj\Release\net6.0\BCPF Showcase.csproj.CoreCompileInputs.cache
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\obj\Release\net6.0\BCPF Showcase.csproj.CopyComplete
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\obj\Release\net6.0\BCPF Showcase.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\obj\Release\net6.0\ref\BCPF Showcase.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\obj\Release\net6.0\BCPF Showcase.pdb
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF Showcase\obj\Release\net6.0\BCPF Showcase.genruntimeconfig.cache

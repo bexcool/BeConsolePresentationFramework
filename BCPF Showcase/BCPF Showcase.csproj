@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>BCPF_Showcase</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BeConsolePresentationFramework">
+      <HintPath>..\BeConsolePresentationFramework\bin\Debug\net6.0\BeConsolePresentationFramework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
