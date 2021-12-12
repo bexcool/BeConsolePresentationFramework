@@ -18,7 +18,7 @@ namespace BeConsolePresentationFramework
         static List<Control> AllControls = new List<Control>();
 
         // Multithreading
-        Thread InputThread, RenderThread;
+        Thread CoreThread;
 
         // Input
         private NativeMethods.INPUT_RECORD record;
@@ -40,9 +40,9 @@ namespace BeConsolePresentationFramework
 
             if (Loaded != null) Loaded(this, EventArgs.Empty);
 
-            InputThread = new Thread(InitializeCore);
-            InputThread.IsBackground = false;
-            InputThread.Start();
+            CoreThread = new Thread(InitializeCore);
+            CoreThread.IsBackground = false;
+            CoreThread.Start();
         }
 
         private void InitializeConsole()

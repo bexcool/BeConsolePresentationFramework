@@ -39,7 +39,7 @@ public class Application : ConsolePresentation
 
         Button btnPlus = new Button(16, 20, 8, 5, "PLUS", Line.Double);
         btnPlus.ContentVerticalAlignment = VerticalAlignment.Top;
-        btnPlus.Padding = new Thickness(6, 0, 0, 0);
+        btnPlus.Padding = new Thickness(4, 0, 0, 0);
         btnPlus.OnClick += BtnPlus_OnClick;
 
         Button btnMinus = new Button(25, 20, 9, 5, "MINUS", Line.DoubleSingle);

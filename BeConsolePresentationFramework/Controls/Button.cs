@@ -20,6 +20,14 @@ namespace BeConsolePresentationFramework.Controls
             this.Width = Width;
             this.Height = Height;
         }
+        public Button(int X, int Y, int Width, int Height, string Content)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Width = Width;
+            this.Height = Height;
+            this.Content = Content;
+        }
         public Button(int X, int Y, int Width, int Height, VerticalAlignment ContentVerticalAlignment)
         {
             this.X = X;

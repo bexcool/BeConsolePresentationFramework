@@ -26,7 +26,7 @@ namespace BCPF_Template
             // Code after initialization
 
             // Created new button
-            btn = new Button(10, 15, 10, 3, "Click me!");
+            btn = new Button(10, 15, 30, 3, "Click me!");
 
             // Assigned OnClick event for button
             btn.OnClick += btn_OnClick;
@@ -37,6 +37,7 @@ namespace BCPF_Template
         {
             // Set button content
             btn.Content = "Clicked!";
+            btn.Width = 15;
         }
     }
 }
