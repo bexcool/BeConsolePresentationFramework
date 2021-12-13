@@ -178,6 +178,11 @@ namespace BeConsolePresentationFramework.Controls.Base
             if (!ValueChanged)
             {
                 ValueChanged = true;
+
+                if (this is Button)
+                {
+                    Renderer.DrawBlank(new Rectangle(X, Y, Width, Height));
+                }
             }
         }
 

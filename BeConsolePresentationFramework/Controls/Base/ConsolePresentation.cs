@@ -185,10 +185,6 @@ namespace BeConsolePresentationFramework
                             }
                             else if (control is Button)
                             {
-                                if (control.ValueChanged)
-                                {
-                                    Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
-                                }
                                 if (control.Hovered) SetForeColor(ConsoleColor.Gray);
                                 if (control.Pressed) SetForeColor(ConsoleColor.DarkGray);
                                 Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
