@@ -150,6 +150,8 @@ namespace BeConsolePresentationFramework.Controls.Base
         public bool Hovered = false;
         public bool Pressed = false;
 
+        internal Control Old;
+
         #region Event handlers
         // Click handler
         public delegate void ClickHandler(object sender, EventArgs e);
@@ -177,6 +179,7 @@ namespace BeConsolePresentationFramework.Controls.Base
         {
             if (!ValueChanged)
             {
+                Old = this;
                 ValueChanged = true;
 
                 if (this is Button)

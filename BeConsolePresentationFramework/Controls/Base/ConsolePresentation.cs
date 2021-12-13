@@ -176,7 +176,7 @@ namespace BeConsolePresentationFramework
                             {
                                 if (control.ValueChanged)
                                 {
-                                    Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
                                 }
                                 control.Width = control.Content.GetLongestLineLength();
                                 control.Height = control.Content.GetNumberOfLines();
@@ -185,6 +185,10 @@ namespace BeConsolePresentationFramework
                             }
                             else if (control is Button)
                             {
+                                if (control.ValueChanged)
+                                {
+                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                }
                                 if (control.Hovered) SetForeColor(ConsoleColor.Gray);
                                 if (control.Pressed) SetForeColor(ConsoleColor.DarkGray);
                                 Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
@@ -195,7 +199,7 @@ namespace BeConsolePresentationFramework
                             {
                                 if (control.ValueChanged)
                                 {
-                                    Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
                                 }
                                 Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Line);
                                 SetForeColor(ConsoleColor.White);
