@@ -9,6 +9,7 @@ using BeConsolePresentationFramework.Controls.Base;
 using BeConsolePresentationFramework.Controls;
 using System.Drawing;
 using static BeConsolePresentationFramework.Utilities.Utilities;
+using BeConsolePresentationFramework.Interface;
 
 namespace BeConsolePresentationFramework
 {
@@ -22,10 +23,20 @@ namespace BeConsolePresentationFramework
 
         // Input
         private NativeMethods.INPUT_RECORD record;
+        private Control _Focused;
+        internal Control Focused
+        {
+            get { return _Focused; }
+            set
+            {
+                _Focused = value;
+                FocusChanged();
+            }
+        }
 
         // Basic values
-        int LastLeftMouseButtonPressed = 0;
-        bool ExitRequest = false, RefreshingRender = false;
+        int MouseButtonPressed = 0;
+        bool ExitRequest = false, RefreshingRender = false, KeyboardKeyPressed = false;
         public bool ShowDebug = false;
 
         public ConsolePresentation()
@@ -113,13 +124,20 @@ namespace BeConsolePresentationFramework
 
                                     if (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Escape) { return; }
                                 }
+
                                 break;
                         }
                     }
 
-                    if (record.KeyEvent.wVirtualKeyCode != 0 && record.EventType == NativeMethods.KEY_EVENT && record.KeyEvent.wVirtualKeyCode != 95)
+                    // Check text box input
+                    if (record.KeyEvent.wVirtualKeyCode != 0 && record.EventType == NativeMethods.KEY_EVENT && !KeyboardKeyPressed)
                     {
-                        // Key pressed
+                        KeyboardKeyPressed = true;
+                        CheckTextBoxInput((ConsoleKey)record.KeyEvent.wVirtualKeyCode);
+                    }
+                    else if (!record.KeyEvent.bKeyDown && record.EventType == NativeMethods.KEY_EVENT)
+                    {
+                        KeyboardKeyPressed = false;
                     }
 
                     CheckInput();
@@ -128,14 +146,120 @@ namespace BeConsolePresentationFramework
                     // Left mouse button press
                     if (record.MouseEvent.dwButtonState == 0 || record.MouseEvent.dwButtonState == 1)
                     {
-                        LastLeftMouseButtonPressed = record.MouseEvent.dwButtonState;
+                        MouseButtonPressed = record.MouseEvent.dwButtonState;
                     }
                     else
                     {
-                        LastLeftMouseButtonPressed = 0;
+                        MouseButtonPressed = 0;
                     }
                 }
 
+            }
+        }
+
+        private void FocusChanged()
+        {
+            Focused._Focused();
+
+            if (Focused is TextBox)
+            {
+                int _Width = Focused.Width - 2 + Focused.Padding.Left + Focused.Padding.Right;
+                int _Height = Focused.Height - 2 + Focused.Padding.Top + Focused.Padding.Bottom;
+
+                int ContentX = Focused.X + ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
+                int ContentY = Focused.Y + ((_Height / 2) - Focused.Content.GetNumberOfLines() / 2) + 1 + Focused.Padding.Top - Focused.Padding.Bottom;
+
+                switch (Focused.ContentHorizontalAlignment)
+                {
+                    case HorizontalAlignment.Left:
+                        {
+                            ContentX = 1 - Focused.Padding.Right + Focused.Padding.Left;
+
+                            break;
+                        }
+
+                    case HorizontalAlignment.Right:
+                        {
+                            ContentX = Focused.Width - Focused.Content.GetLongestLineLength() - 1 - Focused.Padding.Right + Focused.Padding.Left;
+
+                            break;
+                        }
+
+                    case HorizontalAlignment.Center:
+                        {
+                            ContentX = ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
+
+                            break;
+                        }
+
+                    case HorizontalAlignment.Stretch:
+                        {
+                            ContentX = ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
+
+                            break;
+                        }
+                }
+
+                ContentX += Focused.X;
+
+                Console.SetCursorPosition(ContentX, ContentY);
+                Console.BackgroundColor = ConsoleColor.Gray;
+                Console.Write("█");
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
+        }
+
+        private void CheckTextBoxInput(ConsoleKey Key)
+        {
+            if (Focused is TextBox)
+            {
+                int _Width = Focused.Width - 2 + Focused.Padding.Left + Focused.Padding.Right;
+                int _Height = Focused.Height - 2 + Focused.Padding.Top + Focused.Padding.Bottom;
+
+                int ContentX = Focused.X + ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
+                int ContentY = Focused.Y + ((_Height / 2) - Focused.Content.GetNumberOfLines() / 2) + 1 + Focused.Padding.Top - Focused.Padding.Bottom;
+
+                switch (Focused.ContentHorizontalAlignment)
+                {
+                    case HorizontalAlignment.Left:
+                        {
+                            ContentX = 1 - Focused.Padding.Right + Focused.Padding.Left;
+
+                            break;
+                        }
+
+                    case HorizontalAlignment.Right:
+                        {
+                            ContentX = Focused.Width - Focused.Content.GetLongestLineLength() - 1 - Focused.Padding.Right + Focused.Padding.Left;
+
+                            break;
+                        }
+
+                    case HorizontalAlignment.Center:
+                        {
+                            ContentX = ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
+
+                            break;
+                        }
+
+                    case HorizontalAlignment.Stretch:
+                        {
+                            ContentX = ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
+
+                            break;
+                        }
+                }
+
+
+                ContentX += Focused.X;
+
+                Focused.Content += record.KeyEvent.UnicodeChar;
+
+                Console.SetCursorPosition(ContentX, ContentY);
+                Console.Write(Focused.Content);
+                Console.BackgroundColor = ConsoleColor.Gray;
+                Console.Write("█");
+                Console.BackgroundColor = ConsoleColor.Black;
             }
         }
 
@@ -162,7 +286,7 @@ namespace BeConsolePresentationFramework
         {
             try
             {
-                if (AllControls.Count > 0)
+                if (AllControls.Count > 0 && Focused is not TextBox)
                 {
                     if (BeforeRender != null) BeforeRender(this, EventArgs.Empty);
 
@@ -205,7 +329,16 @@ namespace BeConsolePresentationFramework
                                 SetForeColor(ConsoleColor.White);
                                 control.ValueChanged = false;
                             }
-
+                            else if (control is TextBox)
+                            {
+                                if (control.ValueChanged)
+                                {
+                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                }
+                                Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
+                                SetForeColor(ConsoleColor.White);
+                                control.ValueChanged = false;
+                            }
                         }
                         else
                         {
@@ -234,70 +367,78 @@ namespace BeConsolePresentationFramework
                     {
                         if (control.Visibility != Visibility.Collapsed)
                         {
+
+                            Thickness Padding = control.Padding;
+
+                            if (
+                                record.MouseEvent.dwButtonState != MouseButtonPressed &&
+                                record.MouseEvent.dwButtonState == 0 &&
+                                record.MouseEvent.dwMousePosition.X >= control.X &&
+                                record.MouseEvent.dwMousePosition.X <= control.X + control.Width + control.Padding.LeftRight - 1 &&
+                                record.MouseEvent.dwMousePosition.Y >= control.Y &&
+                                record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
+                                )
+                            {
+                                Focused = control;
+                                control._OnClick();
+                            }
+
+                            if (
+                                record.MouseEvent.dwButtonState > 0 &&
+                                record.MouseEvent.dwMousePosition.X >= control.X &&
+                                record.MouseEvent.dwMousePosition.X <= control.X + control.Width + control.Padding.LeftRight - 1 &&
+                                record.MouseEvent.dwMousePosition.Y >= control.Y &&
+                                record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
+                                )
+                            {
+                                if (!control.Pressed)
+                                {
+                                    control.Pressed = true;
+                                    control._MousePressed();
+                                }
+                            }
+                            else
+                            {
+                                if (control.Pressed)
+                                {
+                                    control.Pressed = false;
+                                    control._MouseReleased();
+                                }
+                            }
+
+                            if (
+                                record.MouseEvent.dwMousePosition.X >= control.X &&
+                                record.MouseEvent.dwMousePosition.X <= control.X + control.Width + control.Padding.LeftRight - 1 &&
+                                record.MouseEvent.dwMousePosition.Y >= control.Y &&
+                                record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
+                                )
+                            {
+                                if (!control.Hovered)
+                                {
+                                    control.Hovered = true;
+                                    control._MouseEnter();
+                                }
+                            }
+                            else
+                            {
+                                if (control.Hovered)
+                                {
+                                    control.Hovered = false;
+                                    control._MouseLeave();
+                                }
+                            }
+
                             if (control is TextBlock)
                             {
 
                             }
                             else if (control is Button)
                             {
-                                Thickness Padding = control.Padding;
 
-                                if (
-                                    record.MouseEvent.dwButtonState != LastLeftMouseButtonPressed &&
-                                    record.MouseEvent.dwButtonState == 0 &&
-                                    record.MouseEvent.dwMousePosition.X >= control.X &&
-                                    record.MouseEvent.dwMousePosition.X <= control.X + control.Width + control.Padding.LeftRight - 1 &&
-                                    record.MouseEvent.dwMousePosition.Y >= control.Y &&
-                                    record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
-                                    )
-                                {
-                                    ((Button)control)._OnClick();
-                                }
+                            }
+                            else if (control is TextBox)
+                            {
 
-                                if (
-                                    record.MouseEvent.dwButtonState > 0 &&
-                                    record.MouseEvent.dwMousePosition.X >= control.X &&
-                                    record.MouseEvent.dwMousePosition.X <= control.X + control.Width + control.Padding.LeftRight - 1 &&
-                                    record.MouseEvent.dwMousePosition.Y >= control.Y &&
-                                    record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
-                                    )
-                                {
-                                    if (!control.Pressed)
-                                    {
-                                        control.Pressed = true;
-                                        ((Button)control)._MousePressed();
-                                    }
-                                }
-                                else
-                                {
-                                    if (control.Pressed)
-                                    {
-                                        control.Pressed = false;
-                                        ((Button)control)._MouseReleased();
-                                    }
-                                }
-
-                                if (
-                                    record.MouseEvent.dwMousePosition.X >= control.X &&
-                                    record.MouseEvent.dwMousePosition.X <= control.X + control.Width + control.Padding.LeftRight - 1 &&
-                                    record.MouseEvent.dwMousePosition.Y >= control.Y &&
-                                    record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
-                                    )
-                                {
-                                    if (!control.Hovered)
-                                    {
-                                        control.Hovered = true;
-                                        ((Button)control)._MouseEnter();
-                                    }
-                                }
-                                else
-                                {
-                                    if (control.Hovered)
-                                    {
-                                        control.Hovered = false;
-                                        ((Button)control)._MouseLeave();
-                                    }
-                                }
                             }
                         }
                     }

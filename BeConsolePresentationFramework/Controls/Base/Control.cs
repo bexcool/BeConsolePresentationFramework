@@ -168,6 +168,9 @@ namespace BeConsolePresentationFramework.Controls.Base
         // Mouse released leave
         public delegate void MouseReleasedHandler(object sender, EventArgs e);
         public event MouseReleasedHandler MouseReleased;
+        // Focused
+        public delegate void FocusedHandler(object sender, EventArgs e);
+        public event FocusedHandler Focused;
         #endregion
 
         public Control()
@@ -177,52 +180,56 @@ namespace BeConsolePresentationFramework.Controls.Base
 
         private void _ValueChanged()
         {
+            Old = this;
+
             if (!ValueChanged)
             {
-                Old = this;
                 ValueChanged = true;
 
-                if (this is Button)
+                if (this is Button /*|| this is TextBox*/)
                 {
                     Renderer.DrawBlank(new Rectangle(X, Y, Width, Height));
                 }
             }
         }
 
+        // Events
         internal void _OnClick()
         {
             if (OnClick == null) return;
 
             OnClick(this, EventArgs.Empty);
         }
-
         internal void _MouseEnter()
         {
             if (MouseEnter == null) return;
 
             MouseEnter(this, EventArgs.Empty);
         }
-
         internal void _MouseLeave()
         {
             if (MouseLeave == null) return;
 
             MouseLeave(this, EventArgs.Empty);
         }
-
         internal void _MousePressed()
         {
             if (MousePressed == null) return;
 
             MousePressed(this, EventArgs.Empty);
         }
-
         internal void _MouseReleased()
         {
 
             if (MouseReleased == null) return;
 
             MouseReleased(this, EventArgs.Empty);
+        }
+        internal void _Focused()
+        {
+            if (Focused == null) return;
+
+            Focused(this, EventArgs.Empty);
         }
 
         // Public functions

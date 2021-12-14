@@ -8,6 +8,7 @@ using static BeConsolePresentationFramework.Utilities.Utilities;
 public class Application : ConsolePresentation
 {
     TextBlock textBlock, honza, hover, pressed, removeMe;
+    TextBox textBox;
     int number = 0;
     Timer timer;
 
@@ -48,6 +49,9 @@ public class Application : ConsolePresentation
         new Border(50, 5, 10, 5, Line.SingleRound);
 
         //timer = new Timer(new TimerCallback(TickTimer), null, 2000, 2000);
+
+        textBox = new TextBox(25, 10, 20, 3);
+        textBox.ContentHorizontalAlignment = HorizontalAlignment.Left;
 
     }
 
@@ -94,6 +98,7 @@ public class Application : ConsolePresentation
         removeMe.Remove();
         (sender as Button).Visibility = Visibility.Visible;
         (sender as Button).Content = "ZLVMN";
+        textBox.Width = 10;
     }
 
     private void BtnMinus_OnClick(object sender, EventArgs e)
