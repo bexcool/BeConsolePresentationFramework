@@ -202,7 +202,7 @@ namespace BeConsolePresentationFramework
 
                 ContentX += Focused.X;
 
-                Console.SetCursorPosition(ContentX, ContentY);
+                Console.SetCursorPosition(ContentX + Focused.Content.Length, ContentY);
                 Console.BackgroundColor = ConsoleColor.Gray;
                 Console.Write("█");
                 Console.BackgroundColor = ConsoleColor.Black;
@@ -251,24 +251,27 @@ namespace BeConsolePresentationFramework
                 }
                 ContentX += Focused.X;
 
-                if (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Backspace)
+                if (_Width > Focused.Content.Length + 1 || record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Backspace)
                 {
-                    Focused.Content = Focused.Content.Remove(Focused.Content.Length - 1);
-                }
-                else
-                {
-                    Focused.Content += record.KeyEvent.UnicodeChar;
-                }
-                Debug.WriteLine(Focused.Content);
+                    if (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Backspace)
+                    {
+                        Focused.Content = Focused.Content.Remove(Focused.Content.Length - 1);
+                    }
+                    else
+                    {
+                        Focused.Content += record.KeyEvent.UnicodeChar;
+                    }
+                    Debug.WriteLine(Focused.Content);
 
-                Focused.ValueChanged = true;
+                    Focused.ValueChanged = true;
 
-                Console.SetCursorPosition(ContentX, ContentY);
-                Console.Write(Focused.Content);
-                Console.BackgroundColor = ConsoleColor.Gray;
-                Console.Write("█");
-                Console.BackgroundColor = ConsoleColor.Black;
-                if (_Width - Focused.Content.Length - 1 >= 0) Console.Write(new string(' ', _Width - Focused.Content.Length - 1));
+                    Console.SetCursorPosition(ContentX, ContentY);
+                    Console.Write(Focused.Content);
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.Write("█");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    if (_Width - Focused.Content.Length - 1 >= 0) Console.Write(new string(' ', _Width - Focused.Content.Length - 1));
+                }
             }
         }
 

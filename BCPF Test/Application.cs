@@ -7,7 +7,7 @@ using static BeConsolePresentationFramework.Utilities.Utilities;
 
 public class Application : ConsolePresentation
 {
-    TextBlock textBlock, honza, hover, pressed, removeMe;
+    TextBlock textBlock, honza, hover, pressed, removeMe, textBoxOutput;
     TextBox textBox;
     int number = 0;
     Timer timer;
@@ -52,7 +52,19 @@ public class Application : ConsolePresentation
 
         textBox = new TextBox(25, 10, 20, 3);
         textBox.ContentHorizontalAlignment = HorizontalAlignment.Left;
+        textBox.ContentChanged += TextBox_ContentChanged;
+        textBox.OnClick += TextBox_OnClick;
 
+        textBoxOutput = new TextBlock(25, 15, "Type in TextBox");
+    }
+
+    private void TextBox_OnClick(object sender, EventArgs e)
+    {
+
+    }
+
+    private void TextBox_ContentChanged(object sender, EventArgs e)
+    {
     }
 
     private void Exit_OnClick(object sender, EventArgs e)
@@ -98,7 +110,7 @@ public class Application : ConsolePresentation
         removeMe.Remove();
         (sender as Button).Visibility = Visibility.Visible;
         (sender as Button).Content = "ZLVMN";
-        textBox.Width = 10;
+        textBoxOutput.Content = textBox.Content;
     }
 
     private void BtnMinus_OnClick(object sender, EventArgs e)

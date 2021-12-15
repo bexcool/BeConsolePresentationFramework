@@ -170,6 +170,9 @@ namespace BeConsolePresentationFramework.Controls.Base
         // Focused
         public delegate void FocusedHandler(object sender, EventArgs e);
         public event FocusedHandler Focused;
+        // Content changed
+        public delegate void ContentChangedHandler(object sender, EventArgs e);
+        public event ContentChangedHandler ContentChanged;
         #endregion
 
         public Control()
@@ -226,6 +229,12 @@ namespace BeConsolePresentationFramework.Controls.Base
             if (Focused == null) return;
 
             Focused(this, EventArgs.Empty);
+        }
+        internal void _ContentChanged()
+        {
+            if (ContentChanged == null) return;
+
+            ContentChanged(this, EventArgs.Empty);
         }
 
         // Public functions
