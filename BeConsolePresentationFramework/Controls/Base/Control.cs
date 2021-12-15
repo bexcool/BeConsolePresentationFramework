@@ -147,10 +147,9 @@ namespace BeConsolePresentationFramework.Controls.Base
         }
 
         internal bool ValueChanged = false, ChangingByCore = false;
-        public bool Hovered = false;
-        public bool Pressed = false;
+        public bool Hovered = false, Pressed = false;
 
-        internal Control Old;
+        internal Rectangle Old;
 
         #region Event handlers
         // Click handler
@@ -175,21 +174,18 @@ namespace BeConsolePresentationFramework.Controls.Base
 
         public Control()
         {
+            Old = new Rectangle(X, Y, Width, Height);
+
             ConsolePresentation.AddControl(this);
         }
 
         private void _ValueChanged()
         {
-            Old = this;
-
             if (!ValueChanged)
             {
-                ValueChanged = true;
+                Old = new Rectangle(X, Y, Width, Height);
 
-                if (this is Button /*|| this is TextBox*/)
-                {
-                    Renderer.DrawBlank(new Rectangle(X, Y, Width, Height));
-                }
+                ValueChanged = true;
             }
         }
 

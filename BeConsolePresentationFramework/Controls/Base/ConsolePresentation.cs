@@ -249,17 +249,26 @@ namespace BeConsolePresentationFramework
                             break;
                         }
                 }
-
-
                 ContentX += Focused.X;
 
-                Focused.Content += record.KeyEvent.UnicodeChar;
+                if (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Backspace)
+                {
+                    Focused.Content = Focused.Content.Remove(Focused.Content.Length - 1);
+                }
+                else
+                {
+                    Focused.Content += record.KeyEvent.UnicodeChar;
+                }
+                Debug.WriteLine(Focused.Content);
+
+                Focused.ValueChanged = true;
 
                 Console.SetCursorPosition(ContentX, ContentY);
                 Console.Write(Focused.Content);
                 Console.BackgroundColor = ConsoleColor.Gray;
                 Console.Write("█");
                 Console.BackgroundColor = ConsoleColor.Black;
+                if (_Width - Focused.Content.Length - 1 >= 0) Console.Write(new string(' ', _Width - Focused.Content.Length - 1));
             }
         }
 
