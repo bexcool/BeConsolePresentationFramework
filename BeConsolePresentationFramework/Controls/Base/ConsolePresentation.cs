@@ -24,7 +24,7 @@ namespace BeConsolePresentationFramework
         // Input
         private NativeMethods.INPUT_RECORD record;
         private Control _Focused;
-        internal Control Focused
+        internal Control? Focused
         {
             get { return _Focused; }
             set
@@ -38,6 +38,7 @@ namespace BeConsolePresentationFramework
         int MouseButtonPressed = 0;
         bool ExitRequest = false, RefreshingRender = false, KeyboardKeyPressed = false;
         public bool ShowDebug = false;
+        ConsoleKey LastKeyPressed;
 
         public ConsolePresentation()
         {
@@ -58,6 +59,7 @@ namespace BeConsolePresentationFramework
 
         private void InitializeConsole()
         {
+            Console.Title = "New BeConsole Window";
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
             ConsoleExtension.DisableEdit();
@@ -130,8 +132,9 @@ namespace BeConsolePresentationFramework
                     }
 
                     // Check text box input
-                    if (record.KeyEvent.wVirtualKeyCode != 0 && record.EventType == NativeMethods.KEY_EVENT && !KeyboardKeyPressed)
+                    if (record.KeyEvent.wVirtualKeyCode != 0 && record.EventType == NativeMethods.KEY_EVENT && (LastKeyPressed != (ConsoleKey)record.KeyEvent.wVirtualKeyCode || !KeyboardKeyPressed))
                     {
+                        LastKeyPressed = (ConsoleKey)record.KeyEvent.wVirtualKeyCode;
                         KeyboardKeyPressed = true;
                         CheckTextBoxInput((ConsoleKey)record.KeyEvent.wVirtualKeyCode);
                     }
@@ -159,53 +162,60 @@ namespace BeConsolePresentationFramework
 
         private void FocusChanged()
         {
-            Focused._Focused();
-
-            if (Focused is TextBox)
+            if (Focused != null)
             {
-                int _Width = Focused.Width - 2 + Focused.Padding.Left + Focused.Padding.Right;
-                int _Height = Focused.Height - 2 + Focused.Padding.Top + Focused.Padding.Bottom;
+                Focused._Focused();
 
-                int ContentX = Focused.X + ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
-                int ContentY = Focused.Y + ((_Height / 2) - Focused.Content.GetNumberOfLines() / 2) + 1 + Focused.Padding.Top - Focused.Padding.Bottom;
-
-                switch (Focused.ContentHorizontalAlignment)
+                if (Focused is TextBox)
                 {
-                    case HorizontalAlignment.Left:
-                        {
-                            ContentX = 1 - Focused.Padding.Right + Focused.Padding.Left;
+                    int _Width = Focused.Width - 2 + Focused.Padding.Left + Focused.Padding.Right;
+                    int _Height = Focused.Height - 2 + Focused.Padding.Top + Focused.Padding.Bottom;
 
-                            break;
-                        }
+                    int ContentX = Focused.X + ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
+                    int ContentY = Focused.Y + ((_Height / 2) - Focused.Content.GetNumberOfLines() / 2) + 1 + Focused.Padding.Top - Focused.Padding.Bottom;
 
-                    case HorizontalAlignment.Right:
-                        {
-                            ContentX = Focused.Width - Focused.Content.GetLongestLineLength() - 1 - Focused.Padding.Right + Focused.Padding.Left;
+                    switch (Focused.ContentHorizontalAlignment)
+                    {
+                        case HorizontalAlignment.Left:
+                            {
+                                ContentX = 1 - Focused.Padding.Right + Focused.Padding.Left;
 
-                            break;
-                        }
+                                break;
+                            }
 
-                    case HorizontalAlignment.Center:
-                        {
-                            ContentX = ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
+                        case HorizontalAlignment.Right:
+                            {
+                                ContentX = Focused.Width - Focused.Content.GetLongestLineLength() - 1 - Focused.Padding.Right + Focused.Padding.Left;
 
-                            break;
-                        }
+                                break;
+                            }
 
-                    case HorizontalAlignment.Stretch:
-                        {
-                            ContentX = ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
+                        case HorizontalAlignment.Center:
+                            {
+                                ContentX = ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
 
-                            break;
-                        }
+                                break;
+                            }
+
+                        case HorizontalAlignment.Stretch:
+                            {
+                                ContentX = ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
+
+                                break;
+                            }
+                    }
+
+                    ContentX += Focused.X;
+
+                    Console.SetCursorPosition(ContentX + Focused.Content.Length, ContentY);
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.Write("█");
+                    Console.BackgroundColor = ConsoleColor.Black;
                 }
+            }
+            else if (Focused == null)
+            {
 
-                ContentX += Focused.X;
-
-                Console.SetCursorPosition(ContentX + Focused.Content.Length, ContentY);
-                Console.BackgroundColor = ConsoleColor.Gray;
-                Console.Write("█");
-                Console.BackgroundColor = ConsoleColor.Black;
             }
         }
 
@@ -251,18 +261,17 @@ namespace BeConsolePresentationFramework
                 }
                 ContentX += Focused.X;
 
-                if (_Width > Focused.Content.Length + 1 || record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Backspace)
+                if ((_Width > Focused.Content.Length + 1 && record.KeyEvent.wVirtualKeyCode != (int)ConsoleKey.Backspace) || (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Backspace && Focused.Content.Length != 0))
                 {
                     if (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Backspace)
                     {
-                        Focused.Content = Focused.Content.Remove(Focused.Content.Length - 1);
+                        Focused.Content =  Focused.Content.Remove(Focused.Content.ToCharArray().Length - 1);
                     }
-                    else
+                    else if (record.KeyEvent.wVirtualKeyCode != 16 && record.KeyEvent.dwControlKeyState != 17 && record.KeyEvent.dwControlKeyState != 18)
                     {
                         Focused.Content += record.KeyEvent.UnicodeChar;
                     }
                     Debug.WriteLine(Focused.Content);
-
                     Focused.ValueChanged = true;
 
                     Console.SetCursorPosition(ContentX, ContentY);
@@ -298,7 +307,7 @@ namespace BeConsolePresentationFramework
         {
             try
             {
-                if (AllControls.Count > 0 && Focused is not TextBox)
+                if (AllControls.Count > 0)
                 {
                     if (BeforeRender != null) BeforeRender(this, EventArgs.Empty);
 
@@ -341,7 +350,7 @@ namespace BeConsolePresentationFramework
                                 SetForeColor(ConsoleColor.White);
                                 control.ValueChanged = false;
                             }
-                            else if (control is TextBox)
+                            else if (control is TextBox && control != Focused)
                             {
                                 if (control.ValueChanged)
                                 {
@@ -375,11 +384,12 @@ namespace BeConsolePresentationFramework
             {
                 if (AllControls.Count > 0)
                 {
+                    bool FocusChanged = false;
+
                     foreach (Control control in AllControls)
                     {
                         if (control.Visibility != Visibility.Collapsed)
                         {
-
                             Thickness Padding = control.Padding;
 
                             if (
@@ -391,6 +401,7 @@ namespace BeConsolePresentationFramework
                                 record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
                                 )
                             {
+                                FocusChanged = true;
                                 Focused = control;
                                 control._OnClick();
                             }
@@ -453,6 +464,14 @@ namespace BeConsolePresentationFramework
 
                             }
                         }
+                    }
+                    
+                    if (!FocusChanged && record.MouseEvent.dwButtonState != MouseButtonPressed && record.MouseEvent.dwButtonState == 0 && Focused != null)
+                    {
+                        Renderer.DrawBlank(new Rectangle(Focused.X, Focused.Y, Focused.Width, Focused.Height));
+                        Renderer.DrawBox(Focused.X, Focused.Y, Focused.Width, Focused.Height, Focused.Content, Focused.Padding, Focused.Line, Focused.ContentHorizontalAlignment, Focused.ContentVerticalAlignment);
+                        
+                        Focused = null; 
                     }
                 }
             }
