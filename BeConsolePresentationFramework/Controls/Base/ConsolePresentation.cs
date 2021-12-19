@@ -34,6 +34,18 @@ namespace BeConsolePresentationFramework
             }
         }
 
+        // Customization
+        private ConsoleColor _AccentColor = ConsoleColor.Blue;
+        public ConsoleColor AccentColor
+        {
+            get { return _AccentColor; }
+            set
+            {
+                _AccentColor = value;
+                // Add event "AccentColorChanged"
+            }
+        }
+
         // Basic values
         int MouseButtonPressed = 0;
         bool ExitRequest = false, RefreshingRender = false, KeyboardKeyPressed = false;
@@ -91,7 +103,6 @@ namespace BeConsolePresentationFramework
             
             record = new NativeMethods.INPUT_RECORD();
             uint recordLen = 0;
-
             while (!ExitRequest)
             {
                 if (!NativeMethods.ReadConsoleInput(handle, ref record, 1, ref recordLen)) { throw new Win32Exception(); }
@@ -267,11 +278,11 @@ namespace BeConsolePresentationFramework
                     {
                         Focused.Content =  Focused.Content.Remove(Focused.Content.ToCharArray().Length - 1);
                     }
-                    else if (record.KeyEvent.wVirtualKeyCode != 16 && record.KeyEvent.dwControlKeyState != 17 && record.KeyEvent.dwControlKeyState != 18)
+                    else if ((record.KeyEvent.wVirtualKeyCode < 16 || record.KeyEvent.wVirtualKeyCode > 18) && record.KeyEvent.wVirtualKeyCode != 13)
                     {
                         Focused.Content += record.KeyEvent.UnicodeChar;
                     }
-                    Debug.WriteLine(Focused.Content);
+
                     Focused.ValueChanged = true;
 
                     Console.SetCursorPosition(ContentX, ContentY);
@@ -350,15 +361,22 @@ namespace BeConsolePresentationFramework
                                 SetForeColor(ConsoleColor.White);
                                 control.ValueChanged = false;
                             }
-                            else if (control is TextBox && control != Focused)
+                            else if (control is TextBox)
                             {
-                                if (control.ValueChanged)
+                                if (control != Focused)
                                 {
-                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                    if (control.ValueChanged)
+                                    {
+                                        Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                    }
+                                    Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
+                                    SetForeColor(ConsoleColor.White);
+                                    control.ValueChanged = false;
                                 }
-                                Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
-                                SetForeColor(ConsoleColor.White);
-                                control.ValueChanged = false;
+                                else
+                                {
+                                    Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment, AccentColor);
+                                }
                             }
                         }
                         else
