@@ -146,7 +146,7 @@ namespace BeConsolePresentationFramework.Controls.Base
             }
         }
 
-        internal bool ValueChanged = false, ChangingByCore = false;
+        internal bool ValueChanged = false, ChangingByCore = false, RemoveRequest = false;
         public bool Hovered = false, Pressed = false;
 
         internal Rectangle Old;
@@ -240,9 +240,7 @@ namespace BeConsolePresentationFramework.Controls.Base
         // Public functions
         public void Remove()
         {
-            ConsolePresentation.RemoveControl(this);
-
-            Renderer.DrawBlank(new Rectangle(X, Y, Width, Height));
+            RemoveRequest = true;
         }
     }
 }

@@ -16,7 +16,7 @@ public class Application : ConsolePresentation
     {
         InitializeApplication();
 
-        ShowDebug = true;
+        //ShowDebug = true;
 
         textBlock = new TextBlock(10, 20, "GGEGE");
         honza = new TextBlock(55, 20, "HONZA JE HONZA");
@@ -48,7 +48,7 @@ public class Application : ConsolePresentation
 
         new Border(50, 5, 10, 5, Line.SingleRound);
 
-        //timer = new Timer(new TimerCallback(TickTimer), null, 2000, 2000);
+        timer = new Timer(new TimerCallback(TickTimer), null, 1000, 1000);
 
         textBox = new TextBox(25, 10, 20, 3);
         textBox.ContentHorizontalAlignment = HorizontalAlignment.Left;
@@ -65,6 +65,7 @@ public class Application : ConsolePresentation
 
     private void TextBox_ContentChanged(object sender, EventArgs e)
     {
+
     }
 
     private void Exit_OnClick(object sender, EventArgs e)
@@ -74,12 +75,7 @@ public class Application : ConsolePresentation
 
     void TickTimer(object state)
     {
-        honza.Content = "TICK BRACHO!!!";
-
-        // Call for refreshing UI to show new TextBlock content
-        RefreshRender();
-
-        timer.Dispose();
+        honza.Content = FPS.ToString();
     }
 
     private void Zelva_MouseReleased(object sender, EventArgs e)
