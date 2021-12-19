@@ -47,8 +47,8 @@ namespace BeConsolePresentationFramework
         }
 
         // Time
-        long DeltaTime = 0, LastTime;
-        public float FPS = 0;
+        int DeltaTime = 0, LastTime;
+        public float FPS { get; set; }
 
         // Basic values
         int MouseButtonPressed = 0;
@@ -128,9 +128,8 @@ namespace BeConsolePresentationFramework
                         KeyboardKeyPressed = false;
                     }
                     
-                    CheckInput();/*
-                    Render();
-                    */
+                    CheckInput();
+
                     // Left mouse button press
                     if (record.MouseEvent.dwButtonState == 0 || record.MouseEvent.dwButtonState == 1)
                     {
@@ -149,7 +148,6 @@ namespace BeConsolePresentationFramework
         {
             while (!ExitRequest)
             {
-                //CheckInput();
                 Render();
             }
         }
@@ -237,7 +235,7 @@ namespace BeConsolePresentationFramework
                 if (AllControls.Count > 0)
                 {
                     if (BeforeRender != null) BeforeRender(this, EventArgs.Empty);
-                    LastTime = DateTime.Now.Ticks;
+                    LastTime = DateTime.Now.Millisecond;
 
                     foreach (Control control in AllControls)
                     {
@@ -372,9 +370,9 @@ namespace BeConsolePresentationFramework
                         Focused = null;
                     }
 
-                    DeltaTime = DateTime.Now.Ticks - LastTime;
-                    
-                    FPS = DeltaTime;
+                    // Time calculations
+                    DeltaTime = DateTime.Now.Millisecond - LastTime;
+                    FPS = (float)1 / DeltaTime * 1000;
                 }
             }
             catch

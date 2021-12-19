@@ -48,7 +48,7 @@ public class Application : ConsolePresentation
 
         new Border(50, 5, 10, 5, Line.SingleRound);
 
-        timer = new Timer(new TimerCallback(TickTimer), null, 1000, 1000);
+        timer = new Timer(new TimerCallback(TickTimer), null, 100, 100);
 
         textBox = new TextBox(25, 10, 20, 3);
         textBox.ContentHorizontalAlignment = HorizontalAlignment.Left;
