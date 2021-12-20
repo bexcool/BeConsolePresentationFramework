@@ -1,5 +1,6 @@
 ﻿using BeConsolePresentationFramework;
 using BeConsolePresentationFramework.Controls;
+using BeConsolePresentationFramework.Controls.Base;
 using BeConsolePresentationFramework.Rendering;
 using BeConsolePresentationFramework.Utilities;
 using System.Diagnostics;
@@ -11,13 +12,12 @@ public class Application : ConsolePresentation
     TextBox textBox;
     int number = 0;
     Timer timer;
+    StackPanel stackPanel;
 
     List<TextBlock> files = new List<TextBlock>();
 
     public Application()
     {
-        InitializeApplication();
-
         //ShowDebug = true;
 
         textBlock = new TextBlock(10, 20, "GGEGE");
@@ -31,6 +31,7 @@ public class Application : ConsolePresentation
 
         Button Exit = new Button(55, 15, 8, 5, "EXIT", Line.SingleDouble);
         Exit.OnClick += Exit_OnClick;
+        //Exit.MousePressed += Exit_Pressed;
         Exit.Padding = new Thickness(0, 2, 0, 1);
 
         Button zelva = new Button(40, 20, 13, 5, "ZelvaMan", Line.SingleRound);
@@ -48,16 +49,62 @@ public class Application : ConsolePresentation
         Button btnMinus = new Button(25, 20, 9, 5, "MINUS", Line.DoubleSingle);
         btnMinus.OnClick += BtnMinus_OnClick;
 
-        new Border(50, 5, 10, 5, Line.SingleRound);
+        //new Border(50, 5, 10, 5, Line.SingleRound);
 
         timer = new Timer(new TimerCallback(TickTimer), null, 100, 100);
 
         textBox = new TextBox(25, 10, 40, 3);
+        textBox.Line = Line.SingleRound;
         textBox.ContentHorizontalAlignment = HorizontalAlignment.Left;
         textBox.ContentChanged += TextBox_ContentChanged;
         textBox.OnClick += TextBox_OnClick;
 
         textBoxOutput = new TextBlock(25, 15, "Type in TextBox");
+
+
+        // Stack panel file search
+
+        stackPanel = new StackPanel(25, 4, 100, 100);
+        //stackPanel.Children.Add(btnMinus);
+        //stackPanel.Children.Add(btnPlus);
+
+        Button SearchBtn = new Button
+        {
+            Width = 10,
+            Height = 3,
+            Content = "Search",
+            Line = Line.Double
+        };
+
+        SearchBtn.OnClick += (s, e) =>
+        {
+            stackPanel.Children.Clear();
+            //@"C:\Users\Santa\OneDrive\Obrázky"
+            List<string> list = Directory.GetFiles(textBox.Content).ToList();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                stackPanel.Children.Add(new TextBlock { Content = Path.GetFileName(list[i]), Padding = new Thickness(0, 0, 0, 2) });
+            }
+        };
+
+        StackPanel stackPanelTXT = new StackPanel(25, 1, 40, 4);
+        stackPanelTXT.Orientation = Orientation.Horizontal;
+        stackPanelTXT.Children.Add(textBox);
+        stackPanelTXT.Children.Add(SearchBtn);
+
+        // Init application
+        InitializeApplication();
+    }
+
+    private void Exit_Pressed(object sender, EventArgs e)
+    {
+        foreach (TextBlock textBlock in stackPanel.Children)
+        {
+            textBlock.Remove();
+        }
+
+        stackPanel.Children.Clear();
     }
 
     private void TextBox_OnClick(object sender, EventArgs e)
@@ -109,19 +156,6 @@ public class Application : ConsolePresentation
         (sender as Button).Visibility = Visibility.Visible;
         (sender as Button).Content = "ZLVMN";
         textBoxOutput.Content = textBox.Content;
-
-        foreach(TextBlock textBlock in files)
-        {
-            textBlock.Remove();
-        }
-
-        //List<string> list = Directory.GetFiles(@"C:\Users\Santa\OneDrive\Obrázky").ToList();
-        List<string> list = Directory.GetFiles(textBox.Content).ToList();
-
-        for (int i = 0; i < list.Count; i++)
-        {
-            files.Add(new TextBlock(70, i + 5, Path.GetFileName(list[i])));
-        }
     }
 
     private void BtnMinus_OnClick(object sender, EventArgs e)
@@ -129,6 +163,7 @@ public class Application : ConsolePresentation
         number--;
         textBlock.Content = number.ToString();
         CheckNumberColor();
+        stackPanel.Visibility = Visibility.Visible;
     }
 
     private void BtnPlus_OnClick(object sender, EventArgs e)
@@ -136,6 +171,7 @@ public class Application : ConsolePresentation
         number++;
         textBlock.Content = number.ToString();
         CheckNumberColor();
+        stackPanel.Visibility = Visibility.Hidden;
     }
 
     private void CheckNumberColor()

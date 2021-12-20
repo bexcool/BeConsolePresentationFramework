@@ -13,12 +13,16 @@ namespace BeConsolePresentationFramework.Controls
 {
     public class TextBlock : Control
     {
+        public TextBlock()
+
+        {
+
+        }
         public TextBlock(int X, int Y)
         {
             this.X = X;
             this.Y = Y;
         }
-
         public TextBlock(int X, int Y, string Content)
         {
             this.X = X;
@@ -27,7 +31,6 @@ namespace BeConsolePresentationFramework.Controls
             Width = Content.GetLongestLineLength();
             Height = Content.GetNumberOfLines();
         }
-
         public TextBlock(int X, int Y, string Content, ConsoleColor ForegroundColor)
         {
             this.X = X;

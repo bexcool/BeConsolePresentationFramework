@@ -12,6 +12,7 @@ namespace BeConsolePresentationFramework.Utilities
         public enum Line { Single, Double, SingleRound, DoubleSingle, SingleDouble};
         public enum HorizontalAlignment { Left, Right, Center, Stretch };
         public enum VerticalAlignment { Top, Bottom, Center, Stretch };
+        public enum Orientation { Horizontal, Vertical };
 
         /// <summary>
         /// Gets longest line from string.

@@ -149,6 +149,8 @@ namespace BeConsolePresentationFramework.Controls.Base
         internal bool ValueChanged = false, ChangingByCore = false, RemoveRequest = false;
         public bool Hovered = false, Pressed = false;
 
+        public Control Parent;
+
         internal Rectangle Old;
 
         #region Event handlers

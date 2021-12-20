@@ -3,6 +3,7 @@ using BeConsolePresentationFramework.Rendering;
 using BeConsolePresentationFramework.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,23 +14,73 @@ namespace BeConsolePresentationFramework.Controls
 {
     public class StackPanel : Control
     {
-        public List<Control> Children { get; set; }
+        public bool RemoveChildrenOnClear = false;
+
+        public List<Control> Children = new List<Control>();
+        internal int LastChildrenCount;
+
+        private Orientation _Orientation = Orientation.Vertical;
+        public Orientation Orientation
+        {
+            get { return _Orientation; }
+            set { _Orientation = value; }
+        }
+
+        // Refresh children
+        private int LastChildAbsoluteSize;
+        internal void RefreshChildren()
+        {
+            LastChildAbsoluteSize = 0;
+
+            if (Children.Count > 0)
+            {
+                if (Orientation == Orientation.Vertical)
+                {
+                    for (int i = 0; i < Children.Count; i++)
+                    {
+                        if (Children[i].Visibility != Visibility.Collapsed)
+                        {
+                            Children[i].X = X + Padding.Left;
+                            Children[i].Y = Y + Padding.Top + LastChildAbsoluteSize;
+                            Children[i].Visibility = Visibility;
+                            Children[i].Parent = this;
+
+                            // Width
+                            LastChildAbsoluteSize += Children[i].Height + Children[i].Padding.TopBottom;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < Children.Count; i++)
+                    {
+                        if (Children[i].Visibility != Visibility.Collapsed)
+                        {
+                            Children[i].X = X + Padding.Left + LastChildAbsoluteSize;
+                            Children[i].Y = Y + Padding.Top;
+                            Children[i].Visibility = Visibility;
+                            Children[i].Parent = this;
+
+                            // Height
+                            LastChildAbsoluteSize += Children[i].Width + Children[i].Padding.LeftRight;
+                        }
+                    }
+                }
+            }
+        }
+
+        public StackPanel()
+        {
+
+        }
 
         public StackPanel(int X, int Y, int Width, int Height)
         {
+            LastChildrenCount = 0;
             this.X = X;
             this.Y = Y;
             this.Width = Width;
             this.Height = Height;
-        }
-
-        public StackPanel(int X, int Y, int Width, int Height, Line Line)
-        {
-            this.X = X;
-            this.Y = Y;
-            this.Width = Width;
-            this.Height = Height;
-            this.Line = Line;
         }
     }
 }

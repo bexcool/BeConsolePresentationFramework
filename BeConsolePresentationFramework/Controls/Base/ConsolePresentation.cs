@@ -242,6 +242,23 @@ namespace BeConsolePresentationFramework
                     {
                         control.ChangingByCore = true;
 
+                        // Check parents
+                        if (AllControls.Contains(control.Parent))
+                        {
+                            if (control.Parent is StackPanel)
+                            {
+                                var StackPanel = control.Parent as StackPanel;
+
+                                if (!StackPanel.Children.Contains(control) && StackPanel.RemoveChildrenOnClear)
+                                {
+                                    StackPanel.RefreshChildren();
+                                    Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                                    RemoveControl(control);
+                                }
+                            }
+                        }
+
+                        // Rendering and calculating
                         if (control.Visibility == Visibility.Visible)
                         {
                             if (control is TextBlock)
@@ -348,31 +365,44 @@ namespace BeConsolePresentationFramework
                                     Console.BackgroundColor = ConsoleColor.Gray;
                                     Console.Write("█");
                                     Console.BackgroundColor = ConsoleColor.Black;
-                                    if (_Width - Focused.Content.Length - 1 >= 0) Console.Write(new string(' ', _Width - Focused.Content.Length - 1));
+                                    if (Focused != null && _Width - Focused.Content.Length - 1 >= 0) Console.Write(new string(' ', _Width - Focused.Content.Length - 1));
                                     Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment, AccentColor);
                                 }
                             }
                             else if (control is StackPanel)
                             {
                                 if (control.RemoveRequest) { Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
+                                
+                                var StackPanel = control as StackPanel;
 
                                 if (control.ValueChanged)
                                 {
-                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                    StackPanel.RefreshChildren();
                                 }
-
-                                int Offset = 0;
-
-                                foreach (Control child in (control as StackPanel).Children)
+                                else
                                 {
-                                    int _Height = child.Height - 2 + child.Padding.Top + child.Padding.Bottom;
-
+                                    if (StackPanel.LastChildrenCount != StackPanel.Children.Count)
+                                    {
+                                        StackPanel.RefreshChildren();
+                                    }
                                 }
+
+                                StackPanel.LastChildrenCount = StackPanel.Children.Count;
+
+                                control.ValueChanged = false;
                             }
                         }
                         else
                         {
-                            Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                            if (control is StackPanel)
+                            {
+                                var StackPanel = control as StackPanel;
+                                StackPanel.RefreshChildren();
+                            }
+                            else
+                            {
+                                Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                            }
                         }
 
                         control.ChangingByCore = false;
@@ -385,9 +415,9 @@ namespace BeConsolePresentationFramework
                 DeltaTime = DateTime.Now.Millisecond - LastTime;
                 FPS = (float)1 / DeltaTime * 1000;
             }
-            catch
+            catch (Exception ex)
             {
-
+                Debug.WriteLine(ex.ToString());
             }
         }
 
@@ -414,14 +444,17 @@ namespace BeConsolePresentationFramework
                                 record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
                                 )
                             {
-                                if (Focused != null)
+                                if (control is not StackPanel)
                                 {
-                                    Focused.Old = new Rectangle(Focused.X, Focused.Y, Focused.Width, Focused.Height);
-                                    Focused.ValueChanged = true;
-                                }
+                                    if (Focused != null)
+                                    {
+                                        Focused.Old = new Rectangle(Focused.X, Focused.Y, Focused.Width, Focused.Height);
+                                        Focused.ValueChanged = true;
+                                    }
 
-                                HasFocusChanged = true;
-                                Focused = control;
+                                    HasFocusChanged = true;
+                                    Focused = control;
+                                }
                                 control._OnClick();
                             }
 
