@@ -199,6 +199,10 @@ namespace BeConsolePresentationFramework
         {
             try
             {
+                if (BeforeRender != null) BeforeRender(this, EventArgs.Empty);
+
+                LastTime = DateTime.Now.Millisecond;
+
                 if (ShowDebug)
                 {
                     Console.SetCursorPosition(0, 0);
@@ -234,9 +238,6 @@ namespace BeConsolePresentationFramework
                 
                 if (AllControls.Count > 0)
                 {
-                    if (BeforeRender != null) BeforeRender(this, EventArgs.Empty);
-                    LastTime = DateTime.Now.Millisecond;
-
                     foreach (Control control in AllControls)
                     {
                         control.ChangingByCore = true;
@@ -351,6 +352,23 @@ namespace BeConsolePresentationFramework
                                     Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment, AccentColor);
                                 }
                             }
+                            else if (control is StackPanel)
+                            {
+                                if (control.RemoveRequest) { Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
+
+                                if (control.ValueChanged)
+                                {
+                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                }
+
+                                int Offset = 0;
+
+                                foreach (Control child in (control as StackPanel).Children)
+                                {
+                                    int _Height = child.Height - 2 + child.Padding.Top + child.Padding.Bottom;
+
+                                }
+                            }
                         }
                         else
                         {
@@ -359,21 +377,13 @@ namespace BeConsolePresentationFramework
 
                         control.ChangingByCore = false;
                     }
-
-                    if (AfterRender != null) AfterRender(this, EventArgs.Empty);
-
-                    if (!HasFocusChanged && record.MouseEvent.dwButtonState != MouseButtonPressed && record.MouseEvent.dwButtonState == 0 && Focused != null)
-                    {
-                        Renderer.DrawBlank(new Rectangle(Focused.X, Focused.Y, Focused.Width, Focused.Height));
-                        Renderer.DrawBox(Focused.X, Focused.Y, Focused.Width, Focused.Height, Focused.Content, Focused.Padding, Focused.Line, Focused.ContentHorizontalAlignment, Focused.ContentVerticalAlignment);
-
-                        Focused = null;
-                    }
-
-                    // Time calculations
-                    DeltaTime = DateTime.Now.Millisecond - LastTime;
-                    FPS = (float)1 / DeltaTime * 1000;
                 }
+
+                if (AfterRender != null) AfterRender(this, EventArgs.Empty);
+
+                // Time calculations
+                DeltaTime = DateTime.Now.Millisecond - LastTime;
+                FPS = (float)1 / DeltaTime * 1000;
             }
             catch
             {
@@ -404,6 +414,12 @@ namespace BeConsolePresentationFramework
                                 record.MouseEvent.dwMousePosition.Y <= control.Y + control.Height + control.Padding.TopBottom - 1
                                 )
                             {
+                                if (Focused != null)
+                                {
+                                    Focused.Old = new Rectangle(Focused.X, Focused.Y, Focused.Width, Focused.Height);
+                                    Focused.ValueChanged = true;
+                                }
+
                                 HasFocusChanged = true;
                                 Focused = control;
                                 control._OnClick();
@@ -467,6 +483,13 @@ namespace BeConsolePresentationFramework
 
                             }
                         }
+                    }
+                    
+                    if (!HasFocusChanged && record.MouseEvent.dwButtonState != MouseButtonPressed && record.MouseEvent.dwButtonState == 0 && Focused != null)
+                    {
+                        Focused.Old = new Rectangle(Focused.X, Focused.Y, Focused.Width, Focused.Height);
+                        Focused.ValueChanged = true;
+                        Focused = null;
                     }
                 }
             }

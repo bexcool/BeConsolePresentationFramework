@@ -12,6 +12,8 @@ public class Application : ConsolePresentation
     int number = 0;
     Timer timer;
 
+    List<TextBlock> files = new List<TextBlock>();
+
     public Application()
     {
         InitializeApplication();
@@ -50,7 +52,7 @@ public class Application : ConsolePresentation
 
         timer = new Timer(new TimerCallback(TickTimer), null, 100, 100);
 
-        textBox = new TextBox(25, 10, 20, 3);
+        textBox = new TextBox(25, 10, 40, 3);
         textBox.ContentHorizontalAlignment = HorizontalAlignment.Left;
         textBox.ContentChanged += TextBox_ContentChanged;
         textBox.OnClick += TextBox_OnClick;
@@ -107,6 +109,19 @@ public class Application : ConsolePresentation
         (sender as Button).Visibility = Visibility.Visible;
         (sender as Button).Content = "ZLVMN";
         textBoxOutput.Content = textBox.Content;
+
+        foreach(TextBlock textBlock in files)
+        {
+            textBlock.Remove();
+        }
+
+        //List<string> list = Directory.GetFiles(@"C:\Users\Santa\OneDrive\Obrázky").ToList();
+        List<string> list = Directory.GetFiles(textBox.Content).ToList();
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            files.Add(new TextBlock(70, i + 5, Path.GetFileName(list[i])));
+        }
     }
 
     private void BtnMinus_OnClick(object sender, EventArgs e)
