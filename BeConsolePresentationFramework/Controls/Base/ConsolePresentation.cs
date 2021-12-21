@@ -304,7 +304,7 @@ namespace BeConsolePresentationFramework
                                     control.ValueChanged = false;
                                 }
 
-                                Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Line);
+                                Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
                                 SetForeColor(ConsoleColor.White);
                             }
                             else if (control is TextBox)

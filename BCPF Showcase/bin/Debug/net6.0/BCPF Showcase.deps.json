@@ -8,13 +8,14 @@
     ".NETCoreApp,Version=v6.0": {
       "BCPF Showcase/1.0.0": {
         "dependencies": {
-          "BeConsolePresentationFramework": "1.0.0.0"
+          "BeConsolePresentationFramework": "1.0.0",
+          "BeConsolePresentationFramework.Reference": "1.0.0.0"
         },
         "runtime": {
           "BCPF Showcase.dll": {}
         }
       },
-      "BeConsolePresentationFramework/1.0.0.0": {
+      "BeConsolePresentationFramework.Reference/1.0.0.0": {
         "runtime": {
           "BeConsolePresentationFramework.dll": {
             "assemblyVersion": "1.0.0.0",
@@ -30,7 +31,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "BeConsolePresentationFramework/1.0.0.0": {
+    "BeConsolePresentationFramework.Reference/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

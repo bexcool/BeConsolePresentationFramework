@@ -22,11 +22,19 @@ namespace BCPF_Showcase
 
         // Declared Borders
         Border
-            WelcomeBorder = new Border(5, 3, 40, 5, Line.SingleRound);
+            NavigationBorder = new Border()
+            {
+                X = 5,
+                Y = 3,
+                Width = 45,
+                Height = 5,
+                Line = Line.SingleRound,
+                Content = "Welcome to BCPF showcase!"
+            };
 
         // Declared TextBlocks
-        TextBlock
-            WelcomeTextBlock = new TextBlock(12, 5, "Welcome to BCPF showcase!");
+        //TextBlock
+        //    WelcomeTextBlock = new TextBlock(12, 5, "Welcome to BCPF showcase!");
 
         // Declared StackPanel
         StackPanel
@@ -63,8 +71,9 @@ namespace BCPF_Showcase
         // OnClick event for button
         private void Continue_OnClick(object sender, EventArgs e)
         {
-            // Set button content
-            ContinueButton.Content = "Clicked!";
+            // Set border
+            NavigationBorder.Content = "Select showcase.";
+            MainMenuStackPanel.Visibility = Visibility.Collapsed;
         }
     }
 }

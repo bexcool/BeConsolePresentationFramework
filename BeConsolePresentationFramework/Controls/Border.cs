@@ -13,6 +13,10 @@ namespace BeConsolePresentationFramework.Controls
 {
     public class Border : Control
     {
+        public Border()
+        {
+
+        }
         public Border(int X, int Y, int Width, int Height)
         {
             this.X = X;
@@ -20,7 +24,6 @@ namespace BeConsolePresentationFramework.Controls
             this.Width = Width;
             this.Height = Height;
         }
-
         public Border(int X, int Y, int Width, int Height, Line Line)
         {
             this.X = X;

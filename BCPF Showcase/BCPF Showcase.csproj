@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BeConsolePresentationFramework\BeConsolePresentationFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="BeConsolePresentationFramework">
       <HintPath>..\BeConsolePresentationFramework\bin\Debug\net6.0\BeConsolePresentationFramework.dll</HintPath>
     </Reference>

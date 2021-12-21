@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {}
+    "net6.0": {
+      "BeConsolePresentationFramework/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/BeConsolePresentationFramework.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BeConsolePresentationFramework.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "BeConsolePresentationFramework/1.0.0": {
+      "type": "project",
+      "path": "../BeConsolePresentationFramework/BeConsolePresentationFramework.csproj",
+      "msbuildProject": "../BeConsolePresentationFramework/BeConsolePresentationFramework.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0": []
+    "net6.0": [
+      "BeConsolePresentationFramework >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Santa\\.nuget\\packages\\": {},
@@ -40,7 +59,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BeConsolePresentationFramework.csproj": {
+              "projectPath": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BeConsolePresentationFramework.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
