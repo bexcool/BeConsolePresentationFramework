@@ -28,7 +28,7 @@ namespace BeConsolePresentationFramework.Controls
 
         // Refresh children
         private int LastChildAbsoluteSize;
-        internal void RefreshChildren()
+        internal void RenderChildren()
         {
             LastChildAbsoluteSize = 0;
 
@@ -38,6 +38,11 @@ namespace BeConsolePresentationFramework.Controls
                 {
                     for (int i = 0; i < Children.Count; i++)
                     {
+                        if (Children[i].Visibility != Visibility)
+                        {
+                            Renderer.DrawBlank(new Rectangle(Children[i].X, Children[i].Y, Children[i].CalculateActualWidth(), Children[i].CalculateActualHeight()));
+                        }
+
                         if (Children[i].Visibility != Visibility.Collapsed)
                         {
                             Children[i].X = X + Padding.Left;
@@ -54,6 +59,11 @@ namespace BeConsolePresentationFramework.Controls
                 {
                     for (int i = 0; i < Children.Count; i++)
                     {
+                        if (Children[i].Visibility != Visibility)
+                        {
+                            Renderer.DrawBlank(new Rectangle(Children[i].X, Children[i].Y, Children[i].CalculateActualWidth(), Children[i].CalculateActualHeight()));
+                        }
+
                         if (Children[i].Visibility != Visibility.Collapsed)
                         {
                             Children[i].X = X + Padding.Left + LastChildAbsoluteSize;

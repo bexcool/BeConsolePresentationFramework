@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,20 +14,17 @@ namespace BCPF_Template
 {
     public class Application : ConsolePresentation
     {
-        // Declared button (Don't create here "new Button();")
-        Button btn;
+        // Declared button
+        Button btn = new Button((Console.WindowWidth / 2) - 9, (Console.WindowHeight / 2) - 1, 17, 3, "Click me!");
 
         public Application()
         {
-            // Code before initialization (Do not create controls before initialization!)
+            // Code before initialization
 
             // Initialization of BCPF
             InitializeApplication();
 
             // Code after initialization
-
-            // Created new button
-            btn = new Button(10, 15, 30, 3, "Click me!");
 
             // Assigned OnClick event for button
             btn.OnClick += btn_OnClick;
@@ -37,7 +35,6 @@ namespace BCPF_Template
         {
             // Set button content
             btn.Content = "Clicked!";
-            btn.Width = 15;
         }
     }
 }

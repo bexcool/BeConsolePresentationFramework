@@ -141,15 +141,28 @@ namespace BeConsolePresentationFramework.Controls.Base
 
             set
             {
-                if (!ChangingByCore) _ValueChanged();
+                _ValueChanged();
                 _Content = value;
             }
         }
 
-        internal bool ValueChanged = false, ChangingByCore = false, RemoveRequest = false;
-        public bool Hovered = false, Pressed = false;
+        private Control _Parent;
+        public Control Parent
+        {
+            get
+            {
+                return _Parent;
+            }
 
-        public Control Parent;
+            set
+            {
+                if (!ChangingByCore) _ValueChanged();
+                _Parent = value;
+            }
+        }
+
+        internal bool ValueChanged = false, ChangingByCore = false, RemoveRequest = false, ParentChanged = false;
+        public bool Hovered = false, Pressed = false;
 
         internal Rectangle Old;
 
@@ -179,16 +192,17 @@ namespace BeConsolePresentationFramework.Controls.Base
 
         public Control()
         {
-            Old = new Rectangle(X, Y, Width, Height);
+            Old = new Rectangle(X, Y, CalculateActualWidth(), CalculateActualHeight());
 
             ConsolePresentation.AddControl(this);
         }
 
+        // Called when any value changes
         private void _ValueChanged()
         {
             if (!ValueChanged)
             {
-                Old = new Rectangle(X, Y, Width, Height);
+                Old = new Rectangle(X, Y, CalculateActualWidth(), CalculateActualHeight());
 
                 ValueChanged = true;
             }
@@ -240,9 +254,30 @@ namespace BeConsolePresentationFramework.Controls.Base
         }
 
         // Public functions
+        /// <summary>
+        /// Remove control.
+        /// </summary>
         public void Remove()
         {
             RemoveRequest = true;
+        }
+
+        /// <summary>
+        /// Calculates controls actual width.
+        /// </summary>
+        /// <returns>Actual width.</returns>
+        public int CalculateActualWidth()
+        {
+            return Width + Padding.LeftRight + Content.GetLongestLineLength();
+        }
+
+        /// <summary>
+        /// Calculates controls actual height.
+        /// </summary>
+        /// <returns>Actual height.</returns>
+        public int CalculateActualHeight()
+        {
+            return Height + Padding.TopBottom + Content.GetNumberOfLines();
         }
     }
 }

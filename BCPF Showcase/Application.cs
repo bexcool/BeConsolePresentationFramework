@@ -28,11 +28,12 @@ namespace BCPF_Showcase
         TextBlock
             WelcomeTextBlock = new TextBlock(12, 5, "Welcome to BCPF showcase!");
 
+        // Declared StackPanel
+        StackPanel
+            MainMenuStackPanel = new StackPanel(5, 10, 13, 20);
 
         public Application()
         {
-            // Code before initialization (Do not create controls before initialization!)
-
             // Initialization of BCPF
             InitializeApplication();
 
@@ -42,6 +43,11 @@ namespace BCPF_Showcase
             ContinueButton.OnClick += Continue_OnClick;
             CreditsButton.OnClick += CreditsButton_OnClick;
             ExitButton.OnClick += ExitButton_OnClick;
+
+            // Add children to Stack Panels
+            MainMenuStackPanel.Children.Add(ContinueButton);
+            MainMenuStackPanel.Children.Add(CreditsButton);
+            MainMenuStackPanel.Children.Add(ExitButton);
         }
 
         private void ExitButton_OnClick(object sender, EventArgs e)

@@ -173,6 +173,10 @@ namespace BeConsolePresentationFramework
                     {
                         Focused.Content =  Focused.Content.Remove(Focused.Content.ToCharArray().Length - 1);
                     }
+                    else if (record.KeyEvent.wVirtualKeyCode == 17 && record.KeyEvent.UnicodeChar == 'v')
+                    {
+                        Focused.Content += Clipboard.GetText();
+                    }
                     else if ((record.KeyEvent.wVirtualKeyCode < 16 || record.KeyEvent.wVirtualKeyCode > 18) && record.KeyEvent.wVirtualKeyCode != 13)
                     {
                         Focused.Content += record.KeyEvent.UnicodeChar;
@@ -251,7 +255,7 @@ namespace BeConsolePresentationFramework
 
                                 if (!StackPanel.Children.Contains(control) && StackPanel.RemoveChildrenOnClear)
                                 {
-                                    StackPanel.RefreshChildren();
+                                    StackPanel.RenderChildren();
                                     Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
                                     RemoveControl(control);
                                 }
@@ -268,12 +272,12 @@ namespace BeConsolePresentationFramework
                                 if (control.ValueChanged)
                                 {
                                     Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                    control.ValueChanged = false;
                                 }
 
                                 control.Width = control.Content.GetLongestLineLength();
                                 control.Height = control.Content.GetNumberOfLines();
                                 Renderer.DrawText(control.X, control.Y, control.Content, control.ForegroundColor);
-                                control.ValueChanged = false;
                             }
                             else if (control is Button)
                             {
@@ -282,13 +286,13 @@ namespace BeConsolePresentationFramework
                                 if (control.ValueChanged)
                                 {
                                     Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                    control.ValueChanged = false;
                                 }
 
                                 if (control.Hovered) SetForeColor(ConsoleColor.Gray);
                                 if (control.Pressed) SetForeColor(ConsoleColor.DarkGray);
                                 Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
                                 SetForeColor(ConsoleColor.White);
-                                control.ValueChanged = false;
                             }
                             else if (control is Border)
                             {
@@ -297,11 +301,11 @@ namespace BeConsolePresentationFramework
                                 if (control.ValueChanged)
                                 {
                                     Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                    control.ValueChanged = false;
                                 }
 
                                 Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Line);
                                 SetForeColor(ConsoleColor.White);
-                                control.ValueChanged = false;
                             }
                             else if (control is TextBox)
                             {
@@ -312,11 +316,11 @@ namespace BeConsolePresentationFramework
                                     if (control.ValueChanged)
                                     {
                                         Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                        control.ValueChanged = false;
                                     }
 
                                     Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
                                     SetForeColor(ConsoleColor.White);
-                                    control.ValueChanged = false;
                                 }
                                 else
                                 {
@@ -377,19 +381,18 @@ namespace BeConsolePresentationFramework
 
                                 if (control.ValueChanged)
                                 {
-                                    StackPanel.RefreshChildren();
+                                    StackPanel.RenderChildren();
+                                    control.ValueChanged = false;
                                 }
                                 else
                                 {
                                     if (StackPanel.LastChildrenCount != StackPanel.Children.Count)
                                     {
-                                        StackPanel.RefreshChildren();
+                                        StackPanel.RenderChildren();
                                     }
                                 }
 
                                 StackPanel.LastChildrenCount = StackPanel.Children.Count;
-
-                                control.ValueChanged = false;
                             }
                         }
                         else
@@ -397,11 +400,7 @@ namespace BeConsolePresentationFramework
                             if (control is StackPanel)
                             {
                                 var StackPanel = control as StackPanel;
-                                StackPanel.RefreshChildren();
-                            }
-                            else
-                            {
-                                Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                                StackPanel.RenderChildren();
                             }
                         }
 
@@ -448,7 +447,7 @@ namespace BeConsolePresentationFramework
                                 {
                                     if (Focused != null)
                                     {
-                                        Focused.Old = new Rectangle(Focused.X, Focused.Y, Focused.Width, Focused.Height);
+                                        Focused.Old = new Rectangle(Focused.X, Focused.Y, Focused.CalculateActualWidth(), Focused.CalculateActualHeight());
                                         Focused.ValueChanged = true;
                                     }
 
@@ -520,7 +519,7 @@ namespace BeConsolePresentationFramework
                     
                     if (!HasFocusChanged && record.MouseEvent.dwButtonState != MouseButtonPressed && record.MouseEvent.dwButtonState == 0 && Focused != null)
                     {
-                        Focused.Old = new Rectangle(Focused.X, Focused.Y, Focused.Width, Focused.Height);
+                        Focused.Old = new Rectangle(Focused.X, Focused.Y, Focused.CalculateActualWidth(), Focused.CalculateActualHeight());
                         Focused.ValueChanged = true;
                         Focused = null;
                     }

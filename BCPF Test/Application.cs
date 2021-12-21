@@ -13,12 +13,14 @@ public class Application : ConsolePresentation
     int number = 0;
     Timer timer;
     StackPanel stackPanel;
-
-    List<TextBlock> files = new List<TextBlock>();
+    StackPanel stackPanelTXT;
 
     public Application()
     {
         //ShowDebug = true;
+
+        // Init application
+        InitializeApplication();
 
         textBlock = new TextBlock(10, 20, "GGEGE");
         honza = new TextBlock(55, 20, "HONZA JE HONZA");
@@ -66,7 +68,7 @@ public class Application : ConsolePresentation
 
         stackPanel = new StackPanel(25, 4, 100, 100);
         //stackPanel.Children.Add(btnMinus);
-        //stackPanel.Children.Add(btnPlus);
+        stackPanel.Children.Add(btnPlus);
 
         Button SearchBtn = new Button
         {
@@ -88,13 +90,10 @@ public class Application : ConsolePresentation
             }
         };
 
-        StackPanel stackPanelTXT = new StackPanel(25, 1, 40, 4);
+        stackPanelTXT = new StackPanel(25, 1, 40, 4);
         stackPanelTXT.Orientation = Orientation.Horizontal;
         stackPanelTXT.Children.Add(textBox);
         stackPanelTXT.Children.Add(SearchBtn);
-
-        // Init application
-        InitializeApplication();
     }
 
     private void Exit_Pressed(object sender, EventArgs e)
@@ -156,6 +155,7 @@ public class Application : ConsolePresentation
         (sender as Button).Visibility = Visibility.Visible;
         (sender as Button).Content = "ZLVMN";
         textBoxOutput.Content = textBox.Content;
+        stackPanelTXT.Visibility = Visibility.Collapsed;
     }
 
     private void BtnMinus_OnClick(object sender, EventArgs e)
@@ -163,7 +163,6 @@ public class Application : ConsolePresentation
         number--;
         textBlock.Content = number.ToString();
         CheckNumberColor();
-        stackPanel.Visibility = Visibility.Visible;
     }
 
     private void BtnPlus_OnClick(object sender, EventArgs e)
@@ -171,7 +170,6 @@ public class Application : ConsolePresentation
         number++;
         textBlock.Content = number.ToString();
         CheckNumberColor();
-        stackPanel.Visibility = Visibility.Hidden;
     }
 
     private void CheckNumberColor()
