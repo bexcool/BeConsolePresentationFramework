@@ -94,6 +94,7 @@ public class Application : ConsolePresentation
         stackPanelTXT.Orientation = Orientation.Horizontal;
         stackPanelTXT.Children.Add(textBox);
         stackPanelTXT.Children.Add(SearchBtn);
+        stackPanelTXT.Children.Add(new TextBlock(0, 0, "TEST"));
     }
 
     private void Exit_Pressed(object sender, EventArgs e)

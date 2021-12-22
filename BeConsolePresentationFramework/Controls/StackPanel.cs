@@ -14,16 +14,33 @@ namespace BeConsolePresentationFramework.Controls
 {
     public class StackPanel : Control
     {
-        public bool RemoveChildrenOnClear = false;
+        public bool RemoveChildrenOnClear = true;
 
-        public List<Control> Children = new List<Control>();
+        public List<Control> Children = new List<Control> { };
         internal int LastChildrenCount;
 
         private Orientation _Orientation = Orientation.Vertical;
         public Orientation Orientation
         {
             get { return _Orientation; }
-            set { _Orientation = value; }
+
+            set
+            {
+                if (!ChangingByCore) _ValueChanged();
+                _Orientation = value;
+            }
+        }
+
+        private int _Spacing = 0;
+        public int Spacing
+        {
+            get { return _Spacing; }
+
+            set
+            {
+                if (!ChangingByCore) _ValueChanged();
+                _Spacing = value;
+            }
         }
 
         // Refresh children
@@ -49,7 +66,7 @@ namespace BeConsolePresentationFramework.Controls
                         Children[i].Parent = this;
 
                         // Width
-                        if (Children[i].Visibility != Visibility.Collapsed) LastChildAbsoluteSize += Children[i].Height + Children[i].Padding.TopBottom;
+                        if (Children[i].Visibility != Visibility.Collapsed) LastChildAbsoluteSize += Children[i].Height + Children[i].Padding.TopBottom + Children[i].Margin.TopBottom + Spacing;
                     }
                 }
                 else
@@ -67,7 +84,7 @@ namespace BeConsolePresentationFramework.Controls
                         Children[i].Parent = this;
 
                         // Height
-                        if (Children[i].Visibility != Visibility.Collapsed) LastChildAbsoluteSize += Children[i].Width + Children[i].Padding.LeftRight;
+                        if (Children[i].Visibility != Visibility.Collapsed) LastChildAbsoluteSize += Children[i].Width + Children[i].Padding.LeftRight + Children[i].Margin.LeftRight + Spacing;
                     }
                 }
             }

@@ -121,7 +121,7 @@ namespace BeConsolePresentationFramework
                     {
                         LastKeyPressed = (ConsoleKey)record.KeyEvent.wVirtualKeyCode;
                         KeyboardKeyPressed = true;
-                        CheckTextBoxInput((ConsoleKey)record.KeyEvent.wVirtualKeyCode);
+                        CheckTextBoxInput();
                     }
                     else if (!record.KeyEvent.bKeyDown && record.EventType == NativeMethods.KEY_EVENT)
                     {
@@ -160,7 +160,7 @@ namespace BeConsolePresentationFramework
             }
         }
 
-        private void CheckTextBoxInput(ConsoleKey Key)
+        private void CheckTextBoxInput()
         {
             if (Focused is TextBox)
             {
@@ -260,6 +260,15 @@ namespace BeConsolePresentationFramework
                                     RemoveControl(control);
                                 }
                             }
+                        }
+
+                        // Check control visibility
+                        // Ignore: StackPanel
+                        if (control.OldVisibility != control.Visibility &&
+                            control is not StackPanel)
+                        {
+                            Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                            control.OldVisibility = control.Visibility;
                         }
 
                         // Rendering and calculating
@@ -417,6 +426,14 @@ namespace BeConsolePresentationFramework
                                 }
 
                                 StackPanel.LastChildrenCount = StackPanel.Children.Count;
+                            }
+                            else
+                            {
+                                if (control.OldVisibility != control.Visibility)
+                                {
+                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                    control.ValueChanged = false;
+                                }
                             }
                         }
 

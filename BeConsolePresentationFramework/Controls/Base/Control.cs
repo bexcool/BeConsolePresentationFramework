@@ -74,6 +74,18 @@ namespace BeConsolePresentationFramework.Controls.Base
             }
         }
 
+        private Thickness _Margin = new Thickness();
+        public Thickness Margin
+        {
+            get { return _Margin; }
+
+            set
+            {
+                if (!ChangingByCore) _ValueChanged();
+                _Margin = value;
+            }
+        }
+
         private Line _Line;
         public Line Line
         {
@@ -122,6 +134,7 @@ namespace BeConsolePresentationFramework.Controls.Base
             }
         }
 
+        internal Visibility OldVisibility;
         private Visibility _Visibility = Visibility.Visible;
         public Visibility Visibility
         {
@@ -192,16 +205,18 @@ namespace BeConsolePresentationFramework.Controls.Base
 
         public Control()
         {
+            OldVisibility = Visibility;
             Old = new Rectangle(X, Y, CalculateActualWidth(), CalculateActualHeight());
 
             ConsolePresentation.AddControl(this);
         }
 
         // Called when any value changes
-        private void _ValueChanged()
+        internal void _ValueChanged()
         {
             if (!ValueChanged)
             {
+                OldVisibility = Visibility;
                 Old = new Rectangle(X, Y, CalculateActualWidth(), CalculateActualHeight());
 
                 ValueChanged = true;
