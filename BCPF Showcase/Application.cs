@@ -146,11 +146,11 @@ namespace BCPF_Showcase
             // Show showcase menu
             NavigationBorder.Content = "Select showcase.";
 
+            ShowcaseBackgroundBorder.Visibility = Visibility.Collapsed;
             ShowcaseContentStackPanel.Visibility = Visibility.Collapsed;
             NavigationBorder.Visibility = Visibility.Visible;
             ShowcasesStackPanel.Visibility = Visibility.Visible;
             ShowcaseNavStackPanel.Visibility = Visibility.Collapsed;
-            ShowcaseBackgroundBorder.Visibility = Visibility.Collapsed;
         }
 
         private void ShowShowcase()
@@ -166,10 +166,11 @@ namespace BCPF_Showcase
         private void TextBlockShowcaseButton_OnClick(object sender, EventArgs e)
         {
             ShowcaseNavTextBlock.Content = "Text Block - Showcase";
-            ShowShowcase();
 
             ShowcaseBackgroundBorder.Width = 57;
             ShowcaseBackgroundBorder.Height = 20;
+
+            ShowShowcase();
 
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "Text Block with one line:", ForegroundColor = ConsoleColor.Cyan });
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "Hello! I'm text block with one line." });
@@ -180,10 +181,11 @@ namespace BCPF_Showcase
         private void ButtonShowcaseButton_OnClick(object sender, EventArgs e)
         {
             ShowcaseNavTextBlock.Content = "Button - Showcase";
-            ShowShowcase();
 
             ShowcaseBackgroundBorder.Width = 57;
             ShowcaseBackgroundBorder.Height = 20;
+
+            ShowShowcase();
         }
 
         private void StackPanelShowcaseButton_OnClick(object sender, EventArgs e)

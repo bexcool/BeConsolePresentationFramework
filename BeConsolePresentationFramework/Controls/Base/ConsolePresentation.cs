@@ -258,17 +258,9 @@ namespace BeConsolePresentationFramework
                                     StackPanel.RenderChildren();
                                     Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
                                     RemoveControl(control);
+                                    continue;
                                 }
                             }
-                        }
-
-                        // Check control visibility
-                        // Ignore: StackPanel
-                        if (control.OldVisibility != control.Visibility &&
-                            control is not StackPanel)
-                        {
-                            Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
-                            control.OldVisibility = control.Visibility;
                         }
 
                         // Rendering and calculating
@@ -429,10 +421,11 @@ namespace BeConsolePresentationFramework
                             }
                             else
                             {
-                                if (control.OldVisibility != control.Visibility)
+                                if (!control.BlankApplied && control is Border)
                                 {
-                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                    Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
                                     control.ValueChanged = false;
+                                    control.BlankApplied = true;
                                 }
                             }
                         }
@@ -447,7 +440,7 @@ namespace BeConsolePresentationFramework
                 DeltaTime = DateTime.Now.Millisecond - LastTime;
                 FPS = (float)1 / DeltaTime * 1000;
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
                 Debug.WriteLine(ex.ToString());
             }

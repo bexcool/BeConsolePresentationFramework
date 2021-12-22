@@ -134,7 +134,6 @@ namespace BeConsolePresentationFramework.Controls.Base
             }
         }
 
-        internal Visibility OldVisibility;
         private Visibility _Visibility = Visibility.Visible;
         public Visibility Visibility
         {
@@ -174,7 +173,7 @@ namespace BeConsolePresentationFramework.Controls.Base
             }
         }
 
-        internal bool ValueChanged = false, ChangingByCore = false, RemoveRequest = false, ParentChanged = false;
+        internal bool ValueChanged = false, ChangingByCore = false, RemoveRequest = false, ParentChanged = false, BlankApplied = true;
         public bool Hovered = false, Pressed = false;
 
         internal Rectangle Old;
@@ -205,7 +204,6 @@ namespace BeConsolePresentationFramework.Controls.Base
 
         public Control()
         {
-            OldVisibility = Visibility;
             Old = new Rectangle(X, Y, CalculateActualWidth(), CalculateActualHeight());
 
             ConsolePresentation.AddControl(this);
@@ -216,10 +214,10 @@ namespace BeConsolePresentationFramework.Controls.Base
         {
             if (!ValueChanged)
             {
-                OldVisibility = Visibility;
                 Old = new Rectangle(X, Y, CalculateActualWidth(), CalculateActualHeight());
 
                 ValueChanged = true;
+                BlankApplied = false;
             }
         }
 
