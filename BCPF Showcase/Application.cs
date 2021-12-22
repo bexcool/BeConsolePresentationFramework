@@ -16,9 +16,10 @@ namespace BCPF_Showcase
     {
         // Declared Buttons
         Button
-            ContinueButton = new Button(5, 10, 13, 3, "Continue", new Thickness(0, 0, 0 ,1), Line.Double, HorizontalAlignment.Left),
+            ContinueButton = new Button(5, 10, 13, 3, "Continue", new Thickness(0, 0, 0, 1), Line.Double, HorizontalAlignment.Left),
             CreditsButton = new Button(5, 13, 13, 3, "Credits", new Thickness(0, 0, 0, 1), HorizontalAlignment.Left),
-            ExitButton = new Button(5, 16, 13, 3, "Exit", new Thickness(0, 0, 0, 1), HorizontalAlignment.Left);
+            ExitButton = new Button(5, 16, 13, 3, "Exit", new Thickness(0, 0, 0, 1), HorizontalAlignment.Left),
+            BackToMainMenuButton = new Button(0, 0, 13, 3, "Back", new Thickness(0, 0, 0, 1), HorizontalAlignment.Left);
 
         // Declared Borders
         Border
@@ -38,7 +39,8 @@ namespace BCPF_Showcase
 
         // Declared StackPanel
         StackPanel
-            MainMenuStackPanel = new StackPanel(5, 10, 13, 20);
+            MainMenuStackPanel = new StackPanel(5, 10, 13, 20),
+            ShowcasesStackPanel = new StackPanel(20, 10, 13, 20);
 
         public Application()
         {
@@ -48,14 +50,22 @@ namespace BCPF_Showcase
             // Code after initialization
 
             // Assigning events
+            // Main Menu
             ContinueButton.OnClick += Continue_OnClick;
             CreditsButton.OnClick += CreditsButton_OnClick;
             ExitButton.OnClick += ExitButton_OnClick;
+            // Showcases
+            BackToMainMenuButton.OnClick += BackToMainMenuButton_OnClick;
 
             // Add children to Stack Panels
             MainMenuStackPanel.Children.Add(ContinueButton);
             MainMenuStackPanel.Children.Add(CreditsButton);
             MainMenuStackPanel.Children.Add(ExitButton);
+
+            ShowcasesStackPanel.Children.Add(BackToMainMenuButton);
+
+            // Preparing Stack Panels
+            //ShowcasesStackPanel.Visibility = Visibility.Collapsed;
         }
 
         private void ExitButton_OnClick(object sender, EventArgs e)
@@ -68,12 +78,21 @@ namespace BCPF_Showcase
 
         }
 
-        // OnClick event for button
+        // Switching between pages
         private void Continue_OnClick(object sender, EventArgs e)
         {
-            // Set border
+            // Show showcases page
             NavigationBorder.Content = "Select showcase.";
             MainMenuStackPanel.Visibility = Visibility.Collapsed;
+            ShowcasesStackPanel.Visibility = Visibility.Visible;
+        }
+
+        private void BackToMainMenuButton_OnClick(object sender, EventArgs e)
+        {
+            // Show main menu
+            NavigationBorder.Content = "Welcome to BCPF showcase!";
+            MainMenuStackPanel.Visibility = Visibility.Visible;
+            ShowcasesStackPanel.Visibility = Visibility.Collapsed;
         }
     }
 }

@@ -43,16 +43,13 @@ namespace BeConsolePresentationFramework.Controls
                             Renderer.DrawBlank(new Rectangle(Children[i].X, Children[i].Y, Children[i].CalculateActualWidth(), Children[i].CalculateActualHeight()));
                         }
 
-                        if (Children[i].Visibility != Visibility.Collapsed)
-                        {
-                            Children[i].X = X + Padding.Left;
-                            Children[i].Y = Y + Padding.Top + LastChildAbsoluteSize;
-                            Children[i].Visibility = Visibility;
-                            Children[i].Parent = this;
+                        Children[i].X = X + Padding.Left;
+                        Children[i].Y = Y + Padding.Top + LastChildAbsoluteSize;
+                        Children[i].Visibility = Visibility;
+                        Children[i].Parent = this;
 
-                            // Width
-                            LastChildAbsoluteSize += Children[i].Height + Children[i].Padding.TopBottom;
-                        }
+                        // Width
+                        if (Children[i].Visibility != Visibility.Collapsed) LastChildAbsoluteSize += Children[i].Height + Children[i].Padding.TopBottom;
                     }
                 }
                 else
@@ -64,16 +61,13 @@ namespace BeConsolePresentationFramework.Controls
                             Renderer.DrawBlank(new Rectangle(Children[i].X, Children[i].Y, Children[i].CalculateActualWidth(), Children[i].CalculateActualHeight()));
                         }
 
-                        if (Children[i].Visibility != Visibility.Collapsed)
-                        {
-                            Children[i].X = X + Padding.Left + LastChildAbsoluteSize;
-                            Children[i].Y = Y + Padding.Top;
-                            Children[i].Visibility = Visibility;
-                            Children[i].Parent = this;
+                        Children[i].X = X + Padding.Left + LastChildAbsoluteSize;
+                        Children[i].Y = Y + Padding.Top;
+                        Children[i].Visibility = Visibility;
+                        Children[i].Parent = this;
 
-                            // Height
-                            LastChildAbsoluteSize += Children[i].Width + Children[i].Padding.LeftRight;
-                        }
+                        // Height
+                        if (Children[i].Visibility != Visibility.Collapsed) LastChildAbsoluteSize += Children[i].Width + Children[i].Padding.LeftRight;
                     }
                 }
             }

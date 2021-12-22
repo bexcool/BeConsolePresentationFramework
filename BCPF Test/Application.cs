@@ -163,6 +163,7 @@ public class Application : ConsolePresentation
         number--;
         textBlock.Content = number.ToString();
         CheckNumberColor();
+        stackPanelTXT.Visibility = Visibility.Collapsed;
     }
 
     private void BtnPlus_OnClick(object sender, EventArgs e)
@@ -170,6 +171,7 @@ public class Application : ConsolePresentation
         number++;
         textBlock.Content = number.ToString();
         CheckNumberColor();
+        stackPanelTXT.Visibility = Visibility.Visible;
     }
 
     private void CheckNumberColor()

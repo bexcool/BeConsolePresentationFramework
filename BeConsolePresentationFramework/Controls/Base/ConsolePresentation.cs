@@ -399,8 +399,24 @@ namespace BeConsolePresentationFramework
                         {
                             if (control is StackPanel)
                             {
+                                if (control.RemoveRequest) { Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
+
                                 var StackPanel = control as StackPanel;
-                                StackPanel.RenderChildren();
+
+                                if (control.ValueChanged)
+                                {
+                                    StackPanel.RenderChildren();
+                                    control.ValueChanged = false;
+                                }
+                                else
+                                {
+                                    if (StackPanel.LastChildrenCount != StackPanel.Children.Count)
+                                    {
+                                        StackPanel.RenderChildren();
+                                    }
+                                }
+
+                                StackPanel.LastChildrenCount = StackPanel.Children.Count;
                             }
                         }
 
