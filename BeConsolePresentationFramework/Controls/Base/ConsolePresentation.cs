@@ -288,6 +288,7 @@ namespace BeConsolePresentationFramework
                                         StackPanel.RenderChildren();
                                     }
                                 }
+
                                 if (control.Height != control.Content.GetNumberOfLines())
                                 {
                                     control.Height = control.Content.GetNumberOfLines();
