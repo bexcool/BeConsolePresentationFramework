@@ -65,7 +65,7 @@ namespace BeConsolePresentationFramework.Controls
                         Children[i].Visibility = Visibility;
                         Children[i].Parent = this;
 
-                        // Width
+                        // Height
                         if (Children[i].Visibility != Visibility.Collapsed) LastChildAbsoluteSize += Children[i].Height + Children[i].Padding.TopBottom + Children[i].Margin.TopBottom + Spacing;
                     }
                 }
@@ -83,7 +83,7 @@ namespace BeConsolePresentationFramework.Controls
                         Children[i].Visibility = Visibility;
                         Children[i].Parent = this;
 
-                        // Height
+                        // Width
                         if (Children[i].Visibility != Visibility.Collapsed) LastChildAbsoluteSize += Children[i].Width + Children[i].Padding.LeftRight + Children[i].Margin.LeftRight + Spacing;
                     }
                 }

@@ -8,13 +8,24 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BeConsolePresentationFramework.Utilities.SyntaxHighlight;
 
 namespace BeConsolePresentationFramework.Controls
 {
     public class TextBlock : Control
     {
-        public TextBlock()
+        private ProgrammingLanguage _Language = ProgrammingLanguage.None;
+        public ProgrammingLanguage Language
+        {
+            get { return _Language; }
+            set
+            {
+                if (!ChangingByCore) _ValueChanged();
+                _Language = value;
+            }
+        }
 
+        public TextBlock()
         {
 
         }
@@ -37,6 +48,15 @@ namespace BeConsolePresentationFramework.Controls
             this.Y = Y;
             this.Content = Content;
             this.ForegroundColor = ForegroundColor;
+            Width = Content.GetLongestLineLength();
+            Height = Content.GetNumberOfLines();
+        }
+        public TextBlock(int X, int Y, string Content, ProgrammingLanguage Language)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.Content = Content;
+            this.Language = Language;
             Width = Content.GetLongestLineLength();
             Height = Content.GetNumberOfLines();
         }

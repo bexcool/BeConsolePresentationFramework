@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static BeConsolePresentationFramework.Utilities.SyntaxHighlight;
 using static BeConsolePresentationFramework.Utilities.Utilities;
 
 namespace BeConsolePresentationFramework.Rendering
@@ -1160,6 +1162,49 @@ namespace BeConsolePresentationFramework.Rendering
             }
 
             Console.ForegroundColor = ConsoleColor.White;
+        }
+        /// <summary>
+        /// Draw text with syntax highlighting.
+        /// </summary>
+        /// <param name="X">Position from left.</param>
+        /// <param name="Y">Position from top.</param>
+        /// <param name="Content">Control content.</param>
+        /// <param name="Language">Programming language.</param>
+        public static void DrawText(int X, int Y, string Content, ProgrammingLanguage Language)
+        {
+            string[] lines = Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            int OffsetX = 0;
+
+            // Text content
+            for (int Height = 0; Height < lines.Length; Height++)
+            {
+                string Pattern = KEYWORDS_CS.Replace(',', '|') + "|" + DATATYPES.Replace(',', '|');
+
+                Dictionary<string, ConsoleColor> LanguageDictionary = GetHighlight(Language);
+
+                foreach (string Word in Regex.Split(lines[Height], "(" + Pattern + ")"))
+                {
+                    if (LanguageDictionary.ContainsKey(Word))
+                    {
+                        Console.ForegroundColor = LanguageDictionary[Word];
+
+                        Console.SetCursorPosition(X, Y + Height);
+                        Console.Write(Word);
+
+                        OffsetX += Word.Length;
+
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.SetCursorPosition(X, Y + Height);
+                        Console.Write(Word);
+
+                        OffsetX += Word.Length;
+                    }
+                }
+            }
         }
         /// <summary>
         /// Clear rectangle.

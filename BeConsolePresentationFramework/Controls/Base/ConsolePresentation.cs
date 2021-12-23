@@ -276,9 +276,37 @@ namespace BeConsolePresentationFramework
                                     control.ValueChanged = false;
                                 }
 
-                                control.Width = control.Content.GetLongestLineLength();
-                                control.Height = control.Content.GetNumberOfLines();
-                                Renderer.DrawText(control.X, control.Y, control.Content, control.ForegroundColor);
+                                var TextBlock = control as TextBlock;
+
+                                if (control.Width != control.Content.GetLongestLineLength())
+                                {
+                                    control.Width = control.Content.GetLongestLineLength();
+
+                                    if (control.Parent is StackPanel)
+                                    {
+                                        var StackPanel = control.Parent as StackPanel;
+                                        StackPanel.RenderChildren();
+                                    }
+                                }
+                                if (control.Height != control.Content.GetNumberOfLines())
+                                {
+                                    control.Height = control.Content.GetNumberOfLines();
+
+                                    if (control.Parent is StackPanel)
+                                    {
+                                        var StackPanel = control.Parent as StackPanel;
+                                        StackPanel.RenderChildren();
+                                    }
+                                }
+
+                                if (TextBlock.Language == SyntaxHighlight.ProgrammingLanguage.None)
+                                {
+                                    Renderer.DrawText(control.X, control.Y, control.Content, control.ForegroundColor);
+                                }
+                                else
+                                {
+                                    Renderer.DrawText(control.X, control.Y, control.Content, TextBlock.Language);
+                                }
                             }
                             else if (control is Button)
                             {

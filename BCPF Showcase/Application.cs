@@ -171,11 +171,12 @@ namespace BCPF_Showcase
             ShowcaseBackgroundBorder.Height = 20;
 
             ShowShowcase();
-
+            
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "Text Block with one line:", ForegroundColor = ConsoleColor.Cyan });
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "Hello! I'm text block with one line." });
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = @"Text Block with multiple lines (Split with '\n'):", ForegroundColor = ConsoleColor.Cyan });
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "Hello! I'm the 1st line.\nI'm the 2nd line!\nAnd I'm the 3rd line!" } );
+            ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "int test = 0" });
         }
 
         private void ButtonShowcaseButton_OnClick(object sender, EventArgs e)
