@@ -1174,34 +1174,60 @@ namespace BeConsolePresentationFramework.Rendering
         {
             string[] lines = Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-            int OffsetX = 0;
-
             // Text content
             for (int Height = 0; Height < lines.Length; Height++)
             {
-                string Pattern = KEYWORDS_CS.Replace(',', '|') + "|" + DATATYPES.Replace(',', '|');
+                int OffsetX = 0;
+
+                string Pattern = KEYWORDS_CS.Replace(",", "|") + "|" + DATATYPES.Replace(",", "|");
 
                 Dictionary<string, ConsoleColor> LanguageDictionary = GetHighlight(Language);
 
-                foreach (string Word in Regex.Split(lines[Height], "(" + Pattern + ")"))
+                foreach (string LinePart in Regex.Split(lines[Height], @"\b(" + Pattern + @")\b"))
                 {
-                    if (LanguageDictionary.ContainsKey(Word))
+                    Debug.WriteLine(LinePart);
+                    if (LanguageDictionary.ContainsKey(LinePart))
                     {
-                        Console.ForegroundColor = LanguageDictionary[Word];
+                        Console.ForegroundColor = LanguageDictionary[LinePart];
 
-                        Console.SetCursorPosition(X, Y + Height);
-                        Console.Write(Word);
+                        Console.SetCursorPosition(X + OffsetX, Y + Height);
+                        Console.Write(LinePart);
 
-                        OffsetX += Word.Length;
+                        OffsetX += LinePart.Length;
 
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                     else
                     {
-                        Console.SetCursorPosition(X, Y + Height);
-                        Console.Write(Word);
+                        foreach (string _LinePart in LinePart.Split('\n'))
+                        {
+                            if (_LinePart.IndexOf("//", 0) != -1)
+                            {
+                                int index = _LinePart.IndexOf("//", 0);
 
-                        OffsetX += Word.Length;
+                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.SetCursorPosition(X + OffsetX, Y + Height);
+                                Console.Write(_LinePart.Substring(0, index));
+
+                                OffsetX += index;
+
+                                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                Console.SetCursorPosition(X + OffsetX, Y + Height);
+                                Console.Write(_LinePart.Substring(index, _LinePart.Length - index));
+
+                                OffsetX += _LinePart.Length;
+
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.SetCursorPosition(X + OffsetX, Y + Height);
+                                Console.Write(_LinePart);
+                            }
+
+                            OffsetX += LinePart.Length;
+                        }
                     }
                 }
             }

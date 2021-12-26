@@ -89,7 +89,7 @@ namespace BeConsolePresentationFramework.Utilities
         public enum ProgrammingLanguage { CS, None }
 
         public const string
-            KEYWORDS_CS = "abstract,event,new,struct,as,explicit,null,switch,base,extern,this,false,operator,throw,break,finally,out,true,fixed,override,try,case,params,typeof,catch,for,private,foreach,protected,checked,goto,public,unchecked,if,readonly,unsafe,implicit,ref,continue,in,return,using,virtual,default,interface,sealed,volatile,delegate,internal,do,is,sizeof,while,double,lock,stackalloc,else,static,namespace",
+            KEYWORDS_CS = "abstract,event,new,struct,as,explicit,null,switch,base,extern,this,false,operator,in,throw,break,finally,out,true,fixed,override,try,case,params,typeof,catch,for,private,foreach,protected,checked,goto,public,unchecked,if,readonly,unsafe,implicit,ref,continue,return,using,virtual,default,interface,sealed,volatile,delegate,internal,do,is,sizeof,while,double,lock,stackalloc,else,static,namespace",
             DATATYPES = "bool,object,byte,float,class,uint,char,ulong,ushort,const,decimal,int,sbyte,short,void,long,enum,string";
 
         public static Dictionary<string, ConsoleColor> GetHighlight(ProgrammingLanguage Language)
@@ -100,7 +100,7 @@ namespace BeConsolePresentationFramework.Utilities
             {
                 case ProgrammingLanguage.CS:
                     {
-                        foreach (string Word in KEYWORDS_CS.Split(',')) SyntaxKeywords.Add(Word, ConsoleColor.Green);
+                        foreach (string Word in KEYWORDS_CS.Split(',')) SyntaxKeywords.Add(Word, ConsoleColor.DarkBlue);
                         foreach (string Type in DATATYPES.Split(',')) SyntaxKeywords.Add(Type, ConsoleColor.Blue);
                         break;
                     }

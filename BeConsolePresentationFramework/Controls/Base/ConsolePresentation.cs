@@ -35,14 +35,40 @@ namespace BeConsolePresentationFramework
         }
 
         // Customization
-        private ConsoleColor _AccentColor = ConsoleColor.Blue;
-        public ConsoleColor AccentColor
+        // Accent color
+        private static ConsoleColor _AccentColor = ConsoleColor.Blue;
+        public static ConsoleColor AccentColor
         {
             get { return _AccentColor; }
             set
             {
                 _AccentColor = value;
                 // Add event "AccentColorChanged"
+            }
+        }
+        // Background color
+        private static ConsoleColor _BackgroundColor;
+        public static ConsoleColor BackgroundColor
+        {
+            get { return _BackgroundColor; }
+            set
+            {
+                _BackgroundColor = value;
+                Console.BackgroundColor = BackgroundColor;
+                Console.Clear();
+                // Add event "BackgroundColorChanged"
+            }
+        }
+        // Foreground color
+        private static ConsoleColor _ForegroundColor;
+        public static ConsoleColor ForegroundColor
+        {
+            get { return _ForegroundColor; }
+            set
+            {
+                _ForegroundColor = value;
+                Console.ForegroundColor = ForegroundColor;
+                // Add event "BackgroundColorChanged"
             }
         }
 
@@ -83,7 +109,6 @@ namespace BeConsolePresentationFramework
             Console.Clear();
             ConsoleExtension.DisableEdit();
             Console.CursorVisible = false;
-            SetForeColor(ConsoleColor.White);
         }
 
         public static void AddControl(Control control)
@@ -189,14 +214,15 @@ namespace BeConsolePresentationFramework
 
         public void Exit()
         {
+            BackgroundColor = ConsoleColor.Black;
+            ExitRequest = true;
             AllControls.Clear();
-            Console.Clear();
             ConsoleExtension.EnableEdit();
             Console.CursorVisible = true;
-            SetForeColor(ConsoleColor.Green);
+            ForegroundColor = ConsoleColor.Green;
+            Console.Clear();
             Console.WriteLine("Successfully exited application.");
-            SetForeColor(ConsoleColor.Gray);
-            ExitRequest = true;
+            ForegroundColor = ConsoleColor.Gray;
         }
 
         private void Render()
@@ -319,10 +345,10 @@ namespace BeConsolePresentationFramework
                                     control.ValueChanged = false;
                                 }
 
-                                if (control.Hovered) SetForeColor(ConsoleColor.Gray);
-                                if (control.Pressed) SetForeColor(ConsoleColor.DarkGray);
+                                if (control.Hovered) ForegroundColor = ConsoleColor.Gray;
+                                if (control.Pressed) ForegroundColor = ConsoleColor.DarkGray;
                                 Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
-                                SetForeColor(ConsoleColor.White);
+                                ForegroundColor = ConsoleColor.White;
                             }
                             else if (control is Border)
                             {
@@ -335,7 +361,7 @@ namespace BeConsolePresentationFramework
                                 }
 
                                 Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
-                                SetForeColor(ConsoleColor.White);
+                                ForegroundColor = ConsoleColor.White;
                             }
                             else if (control is TextBox)
                             {
@@ -350,7 +376,7 @@ namespace BeConsolePresentationFramework
                                     }
 
                                     Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.Line, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
-                                    SetForeColor(ConsoleColor.White);
+                                    ForegroundColor = ConsoleColor.White;
                                 }
                                 else
                                 {
@@ -361,7 +387,7 @@ namespace BeConsolePresentationFramework
 
                                     int ContentX = Focused.X + ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
                                     int ContentY = Focused.Y + ((_Height / 2) - Focused.Content.GetNumberOfLines() / 2) + 1 + Focused.Padding.Top - Focused.Padding.Bottom;
-
+                                    
                                     switch (Focused.ContentHorizontalAlignment)
                                     {
                                         case HorizontalAlignment.Left:
@@ -392,6 +418,7 @@ namespace BeConsolePresentationFramework
                                                 break;
                                             }
                                     }
+
                                     ContentX += Focused.X;
 
                                     Console.SetCursorPosition(ContentX, ContentY);
@@ -584,16 +611,6 @@ namespace BeConsolePresentationFramework
             {
 
             }
-        }
-
-        private static void SetForeColor(ConsoleColor consoleColor)
-        {
-            Console.ForegroundColor = consoleColor;
-        }
-
-        private static void SetBackColor(ConsoleColor consoleColor)
-        {
-            Console.BackgroundColor = consoleColor;
         }
 
         #region DLL IMPORTS

@@ -167,7 +167,7 @@ namespace BCPF_Showcase
         {
             ShowcaseNavTextBlock.Content = "Text Block - Showcase";
 
-            ShowcaseBackgroundBorder.Width = 57;
+            ShowcaseBackgroundBorder.Width = 75;
             ShowcaseBackgroundBorder.Height = 20;
 
             ShowShowcase();
@@ -176,14 +176,14 @@ namespace BCPF_Showcase
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "Hello! I'm text block with one line." });
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = @"Text Block with multiple lines (Split with '\n'):", ForegroundColor = ConsoleColor.Cyan });
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "Hello! I'm the 1st line.\nI'm the 2nd line!\nAnd I'm the 3rd line!" } );
-            ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "int test = 0", Language = SyntaxHighlight.ProgrammingLanguage.CS });
-        }
+            ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "StackPanel.Children.Add(new TextBlock \n{ Content = \"Hello! I'm the 1st line.\\nI'm the 2nd line!\\n\nAnd I'm the 3rd line!\" } ); // TEST lol", Language = SyntaxHighlight.ProgrammingLanguage.CS });
+            }
 
         private void ButtonShowcaseButton_OnClick(object sender, EventArgs e)
         {
             ShowcaseNavTextBlock.Content = "Button - Showcase";
 
-            ShowcaseBackgroundBorder.Width = 57;
+            ShowcaseBackgroundBorder.Width = 75;
             ShowcaseBackgroundBorder.Height = 20;
 
             ShowShowcase();
@@ -194,7 +194,7 @@ namespace BCPF_Showcase
             ShowcaseNavTextBlock.Content = "Stack Panel - Showcase";
             ShowShowcase();
 
-            ShowcaseBackgroundBorder.Width = 57;
+            ShowcaseBackgroundBorder.Width = 75;
             ShowcaseBackgroundBorder.Height = 20;
         }
 
@@ -203,7 +203,7 @@ namespace BCPF_Showcase
             ShowcaseNavTextBlock.Content = "Text Box - Showcase";
             ShowShowcase();
 
-            ShowcaseBackgroundBorder.Width = 57;
+            ShowcaseBackgroundBorder.Width = 75;
             ShowcaseBackgroundBorder.Height = 20;
         }
 
@@ -212,7 +212,7 @@ namespace BCPF_Showcase
             ShowcaseNavTextBlock.Content = "Border - Showcase";
             ShowShowcase();
 
-            ShowcaseBackgroundBorder.Width = 57;
+            ShowcaseBackgroundBorder.Width = 75;
             ShowcaseBackgroundBorder.Height = 20;
         }
     }
