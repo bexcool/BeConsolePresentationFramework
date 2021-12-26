@@ -1183,10 +1183,13 @@ namespace BeConsolePresentationFramework.Rendering
 
                 Dictionary<string, ConsoleColor> LanguageDictionary = GetHighlight(Language);
 
+                string PrevLinePart = "";
+
+                bool LineIsComment = false;
+
                 foreach (string LinePart in Regex.Split(lines[Height], @"\b(" + Pattern + @")\b"))
                 {
-                    Debug.WriteLine(LinePart);
-                    if (LanguageDictionary.ContainsKey(LinePart))
+                    if (LanguageDictionary.ContainsKey(LinePart) && !LineIsComment && (PrevLinePart.Contains('\n') || Height == 0))
                     {
                         Console.ForegroundColor = LanguageDictionary[LinePart];
 
@@ -1215,20 +1218,24 @@ namespace BeConsolePresentationFramework.Rendering
                                 Console.SetCursorPosition(X + OffsetX, Y + Height);
                                 Console.Write(_LinePart.Substring(index, _LinePart.Length - index));
 
-                                OffsetX += _LinePart.Length;
-
                                 Console.ForegroundColor = ConsoleColor.White;
+
+                                LineIsComment = true;
                             }
                             else
                             {
-                                Console.ForegroundColor = ConsoleColor.White;
+                                if (!LineIsComment) Console.ForegroundColor = ConsoleColor.White;
+                                else Console.ForegroundColor = ConsoleColor.DarkGreen;
                                 Console.SetCursorPosition(X + OffsetX, Y + Height);
                                 Console.Write(_LinePart);
+
                             }
 
                             OffsetX += LinePart.Length;
                         }
                     }
+
+                    PrevLinePart = LinePart;
                 }
             }
         }

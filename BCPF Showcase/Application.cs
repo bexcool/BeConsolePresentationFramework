@@ -176,7 +176,7 @@ namespace BCPF_Showcase
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "Hello! I'm text block with one line." });
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = @"Text Block with multiple lines (Split with '\n'):", ForegroundColor = ConsoleColor.Cyan });
             ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "Hello! I'm the 1st line.\nI'm the 2nd line!\nAnd I'm the 3rd line!" } );
-            ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "StackPanel.Children.Add(new TextBlock \n{ Content = \"Hello! I'm the 1st line.\\nI'm the 2nd line!\\n\nAnd I'm the 3rd line!\" } ); // TEST lol", Language = SyntaxHighlight.ProgrammingLanguage.CS });
+            ShowcaseContentStackPanel.Children.Add(new TextBlock { Content = "// This is code example of multiline TextBlock\nStackPanel.Children.Add(new TextBlock \n{ Content = \"Hello! I'm the 1st line.\\nI'm the 2nd line!\\n\nAnd I'm the 3rd line!\" } );", Language = SyntaxHighlight.ProgrammingLanguage.CS });
             }
 
         private void ButtonShowcaseButton_OnClick(object sender, EventArgs e)
