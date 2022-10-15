@@ -1,0 +1,40 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "BCPF.Template/1.0.0": {
+        "dependencies": {
+          "BCPF.Core": "1.0.0",
+          "BCPF.Core.Reference": "1.0.0.0"
+        },
+        "runtime": {
+          "BCPF.Template.dll": {}
+        }
+      },
+      "BCPF.Core.Reference/1.0.0.0": {
+        "runtime": {
+          "BCPF.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BCPF.Template/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "BCPF.Core.Reference/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

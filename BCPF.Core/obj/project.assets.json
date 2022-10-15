@@ -1,30 +1,11 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {
-      "BCPF.Core/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "compile": {
-          "bin/placeholder/BCPF.Core.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/BCPF.Core.dll": {}
-        }
-      }
-    }
+    "net6.0": {}
   },
-  "libraries": {
-    "BCPF.Core/1.0.0": {
-      "type": "project",
-      "path": "../BCPF.Core/BCPF.Core.csproj",
-      "msbuildProject": "../BCPF.Core/BCPF.Core.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
-    "net6.0": [
-      "BCPF.Core >= 1.0.0"
-    ]
+    "net6.0": []
   },
   "packageFolders": {
     "C:\\Users\\Santa\\.nuget\\packages\\": {},
@@ -33,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF Template\\BCPF.Template.csproj",
-      "projectName": "BCPF.Template",
-      "projectPath": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF Template\\BCPF.Template.csproj",
+      "projectUniqueName": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF.Core\\BCPF.Core.csproj",
+      "projectName": "BCPF.Core",
+      "projectPath": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF.Core\\BCPF.Core.csproj",
       "packagesPath": "C:\\Users\\Santa\\.nuget\\packages\\",
-      "outputPath": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF Template\\obj\\",
+      "outputPath": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF.Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -59,11 +40,7 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {
-            "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF.Core\\BCPF.Core.csproj": {
-              "projectPath": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF.Core\\BCPF.Core.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {

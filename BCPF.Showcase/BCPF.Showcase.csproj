@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>BCPF.Showcase</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BCPF Template\BCPF.Template.csproj" />
+    <ProjectReference Include="..\BCPF.Core\BCPF.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BCPF.Core">
+      <HintPath>..\BCPF.Core\bin\Debug\net6.0\BCPF.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

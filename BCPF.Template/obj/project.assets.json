@@ -33,11 +33,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF Template\\BCPF.Template.csproj",
+      "projectUniqueName": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF.Template\\BCPF.Template.csproj",
       "projectName": "BCPF.Template",
-      "projectPath": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF Template\\BCPF.Template.csproj",
+      "projectPath": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF.Template\\BCPF.Template.csproj",
       "packagesPath": "C:\\Users\\Santa\\.nuget\\packages\\",
-      "outputPath": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF Template\\obj\\",
+      "outputPath": "F:\\Windows Apps Projects\\BeConsolePresentationFramework\\BeConsolePresentationFramework\\BCPF.Template\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
