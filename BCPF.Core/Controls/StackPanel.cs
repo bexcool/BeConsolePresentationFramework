@@ -57,7 +57,7 @@ namespace BCPF.Core.Controls
                     {
                         if (Children[i].Visibility != Visibility)
                         {
-                            Renderer.DrawBlank(new Rectangle(Children[i].X, Children[i].Y, Children[i].CalculateActualWidth(), Children[i].CalculateActualHeight()));
+                            ConsoleGraphics.DrawBlank(new Rectangle(Children[i].X, Children[i].Y, Children[i].CalculateActualWidth(), Children[i].CalculateActualHeight()));
                         }
 
                         Children[i].X = X + Padding.Left;
@@ -75,7 +75,7 @@ namespace BCPF.Core.Controls
                     {
                         if (Children[i].Visibility != Visibility)
                         {
-                            Renderer.DrawBlank(new Rectangle(Children[i].X, Children[i].Y, Children[i].CalculateActualWidth(), Children[i].CalculateActualHeight()));
+                            ConsoleGraphics.DrawBlank(new Rectangle(Children[i].X, Children[i].Y, Children[i].CalculateActualWidth(), Children[i].CalculateActualHeight()));
                         }
 
                         Children[i].X = X + Padding.Left + LastChildAbsoluteSize;

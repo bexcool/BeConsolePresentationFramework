@@ -37,7 +37,7 @@ public class Application : ConsolePresentation
         Exit.OnClick += Exit_OnClick;
         //Exit.MousePressed += Exit_Pressed;
         Exit.Padding = new Thickness(0, 2, 0, 1);
-        
+
         Button zelva = new Button(40, 20, 13, 5, "ZelvaMan", new BorderStyle(Line.SingleRound));
         zelva.OnClick += Zelva_OnClick;
         zelva.MouseEnter += Zelva_MouseEnter;
@@ -64,14 +64,14 @@ public class Application : ConsolePresentation
         textBox.OnClick += TextBox_OnClick;
 
         textBoxOutput = new TextBlock(25, 15, "Type in TextBox");
-        
+
 
         // Stack panel file search
-        
+
         stackPanel = new StackPanel(25, 4, 100, 100);
         //stackPanel.Children.Add(btnMinus);
         //stackPanel.Children.Add(btnPlus);
-        
+
         Button SearchBtn = new Button
         {
             Width = 10,
@@ -79,11 +79,11 @@ public class Application : ConsolePresentation
             Content = "Search",
             BorderStyle = new BorderStyle(Line.Double)
         };
-        
+
         SearchBtn.OnClick += (s, e) =>
         {
             stackPanel.Children.Clear();
-            //@"C:\Users\Santa\OneDrive\Obrázky"
+            //@"C:\Users\Santa\OneDrive"
             List<string> list = Directory.GetFiles(textBox.Content).ToList();
 
             for (int i = 0; i < list.Count; i++)

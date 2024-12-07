@@ -33,5 +33,10 @@ namespace BCPF.Core.Controls
             this.Height = Height;
             this.BorderStyle = borderStyle;
         }
+
+        public override void RenderControl()
+        {
+            ConsoleGraphics.DrawBox(X, Y, Width, Height, Content, Padding, BorderStyle, ContentHorizontalAlignment, ContentVerticalAlignment);
+        }
     }
 }

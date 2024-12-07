@@ -70,7 +70,7 @@ namespace BCPF.Core.Controls
             this.Width = Width;
             this.Height = Height;
             this.Content = Content;
-            this.ContentHorizontalAlignment= ContentHorizontalAlignment;
+            this.ContentHorizontalAlignment = ContentHorizontalAlignment;
         }
         public TextBox(int X, int Y, int Width, int Height, string Content, HorizontalAlignment ContentHorizontalAlignment, VerticalAlignment ContentVerticalAlignment)
         {
@@ -192,7 +192,7 @@ namespace BCPF.Core.Controls
             this.Content = Content;
             this.Padding = Padding;
             this.BorderStyle = borderStyle;
-            this.ContentHorizontalAlignment= ContentHorizontalAlignment;
+            this.ContentHorizontalAlignment = ContentHorizontalAlignment;
         }
         public TextBox(int X, int Y, int Width, int Height, string Content, Thickness Padding, BorderStyle borderStyle, HorizontalAlignment ContentHorizontalAlignment, VerticalAlignment ContentVerticalAlignment)
         {
@@ -205,6 +205,63 @@ namespace BCPF.Core.Controls
             this.BorderStyle = borderStyle;
             this.ContentHorizontalAlignment = ContentHorizontalAlignment;
             this.ContentVerticalAlignment = ContentVerticalAlignment;
+        }
+
+        public override void RenderControl()
+        {
+            if (this == ConsolePresentation.FocusedControl)
+            {
+                int _Width = Width - 2 + Padding.Left + Padding.Right;
+                int _Height = Height - 2 + Padding.Top + Padding.Bottom;
+
+                int ContentX = X + ((_Width / 2) - Content.GetLongestLineLength() / 2) + 1 - Padding.Right + Padding.Left;
+                int ContentY = Y + ((_Height / 2) - Content.GetNumberOfLines() / 2) + 1 + Padding.Top - Padding.Bottom;
+
+                switch (ContentHorizontalAlignment)
+                {
+                    case HorizontalAlignment.Left:
+                        {
+                            ContentX = 1 - Padding.Right + Padding.Left;
+
+                            break;
+                        }
+
+                    case HorizontalAlignment.Right:
+                        {
+                            ContentX = Width - Content.GetLongestLineLength() - 1 - Padding.Right + Padding.Left;
+
+                            break;
+                        }
+
+                    case HorizontalAlignment.Center:
+                        {
+                            ContentX = ((_Width / 2) - Content.GetLongestLineLength() / 2) + 1 - Padding.Right + Padding.Left;
+
+                            break;
+                        }
+
+                    case HorizontalAlignment.Stretch:
+                        {
+                            ContentX = ((_Width / 2) - Content.GetLongestLineLength() / 2) + 1 - Padding.Right + Padding.Left;
+
+                            break;
+                        }
+                }
+
+                ContentX += X;
+
+                Console.SetCursorPosition(ContentX, ContentY);
+                Console.Write(Content == null ? "" : Content);
+                Console.BackgroundColor = ConsoleColor.Gray;
+                Console.Write("█");
+                Console.BackgroundColor = ConsoleColor.Black;
+                if (ConsolePresentation.FocusedControl != null && _Width - Content.Length - 1 >= 0) Console.Write(new string(' ', _Width - Content.Length - 1));
+                ConsoleGraphics.DrawBox(X, Y, Width, Height, Content, Padding, BorderStyle, ContentHorizontalAlignment, ContentVerticalAlignment, ConsolePresentation.AccentColor);
+            }
+            else
+            {
+                ConsoleGraphics.DrawBox(X, Y, Width, Height, Content, Padding, BorderStyle, ContentHorizontalAlignment, ContentVerticalAlignment);
+            }
         }
     }
 }

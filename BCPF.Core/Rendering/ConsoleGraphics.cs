@@ -14,7 +14,7 @@ using static BCPF.Core.Utilities.Utilities;
 
 namespace BCPF.Core.Rendering
 {
-    public static class Renderer
+    public static class ConsoleGraphics
     {
         /// <summary>
         /// Draw box with fixed size.
@@ -664,6 +664,7 @@ namespace BCPF.Core.Rendering
         /// <param name="language">Programming language.</param>
         public static void DrawText(int x, int y, string content, ProgrammingLanguage language)
         {
+            //.ReplaceLineEndings();
             string[] lines = content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
             // Text content
@@ -739,7 +740,7 @@ namespace BCPF.Core.Rendering
         {
             for (int y = Rectangle.Y; y <= Rectangle.Y + Rectangle.Height; y++)
             {
-                Console.SetCursorPosition(Rectangle.X, y);
+                Console.SetCursorPosition(Math.Clamp(Rectangle.X, 0, Console.BufferWidth - 1), Math.Clamp(y, 0, Console.BufferHeight - 1));
                 Console.Write(new string(' ', Rectangle.Width));
             }
         }

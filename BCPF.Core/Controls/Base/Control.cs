@@ -13,7 +13,7 @@ using BCPF.Core.Rendering.Style;
 
 namespace BCPF.Core.Controls.Base
 {
-    public class Control
+    public abstract class Control
     {
         private int _X;
         public int X
@@ -268,6 +268,7 @@ namespace BCPF.Core.Controls.Base
         }
 
         // Public functions
+
         /// <summary>
         /// Remove control.
         /// </summary>
@@ -293,5 +294,10 @@ namespace BCPF.Core.Controls.Base
         {
             return Height + Padding.TopBottom + Content.GetNumberOfLines();
         }
+
+        /// <summary>
+        /// Called when control is requested to render.
+        /// </summary>
+        public abstract void RenderControl();
     }
 }

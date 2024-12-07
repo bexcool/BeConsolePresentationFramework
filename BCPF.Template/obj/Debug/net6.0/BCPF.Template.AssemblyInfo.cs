@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BCPF.Template")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b7d87823230e2e3f62385d075ff803eed9b27fa0")]
 [assembly: System.Reflection.AssemblyProductAttribute("BCPF.Template")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BCPF.Template")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

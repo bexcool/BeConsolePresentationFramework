@@ -24,13 +24,13 @@ namespace BCPF.Core
 
         // Input
         private NativeMethods.INPUT_RECORD record;
-        private Control _Focused;
-        internal Control? Focused
+        private static Control _focusedControl;
+        public static Control? FocusedControl
         {
-            get { return _Focused; }
+            get { return _focusedControl; }
             set
             {
-                _Focused = value;
+                _focusedControl = value;
                 FocusChanged();
             }
         }
@@ -124,7 +124,7 @@ namespace BCPF.Core
         private void InputThreadLoop()
         {
             var handle = NativeMethods.GetStdHandle(NativeMethods.STD_INPUT_HANDLE);
-            
+
             int mode = 0;
             if (!(NativeMethods.GetConsoleMode(handle, ref mode))) { throw new Win32Exception(); }
 
@@ -133,7 +133,7 @@ namespace BCPF.Core
             mode |= NativeMethods.ENABLE_EXTENDED_FLAGS;
 
             if (!(NativeMethods.SetConsoleMode(handle, mode))) { throw new Win32Exception(); }
-            
+
             record = new NativeMethods.INPUT_RECORD();
             uint recordLen = 0;
             while (!ExitRequest)
@@ -153,7 +153,7 @@ namespace BCPF.Core
                     {
                         KeyboardKeyPressed = false;
                     }
-                    
+
                     CheckInput();
 
                     // Left mouse button press
@@ -178,37 +178,37 @@ namespace BCPF.Core
             }
         }
 
-        private void FocusChanged()
+        private static void FocusChanged()
         {
-            if (Focused != null)
+            if (FocusedControl != null)
             {
-                Focused._Focused();
+                FocusedControl._Focused();
             }
         }
 
         private void CheckTextBoxInput()
         {
-            if (Focused is TextBox)
+            if (FocusedControl is TextBox)
             {
-                int _Width = Focused.Width - 2 + Focused.Padding.Left + Focused.Padding.Right;
-                int _Height = Focused.Height - 2 + Focused.Padding.Top + Focused.Padding.Bottom;
+                int _Width = FocusedControl.Width - 2 + FocusedControl.Padding.Left + FocusedControl.Padding.Right;
+                int _Height = FocusedControl.Height - 2 + FocusedControl.Padding.Top + FocusedControl.Padding.Bottom;
 
-                if ((_Width > Focused.Content.Length + 1 && record.KeyEvent.wVirtualKeyCode != (int)ConsoleKey.Backspace) || (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Backspace && Focused.Content.Length != 0))
+                if ((_Width > FocusedControl.Content.Length + 1 && record.KeyEvent.wVirtualKeyCode != (int)ConsoleKey.Backspace) || (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Backspace && FocusedControl.Content.Length != 0))
                 {
                     if (record.KeyEvent.wVirtualKeyCode == (int)ConsoleKey.Backspace)
                     {
-                        Focused.Content =  Focused.Content.Remove(Focused.Content.ToCharArray().Length - 1);
+                        FocusedControl.Content = FocusedControl.Content.Remove(FocusedControl.Content.ToCharArray().Length - 1);
                     }
                     else if (record.KeyEvent.wVirtualKeyCode == 17 && record.KeyEvent.UnicodeChar == 'v')
                     {
-                        Focused.Content += Clipboard.GetText();
+                        FocusedControl.Content += Clipboard.GetText().Normalize().Last();
                     }
                     else if ((record.KeyEvent.wVirtualKeyCode < 16 || record.KeyEvent.wVirtualKeyCode > 18) && record.KeyEvent.wVirtualKeyCode != 13)
                     {
-                        Focused.Content += record.KeyEvent.UnicodeChar;
+                        FocusedControl.Content += record.KeyEvent.UnicodeChar;
                     }
 
-                    Focused.ValueChanged = true;
+                    FocusedControl.ValueChanged = true;
                 }
             }
         }
@@ -266,12 +266,36 @@ namespace BCPF.Core
                             break;
                     }
                 }
-                
+
                 if (AllControls.Count > 0)
                 {
                     foreach (Control control in AllControls)
                     {
                         control.ChangingByCore = true;
+
+                        // Render if visible
+                        if (control.Visibility == Visibility.Visible)
+                        {
+                            if (control.RemoveRequest) ConsoleGraphics.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+
+                            if (control.ValueChanged)
+                            {
+                                ConsoleGraphics.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                control.ValueChanged = false;
+
+                                control.RenderControl();
+
+                                // Reset foreground color to default white
+                                ForegroundColor = ConsoleColor.White;
+                            }
+                        }
+
+                        if (control.RemoveRequest)
+                        {
+                            RemoveControl(control);
+
+                            continue;
+                        }
 
                         // Check parents
                         if (AllControls.Contains(control.Parent))
@@ -283,7 +307,7 @@ namespace BCPF.Core
                                 if (!StackPanel.Children.Contains(control) && StackPanel.RemoveChildrenOnClear)
                                 {
                                     StackPanel.RenderChildren();
-                                    Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                                    ConsoleGraphics.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
                                     RemoveControl(control);
                                     continue;
                                 }
@@ -295,11 +319,11 @@ namespace BCPF.Core
                         {
                             if (control is TextBlock)
                             {
-                                if (control.RemoveRequest) { Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
+                                if (control.RemoveRequest) { ConsoleGraphics.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
 
                                 if (control.ValueChanged)
                                 {
-                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                    ConsoleGraphics.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
                                     control.ValueChanged = false;
                                 }
 
@@ -329,112 +353,38 @@ namespace BCPF.Core
 
                                 if (TextBlock.Language == SyntaxHighlight.ProgrammingLanguage.None)
                                 {
-                                    Renderer.DrawText(control.X, control.Y, control.Content, control.ForegroundColor);
+                                    ConsoleGraphics.DrawText(control.X, control.Y, control.Content, control.ForegroundColor);
                                 }
                                 else
                                 {
-                                    Renderer.DrawText(control.X, control.Y, control.Content, TextBlock.Language);
+                                    ConsoleGraphics.DrawText(control.X, control.Y, control.Content, TextBlock.Language);
                                 }
                             }
                             else if (control is Button)
                             {
-                                if (control.RemoveRequest) { Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
+                                if (control.RemoveRequest) { ConsoleGraphics.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
 
                                 if (control.ValueChanged)
                                 {
-                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
+                                    ConsoleGraphics.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
                                     control.ValueChanged = false;
                                 }
 
                                 if (control.Hovered) ForegroundColor = ConsoleColor.Gray;
                                 if (control.Pressed) ForegroundColor = ConsoleColor.DarkGray;
-                                Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.BorderStyle, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
+                                ConsoleGraphics.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.BorderStyle, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
                                 ForegroundColor = ConsoleColor.White;
                             }
                             else if (control is Border)
                             {
-                                if (control.RemoveRequest) { Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
-
-                                if (control.ValueChanged)
-                                {
-                                    Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
-                                    control.ValueChanged = false;
-                                }
-
-                                Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.BorderStyle, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
-                                ForegroundColor = ConsoleColor.White;
                             }
                             else if (control is TextBox)
                             {
-                                if (control != Focused)
-                                {
-                                    if (control.RemoveRequest) { Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
-
-                                    if (control.ValueChanged)
-                                    {
-                                        Renderer.DrawBlank(new Rectangle(control.Old.X, control.Old.Y, control.Old.Width, control.Old.Height));
-                                        control.ValueChanged = false;
-                                    }
-
-                                    Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.BorderStyle, control.ContentHorizontalAlignment, control.ContentVerticalAlignment);
-                                    ForegroundColor = ConsoleColor.White;
-                                }
-                                else
-                                {
-                                    if (control.RemoveRequest) { Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
-
-                                    int _Width = Focused.Width - 2 + Focused.Padding.Left + Focused.Padding.Right;
-                                    int _Height = Focused.Height - 2 + Focused.Padding.Top + Focused.Padding.Bottom;
-
-                                    int ContentX = Focused.X + ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
-                                    int ContentY = Focused.Y + ((_Height / 2) - Focused.Content.GetNumberOfLines() / 2) + 1 + Focused.Padding.Top - Focused.Padding.Bottom;
-                                    
-                                    switch (Focused.ContentHorizontalAlignment)
-                                    {
-                                        case HorizontalAlignment.Left:
-                                            {
-                                                ContentX = 1 - Focused.Padding.Right + Focused.Padding.Left;
-
-                                                break;
-                                            }
-
-                                        case HorizontalAlignment.Right:
-                                            {
-                                                ContentX = Focused.Width - Focused.Content.GetLongestLineLength() - 1 - Focused.Padding.Right + Focused.Padding.Left;
-
-                                                break;
-                                            }
-
-                                        case HorizontalAlignment.Center:
-                                            {
-                                                ContentX = ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
-
-                                                break;
-                                            }
-
-                                        case HorizontalAlignment.Stretch:
-                                            {
-                                                ContentX = ((_Width / 2) - Focused.Content.GetLongestLineLength() / 2) + 1 - Focused.Padding.Right + Focused.Padding.Left;
-
-                                                break;
-                                            }
-                                    }
-
-                                    ContentX += Focused.X;
-
-                                    Console.SetCursorPosition(ContentX, ContentY);
-                                    Console.Write(Focused.Content);
-                                    Console.BackgroundColor = ConsoleColor.Gray;
-                                    Console.Write("█");
-                                    Console.BackgroundColor = ConsoleColor.Black;
-                                    if (Focused != null && _Width - Focused.Content.Length - 1 >= 0) Console.Write(new string(' ', _Width - Focused.Content.Length - 1));
-                                    Renderer.DrawBox(control.X, control.Y, control.Width, control.Height, control.Content, control.Padding, control.BorderStyle, control.ContentHorizontalAlignment, control.ContentVerticalAlignment, AccentColor);
-                                }
                             }
                             else if (control is StackPanel)
                             {
-                                if (control.RemoveRequest) { Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
-                                
+                                if (control.RemoveRequest) { ConsoleGraphics.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
+
                                 var StackPanel = control as StackPanel;
 
                                 if (control.ValueChanged)
@@ -457,7 +407,7 @@ namespace BCPF.Core
                         {
                             if (control is StackPanel)
                             {
-                                if (control.RemoveRequest) { Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
+                                if (control.RemoveRequest) { ConsoleGraphics.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height)); RemoveControl(control); continue; }
 
                                 var StackPanel = control as StackPanel;
 
@@ -480,7 +430,7 @@ namespace BCPF.Core
                             {
                                 if (!control.BlankApplied && control is Border)
                                 {
-                                    Renderer.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
+                                    ConsoleGraphics.DrawBlank(new Rectangle(control.X, control.Y, control.Width, control.Height));
                                     control.ValueChanged = false;
                                     control.BlankApplied = true;
                                 }
@@ -528,14 +478,14 @@ namespace BCPF.Core
                             {
                                 if (control is not StackPanel)
                                 {
-                                    if (Focused != null)
+                                    if (FocusedControl != null)
                                     {
-                                        Focused.Old = new Rectangle(Focused.X, Focused.Y, Focused.CalculateActualWidth(), Focused.CalculateActualHeight());
-                                        Focused.ValueChanged = true;
+                                        FocusedControl.Old = new Rectangle(FocusedControl.X, FocusedControl.Y, FocusedControl.CalculateActualWidth(), FocusedControl.CalculateActualHeight());
+                                        FocusedControl.ValueChanged = true;
                                     }
 
                                     HasFocusChanged = true;
-                                    Focused = control;
+                                    FocusedControl = control;
                                 }
                                 control._OnClick();
                             }
@@ -599,12 +549,12 @@ namespace BCPF.Core
                             }
                         }
                     }
-                    
-                    if (!HasFocusChanged && record.MouseEvent.dwButtonState != MouseButtonPressed && record.MouseEvent.dwButtonState == 0 && Focused != null)
+
+                    if (!HasFocusChanged && record.MouseEvent.dwButtonState != MouseButtonPressed && record.MouseEvent.dwButtonState == 0 && FocusedControl != null)
                     {
-                        Focused.Old = new Rectangle(Focused.X, Focused.Y, Focused.CalculateActualWidth(), Focused.CalculateActualHeight());
-                        Focused.ValueChanged = true;
-                        Focused = null;
+                        FocusedControl.Old = new Rectangle(FocusedControl.X, FocusedControl.Y, FocusedControl.CalculateActualWidth(), FocusedControl.CalculateActualHeight());
+                        FocusedControl.ValueChanged = true;
+                        FocusedControl = null;
                     }
                 }
             }

@@ -16,3 +16,4 @@ F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFra
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Test\obj\Debug\net6.0-windows\BCPF.Test.pdb
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Test\obj\Debug\net6.0-windows\BCPF.Test.genruntimeconfig.cache
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Test\obj\Debug\net6.0-windows\ref\BCPF.Test.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Test\obj\Debug\net6.0-windows\BCPF.Test.sourcelink.json

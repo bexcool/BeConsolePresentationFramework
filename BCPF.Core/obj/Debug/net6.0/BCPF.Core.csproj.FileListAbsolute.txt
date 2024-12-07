@@ -14,7 +14,6 @@ F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFra
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\bin\Debug\net6.0\BCPF.Core.deps.json
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\bin\Debug\net6.0\BCPF.Core.dll
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\bin\Debug\net6.0\BCPF.Core.pdb
-F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\obj\Debug\net6.0\BCPF.Core.csproj.AssemblyReference.cache
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\obj\Debug\net6.0\BCPF.Core.csproj.ResolveComReference.cache
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\obj\Debug\net6.0\BCPF.Core.GeneratedMSBuildEditorConfig.editorconfig
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\obj\Debug\net6.0\BCPF.Core.AssemblyInfoInputs.cache
@@ -24,3 +23,4 @@ F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFra
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\obj\Debug\net6.0\refint\BCPF.Core.dll
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\obj\Debug\net6.0\BCPF.Core.pdb
 F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\obj\Debug\net6.0\ref\BCPF.Core.dll
+F:\Windows Apps Projects\BeConsolePresentationFramework\BeConsolePresentationFramework\BCPF.Core\obj\Debug\net6.0\BCPF.Core.sourcelink.json
